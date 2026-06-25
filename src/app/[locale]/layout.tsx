@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Sarabun, Tajawal } from 'next/font/google';
 import { hasLocale } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
@@ -9,14 +9,26 @@ import { routing } from '@/i18n/routing';
 import AppProvider from '@/shared/providers/app.provider';
 import { notFound } from 'next/navigation';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+//fonts
+const sarabun = Sarabun({
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-app',
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const tajawal = Tajawal({
+  subsets: ['arabic'],
+  weight: ['300', '400', '500', '700'],
+  variable: '--font-app',
+  display: 'swap',
+});
+
+const inter = Inter({
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
 });
 
 type Props = LayoutProps<'/[locale]'>;
@@ -30,7 +42,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
   return routing.locales.map((locale) => ({ locale }));
 }
 
@@ -48,9 +59,10 @@ export default async function RootLayout({ children, params }: Props): Promise<R
     <html
       lang={locale}
       dir={locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${locale === 'ar' ? tajawal.variable : sarabun.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col" suppressHydrationWarning>
         <AppProvider locale={locale} messages={messages}>
           {children}
         </AppProvider>
