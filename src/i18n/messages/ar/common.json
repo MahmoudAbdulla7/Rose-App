@@ -5,5 +5,15 @@
   },
   "landing-page": {
     "title": "الصفحة الرئيسيه"
+  },
+  "toast": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "warning": "تحذير",
+    "info": "معلومة"
+  },
+  "pagination": {
+    "next": "التالي",
+    "previous": "السابق"
   }
 }
