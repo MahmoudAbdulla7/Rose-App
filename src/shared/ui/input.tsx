@@ -75,7 +75,7 @@ function Input({
 
       <div className="relative flex items-center">
         {leftIcon && (
-          <span className="text-ds-text-muted absolute left-2 flex items-center">{leftIcon}</span>
+          <span className="text-ds-text-muted absolute start-2 flex items-center">{leftIcon}</span>
         )}
 
         <input

@@ -9,7 +9,6 @@ function SearchInput({
   onChange,
   value,
   defaultValue,
-  placeholder,
   ...props
 }: Omit<InputProps, 'type' | 'leftIcon' | 'rightIcon'>) {
   const t = useTranslations('common.Input');
@@ -23,7 +22,7 @@ function SearchInput({
   return (
     <Input
       type="text"
-      placeholder={placeholder ?? t('searchPlaceholder')}
+      placeholder={t('searchPlaceholder')}
       value={searchValue}
       onChange={handleChange}
       leftIcon={<Search className="w-icon-md h-icon-md text-ds-text-muted" />}
