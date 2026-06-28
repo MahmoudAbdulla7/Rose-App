@@ -5,6 +5,7 @@ import ReactQueryProvider from './react-query.provider';
 import ThemeProvider from './theme.provider';
 
 import type { AbstractIntlMessages, Locale } from 'next-intl';
+import { Toaster } from '../ui/sonner';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -16,7 +17,10 @@ export default function AppProvider({ children, locale, messages }: AppProviderP
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ThemeProvider>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          {children}
+          <Toaster duration={3000} closeButton />
+        </ReactQueryProvider>
       </ThemeProvider>
     </NextIntlClientProvider>
   );
