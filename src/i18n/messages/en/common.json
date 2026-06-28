@@ -19,5 +19,18 @@
     "placeholder": "Select an option",
     "noOptions": "No options found",
     "search": "Search..."
+  "Input": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "fileSelected": "File selected",
+    "uploadFile": "Upload file",
+    "reviewCurrentImages": "Review current image(s)",
+    "removeFile": "Remove file",
+    "imagePreview": "Image preview",
+    "searchCountry": "Search country...",
+    "noCountryFound": "No country found.",
+    "searchPlaceholder": "Search..."
   }
 }
