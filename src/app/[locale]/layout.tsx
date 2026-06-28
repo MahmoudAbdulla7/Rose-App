@@ -1,6 +1,7 @@
 import { Inter, Sarabun, Tajawal } from 'next/font/google';
+import type { Locale } from 'next-intl';
 import { hasLocale } from 'next-intl';
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTimeZone, getTranslations, setRequestLocale } from 'next-intl/server';
 
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
@@ -8,6 +9,7 @@ import type { ReactNode } from 'react';
 import { routing } from '@/i18n/routing';
 import AppProvider from '@/shared/providers/app.provider';
 import { notFound } from 'next/navigation';
+import type { NextIntlConfigProps } from '@/shared/lib/types/global';
 
 //fonts
 const sarabun = Sarabun({
@@ -47,10 +49,13 @@ export function generateStaticParams() {
 
 export default async function RootLayout({ children, params }: Props): Promise<ReactNode> {
   const { locale } = await params;
+  const timeZone = await getTimeZone({ locale: locale as Locale });
+  const nextIntelConfig: NextIntlConfigProps = { timeZone, locale: locale as Locale };
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
   setRequestLocale(locale);
 
   const messages = await getMessages({ locale });
@@ -63,7 +68,7 @@ export default async function RootLayout({ children, params }: Props): Promise<R
       className={`${locale === 'ar' ? tajawal.variable : sarabun.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
-        <AppProvider locale={locale} messages={messages}>
+        <AppProvider nextIntelConfig={nextIntelConfig} messages={messages}>
           {children}
         </AppProvider>
       </body>

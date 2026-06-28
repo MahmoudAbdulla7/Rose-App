@@ -15,6 +15,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale,
+    timeZone: 'Africa/Cairo',
     messages: {
       common: common.default,
       auth: auth.default,
