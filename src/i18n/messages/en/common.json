@@ -6,6 +6,16 @@
   "landing-page": {
     "title": "Landing Page"
   },
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info"
+  },
+  "pagination": {
+    "next": "Next",
+    "previous": "Previous"
+  },
   "Message": {
     "label": "Message",
     "placeholder": "Type your message here.",
