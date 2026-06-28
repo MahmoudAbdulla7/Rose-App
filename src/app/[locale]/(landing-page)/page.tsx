@@ -3,11 +3,6 @@ import ThemeToggle from '@/shared/components/theme-toggle';
 import { Input } from '@/shared/ui/input';
 import { SearchInput } from '@/shared/ui/search-input';
 import { getTranslations } from 'next-intl/server';
-import { FileInputDemo } from './_components/file-input-demo';
-import { PhoneInput } from '@/shared/ui/phone-input';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/shared/ui/input-otp';
-import { PasswordInput } from '@/shared/ui/password-input';
-
 export default async function LandingPage() {
   const t = await getTranslations('common');
   return (
