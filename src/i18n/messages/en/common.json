@@ -6,6 +6,19 @@
   "landing-page": {
     "title": "Landing Page"
   },
+  "Message": {
+    "label": "Message",
+    "placeholder": "Type your message here.",
+    "error": "Message must be at least 10 characters"
+  },
+  "textarea": {
+    "placeholder": "Type your message here.",
+    "charCount": "{current}/{max} characters"
+  },
+  "select": {
+    "placeholder": "Select an option",
+    "noOptions": "No options found",
+    "search": "Search..."
   "Input": {
     "required": "This field is required",
     "invalidEmail": "Invalid email address",

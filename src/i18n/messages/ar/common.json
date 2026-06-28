@@ -6,6 +6,19 @@
   "landing-page": {
     "title": "الصفحة الرئيسيه"
   },
+  "Message": {
+    "label": "الرسالة",
+    "placeholder": "اكتب رسالتك هنا.",
+    "error": "يجب ألا تقل الرسالة عن 10 أحرف"
+  },
+  "textarea": {
+    "placeholder": "اكتب رسالتك هنا.",
+    "charCount": "{current}/{max} حرف"
+  },
+  "select": {
+    "placeholder": "اختر خياراً",
+    "noOptions": "لا توجد خيارات",
+    "search": "بحث..."
   "Input": {
     "required": "هذا الحقل مطلوب",
     "invalidEmail": "عنوان بريد إلكتروني غير صالح",
