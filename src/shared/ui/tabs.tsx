@@ -55,7 +55,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
         'after:bg-foreground after:absolute after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:-bottom-1.25 group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-inset-e-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100',
         // Custom Styling
         // General
-        'h-11 w-44 gap-2.5 border outline-hidden first-of-type:rounded-s-xl first-of-type:border-e-0 last-of-type:rounded-e-xl last-of-type:border-s-0 focus-visible:border-4 first-of-type:focus-visible:border-e-0 last-of-type:focus-visible:border-s-0',
+        'size-fit gap-2.5 border px-[51.5px] py-3.5 outline-hidden first-of-type:rounded-s-xl first-of-type:border-e-0 last-of-type:rounded-e-xl last-of-type:border-s-0 focus-visible:border-4 first-of-type:focus-visible:border-e-0 last-of-type:focus-visible:border-s-0',
         // === Default State ===
         'data-active:border-ds-primary data-active:bg-ds-primary not-data-active:border-ds-soft not-data-active:bg-ds-plain not-data-active:text-ds-text-plain data-active:text-ds-plain',
         // === Hover State ===
