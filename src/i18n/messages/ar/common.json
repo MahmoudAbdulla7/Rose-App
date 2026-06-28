@@ -29,6 +29,7 @@
     "placeholder": "اختر خياراً",
     "noOptions": "لا توجد خيارات",
     "search": "بحث..."
+  },
   "Input": {
     "required": "هذا الحقل مطلوب",
     "invalidEmail": "عنوان بريد إلكتروني غير صالح",

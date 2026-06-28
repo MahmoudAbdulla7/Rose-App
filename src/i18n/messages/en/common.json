@@ -29,6 +29,7 @@
     "placeholder": "Select an option",
     "noOptions": "No options found",
     "search": "Search..."
+  },
   "Input": {
     "required": "This field is required",
     "invalidEmail": "Invalid email address",
