@@ -2,6 +2,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 
 import ReactQueryProvider from './react-query.provider';
+import ThemeProvider from './theme.provider';
 
 import type { AbstractIntlMessages, Locale } from 'next-intl';
 
@@ -14,7 +15,9 @@ type AppProviderProps = {
 export default function AppProvider({ children, locale, messages }: AppProviderProps) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <ReactQueryProvider>{children}</ReactQueryProvider>
+      <ThemeProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </ThemeProvider>
     </NextIntlClientProvider>
   );
 }
