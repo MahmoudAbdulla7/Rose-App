@@ -1,19 +1,131 @@
-import { Input as InputPrimitive } from '@base-ui/react/input';
 import * as React from 'react';
+import { FieldLabel } from '@/shared/ui/field-label';
 import { cn } from 'shared/lib/utils';
 
-function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
+const inputShellClassName = cn(
+  // Size & Layout
+  'w-full min-w-0 h-input',
+
+  // Surface
+  'bg-ds-plain',
+
+  // Shape
+  'rounded-lg',
+
+  // Border
+  'border border-ds-border-soft',
+
+  // Typography
+  'text-sm text-ds-text-plain',
+
+  // Hover State
+  'hover:border-ds-border-default',
+
+  // Focus State
+  'focus-visible:border-ds-primary',
+  'focus-visible:ring',
+  'focus-visible:ring-ds-ring',
+
+  // Error State
+  'aria-invalid:border-ds-danger',
+  'aria-invalid:focus-visible:ring-ds-ring-danger',
+
+  // Disabled State
+  'disabled:bg-ds-muted',
+  'disabled:pointer-events-none',
+  'disabled:cursor-not-allowed',
+  'disabled:text-ds-text-muted',
+);
+interface InputProps extends React.ComponentProps<'input'> {
+  label?: string;
+  error?: string;
+  hint?: string;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  wrapperClassName?: string;
+}
+
+function Input({
+  className,
+  type,
+  label,
+  error,
+  hint,
+  leftIcon,
+  rightIcon,
+  wrapperClassName,
+  id,
+  ...props
+}: InputProps) {
+  const generatedId = React.useId();
+  const inputId = id ?? generatedId;
+
   return (
-    <InputPrimitive
-      type={type}
-      data-slot="input"
-      className={cn(
-        'border-input file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 disabled:bg-input/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 h-8 w-full min-w-0 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-3 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 md:text-sm',
-        className,
+    <div className={cn('flex w-full flex-col gap-1.5', wrapperClassName)}>
+      {label && (
+        <FieldLabel
+          htmlFor={inputId}
+          required={props.required}
+          error={error}
+          disabled={props.disabled}
+        >
+          {label}
+        </FieldLabel>
       )}
-      {...props}
-    />
+
+      <div className="relative flex items-center">
+        {leftIcon && (
+          <span className="text-ds-text-muted absolute start-2 flex items-center">{leftIcon}</span>
+        )}
+
+        <input
+          id={inputId}
+          type={type}
+          aria-invalid={!!error}
+          className={cn(
+            inputShellClassName,
+            // Internal Spacing
+            'gap-2 px-4 py-4',
+
+            // Focus Ring Enhancement
+            'focus-visible:ring-2',
+            'focus-visible:ring-ds-ring',
+            'focus-visible:outline-none',
+
+            // Placeholder
+            'placeholder:text-ds-text-muted',
+
+            // Disabled
+            'disabled:text-ds-text-muted',
+
+            // Icon Offsets
+            leftIcon && !rightIcon && 'ps-10',
+            rightIcon && !leftIcon && 'pe-8',
+            leftIcon && rightIcon && 'ps-10 pe-8',
+            className,
+          )}
+          {...props}
+        />
+
+        {rightIcon && (
+          <span className="text-ds-text-muted absolute end-3 flex items-center">{rightIcon}</span>
+        )}
+      </div>
+
+      {error && (
+        <p id={`${inputId}-error`} className="text-ds-danger text-xs">
+          {error}
+        </p>
+      )}
+
+      {!error && hint && (
+        <p id={`${inputId}-hint`} className="text-ds-text-soft text-xs">
+          {hint}
+        </p>
+      )}
+    </div>
   );
 }
 
-export { Input };
+export { Input, inputShellClassName };
+export type { InputProps };

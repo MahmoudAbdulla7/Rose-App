@@ -134,6 +134,12 @@
   /* ---- Ring — the bare `ring` utility is a 3px ring in the DS ring color ---- */
   --default-ring-width: 3px;
   --default-ring-color: var(--ds-ring);
+
+  /* ---- Input Sizes ---- */
+  --width-input: 21.6875rem;
+  --height-input: 3.0625rem; /* 49px */
+  --size-icon-md: var(--icon-md); /* 18px */
+  --spacing-icon-end: 0.90625rem; /* 14.5px */
 }
 
 /* =============================================================================

@@ -15,5 +15,19 @@
   "pagination": {
     "next": "التالي",
     "previous": "السابق"
+  },
+  "Input": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "fileSelected": "تم اختيار الملف",
+    "uploadFile": "رفع ملف",
+    "reviewCurrentImages": "معاينة الصورة الحالية",
+    "removeFile": "حذف الملف",
+    "imagePreview": "معاينة الصورة",
+    "searchCountry": "ابحث عن دولة...",
+    "noCountryFound": "لم يتم العثور على دولة.",
+    "searchPlaceholder": "بحث..."
   }
 }
