@@ -15,7 +15,7 @@ function Checkbox({ className, error, disabled, ...props }: CheckboxProps) {
       className={cn(
         `peer aria-invalid:border-ds-danger aria-invalid:ring-ds-ring aria-invalid:aria-checked:border-ds-danger`,
 
-        `data-checked:text-primary-foreground focus-visible:border-ds-primary focus-visible:ds-ring`,
+        `data-checked:text-primary-foreground focus-visible:border-ds-primary focus-visible:ring-ds-ring`,
         `data-checked:border-ds-primary data-checked:bg-ds-primary focus-visible:ring`,
 
         `border-ds-primary relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-sm`,
