@@ -2,14 +2,92 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
-@custom-variant dark (&:is(.dark *));
+/* Enable `dark:` variants when any ancestor carries [data-theme='dark'] */
+@custom-variant dark (&:is([data-theme='dark'] *));
 
+/* =============================================================================
+   Theme — maps CSS variables to Tailwind utilities (inline values)
+   ========================================================================== */
 @theme inline {
+  /* ---- Core surfaces ---- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-geist-sans);
+
+  /* ---- Fonts ---- */
+  --font-sans: var(--font-app);
+  --font-mono: var(--font-app);
+  --font-heading: var(--font-app);
+  --font-inter: var(--font-inter);
+
+  /* ---- Maroon — not in Tailwind's default palette ---- */
+  --color-maroon-50: #fbeaea;
+  --color-maroon-100: #f3c5c7;
+  --color-maroon-200: #ea9fa2;
+  --color-maroon-300: #e07a7d;
+  --color-maroon-400: #d75458;
+  --color-maroon-500: #cd2e33;
+  --color-maroon-600: #a6252a;
+  --color-maroon-700: #741c21;
+  --color-maroon-800: #501419;
+  --color-maroon-900: #2c0c10;
+  --color-maroon-950: #20090c;
+
+  /* ---- Soft Pink — not in Tailwind's default palette ---- */
+  --color-soft-pink-50: #fff1f5;
+  --color-soft-pink-100: #ffe0e7;
+  --color-soft-pink-200: #ffc2d0;
+  --color-soft-pink-300: #ffa3b9;
+  --color-soft-pink-400: #ff85a2;
+  --color-soft-pink-500: #ff668b;
+  --color-soft-pink-600: #e65073;
+  --color-soft-pink-700: #cc3a5b;
+  --color-soft-pink-800: #b32443;
+  --color-soft-pink-900: #99102c;
+  --color-soft-pink-950: #590414;
+
+  /* ---- Pink — overrides Tailwind's default pink with the design's values ---- */
+  --color-pink-50: #fff0f8;
+  --color-pink-100: #ffd6ec;
+  --color-pink-200: #ffaddc;
+  --color-pink-300: #ff84cb;
+  --color-pink-400: #ff5bba;
+  --color-pink-500: #f82ba9;
+  --color-pink-600: #d0198f;
+  --color-pink-700: #a41173;
+  --color-pink-800: #790a55;
+  --color-pink-900: #52043a;
+  --color-pink-950: #340021;
+
+  /* ---- Red — only shades that differ from Tailwind v4's vivid P3 default (50 matches) ---- */
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+  --color-red-950: #450a0a;
+
+  /* ---- Yellow — only shades that differ from Tailwind v4's vivid P3 default (50 matches) ---- */
+  --color-yellow-100: #fef9c3;
+  --color-yellow-200: #fef08a;
+  --color-yellow-300: #fde047;
+  --color-yellow-400: #facc15;
+  --color-yellow-500: #eab308;
+  --color-yellow-600: #ca8a04;
+  --color-yellow-700: #a16207;
+  --color-yellow-800: #854d0e;
+  --color-yellow-900: #713f12;
+  --color-yellow-950: #422006;
+
+  /* ---- Zinc — only shades that differ from Tailwind v4's default (~1–2 per channel) ---- */
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+
+  /* ---- Sidebar ---- */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -18,11 +96,15 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+
+  /* ---- Charts ---- */
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+
+  /* ---- shadcn semantic surfaces ---- */
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -39,16 +121,101 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ---- Radius scale — matches the design system (sm 4 / base 6 / lg 8 / xl 10) ---- */
+  --radius-sm: calc(var(--radius) - 2px); /* 4px */
+  --radius-md: var(--radius); /* 6px — base */
+  --radius-lg: calc(var(--radius) + 2px); /* 8px */
+  --radius-xl: calc(var(--radius) + 4px); /* 10px */
+  --radius-2xl: calc(var(--radius) + 6px); /* 12px */
+  --radius-3xl: calc(var(--radius) + 8px); /* 14px */
+  --radius-4xl: calc(var(--radius) + 10px); /* 16px */
+
+  /* ---- Ring — the bare `ring` utility is a 3px ring in the DS ring color ---- */
+  --default-ring-width: 3px;
+  --default-ring-color: var(--ds-ring);
 }
 
+/* =============================================================================
+   Design System (ds) — semantic tokens exposed as static utilities
+   ========================================================================== */
+@theme static {
+  /* ---- Neutral — Background family (bg-ds-*) ---- */
+  --color-ds-plain: var(--ds-plain);
+  --color-ds-subtle: var(--ds-subtle);
+  --color-ds-muted: var(--ds-muted);
+  --color-ds-soft: var(--ds-soft);
+  --color-ds-default: var(--ds-default);
+  --color-ds-inverse: var(--ds-inverse);
+  --color-ds-elevated: var(--ds-elevated);
+  --color-ds-overlay: var(--ds-overlay);
+
+  /* ---- Neutral — Text family (text-ds-text-*) ---- */
+  --color-ds-text-plain: var(--ds-text-plain);
+  --color-ds-text-subtle: var(--ds-text-subtle);
+  --color-ds-text-muted: var(--ds-text-muted);
+  --color-ds-text-soft: var(--ds-text-soft);
+  --color-ds-text-default: var(--ds-text-default);
+  --color-ds-text-inverse: var(--ds-text-inverse);
+
+  /* ---- Neutral — Border family (border-ds-border-*) ---- */
+  --color-ds-border-plain: var(--ds-border-plain);
+  --color-ds-border-subtle: var(--ds-border-subtle);
+  --color-ds-border-muted: var(--ds-border-muted);
+  --color-ds-border-soft: var(--ds-border-soft);
+  --color-ds-border-default: var(--ds-border-default);
+  --color-ds-border-inverse: var(--ds-border-inverse);
+
+  /* ---- Primary ---- */
+  --color-ds-primary: var(--ds-primary);
+  --color-ds-primary-saturated: var(--ds-primary-saturated);
+  --color-ds-primary-faint: var(--ds-primary-faint);
+  --color-ds-primary-fade: var(--ds-primary-fade);
+
+  /* ---- Info ---- */
+  --color-ds-info: var(--ds-info);
+  --color-ds-info-faint: var(--ds-info-faint);
+  --color-ds-info-fade: var(--ds-info-fade);
+
+  /* ---- Secondary ---- */
+  --color-ds-secondary: var(--ds-secondary);
+  --color-ds-secondary-faint: var(--ds-secondary-faint);
+  --color-ds-secondary-fade: var(--ds-secondary-fade);
+
+  /* ---- Success ---- */
+  --color-ds-success: var(--ds-success);
+  --color-ds-success-faint: var(--ds-success-faint);
+  --color-ds-success-fade: var(--ds-success-fade);
+
+  /* ---- Warning ---- */
+  --color-ds-warning: var(--ds-warning);
+  --color-ds-warning-faint: var(--ds-warning-faint);
+  --color-ds-warning-fade: var(--ds-warning-fade);
+
+  /* ---- Danger ---- */
+  --color-ds-danger: var(--ds-danger);
+  --color-ds-danger-saturated: var(--ds-danger-saturated);
+  --color-ds-danger-faint: var(--ds-danger-faint);
+  --color-ds-danger-fade: var(--ds-danger-fade);
+
+  /* ---- Shadow (shadow-ds-*) ---- */
+  --shadow-ds-subtle: var(--ds-shadow-subtle);
+  --shadow-ds-subtle-lg: var(--ds-shadow-subtle-lg);
+  --shadow-ds-subtle-sm: var(--ds-shadow-subtle-sm);
+  --shadow-ds-soft: var(--ds-shadow-soft);
+  --shadow-ds-soft-lg: var(--ds-shadow-soft-lg);
+  --shadow-ds-soft-sm: var(--ds-shadow-soft-sm);
+
+  /* ---- Ring color — ring-ds-ring* (use with the 3px-wide `ring` utility) ---- */
+  --color-ds-ring: var(--ds-ring);
+  --color-ds-ring-danger: var(--ds-ring-danger);
+}
+
+/* =============================================================================
+   Light theme (default)
+   ========================================================================== */
 :root {
+  /* ---- shadcn surfaces ---- */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -72,7 +239,9 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.375rem; /* 6px — base */
+
+  /* ---- Sidebar ---- */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -81,9 +250,85 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ===== Design System tokens — LIGHT ===== */
+
+  /* ---- Neutral — Background ---- */
+  --ds-plain: var(--color-white);
+  --ds-subtle: var(--color-zinc-50);
+  --ds-muted: var(--color-zinc-100);
+  --ds-soft: var(--color-zinc-200);
+  --ds-default: var(--color-zinc-500);
+  --ds-inverse: var(--color-zinc-800);
+  --ds-elevated: rgb(0 0 0 / 0.2);
+  --ds-overlay: rgb(0 0 0 / 0.5);
+
+  /* ---- Neutral — Text ---- */
+  --ds-text-plain: var(--color-zinc-800);
+  --ds-text-subtle: var(--color-zinc-300);
+  --ds-text-muted: var(--color-zinc-400);
+  --ds-text-soft: var(--color-zinc-500);
+  --ds-text-default: var(--color-zinc-600);
+  --ds-text-inverse: var(--color-white);
+
+  /* ---- Neutral — Border ---- */
+  --ds-border-plain: var(--color-zinc-800);
+  --ds-border-subtle: var(--color-zinc-100);
+  --ds-border-muted: var(--color-zinc-200);
+  --ds-border-soft: var(--color-zinc-300);
+  --ds-border-default: var(--color-zinc-400);
+  --ds-border-inverse: var(--color-white);
+
+  /* ---- Primary ---- */
+  --ds-primary: var(--color-maroon-800);
+  --ds-primary-saturated: var(--color-maroon-700);
+  --ds-primary-faint: var(--color-maroon-100);
+  --ds-primary-fade: var(--color-maroon-50);
+
+  /* ---- Info ---- */
+  --ds-info: var(--color-blue-600);
+  --ds-info-faint: var(--color-blue-100);
+  --ds-info-fade: var(--color-blue-50);
+
+  /* ---- Secondary ---- */
+  --ds-secondary: var(--color-soft-pink-400);
+  --ds-secondary-faint: var(--color-soft-pink-100);
+  --ds-secondary-fade: var(--color-soft-pink-50);
+
+  /* ---- Success ---- */
+  --ds-success: var(--color-emerald-500);
+  --ds-success-faint: var(--color-emerald-100);
+  --ds-success-fade: var(--color-emerald-50);
+
+  /* ---- Warning ---- */
+  --ds-warning: var(--color-yellow-400);
+  --ds-warning-faint: var(--color-yellow-100);
+  --ds-warning-fade: var(--color-yellow-50);
+
+  /* ---- Danger ---- */
+  --ds-danger: var(--color-red-600);
+  --ds-danger-saturated: var(--color-red-700);
+  --ds-danger-faint: var(--color-red-100);
+  --ds-danger-fade: var(--color-red-50);
+
+  /* ---- Shadow (shared across themes) ---- */
+  --ds-shadow-subtle: 0 4px 10px 0 rgb(0 0 0 / 0.07);
+  --ds-shadow-subtle-lg: 0 4px 18px 0 rgb(0 0 0 / 0.07);
+  --ds-shadow-subtle-sm: 0 2px 5px 0 rgb(0 0 0 / 0.07);
+  --ds-shadow-soft: 0 4px 10px 0 rgb(0 0 0 / 0.1);
+  --ds-shadow-soft-lg: 0 4px 18px 0 rgb(0 0 0 / 0.1);
+  --ds-shadow-soft-sm: 0 2px 5px 0 rgb(0 0 0 / 0.1);
+
+  /* ---- Ring color (width handled by --default-ring-width) ---- */
+  --ds-ring: var(--color-maroon-50);
+  --ds-ring-danger: var(--color-red-100);
 }
 
-.dark {
+/* =============================================================================
+   Dark theme
+   ========================================================================== */
+[data-theme='dark'] {
+  /* ---- shadcn surfaces ---- */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -107,6 +352,8 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+
+  /* ---- Sidebar ---- */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -115,8 +362,75 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* ===== Design System tokens — DARK ===== */
+
+  /* ---- Neutral — Background ---- */
+  --ds-plain: var(--color-zinc-700);
+  --ds-subtle: var(--color-zinc-800);
+  --ds-muted: var(--color-zinc-900);
+  --ds-soft: var(--color-zinc-700);
+  --ds-default: var(--color-zinc-600);
+  --ds-inverse: var(--color-zinc-50);
+  --ds-elevated: rgb(0 0 0 / 0.2);
+  --ds-overlay: rgb(0 0 0 / 0.5);
+
+  /* ---- Neutral — Text (scale inverts in dark: lighter = more emphasis) ---- */
+  --ds-text-plain: var(--color-zinc-50);
+  --ds-text-subtle: var(--color-zinc-500);
+  --ds-text-muted: var(--color-zinc-400);
+  --ds-text-soft: var(--color-zinc-300);
+  --ds-text-default: var(--color-zinc-200);
+  --ds-text-inverse: var(--color-zinc-800);
+
+  /* ---- Neutral — Border ---- */
+  --ds-border-plain: var(--color-zinc-50);
+  --ds-border-subtle: var(--color-zinc-700);
+  --ds-border-muted: var(--color-zinc-800);
+  --ds-border-soft: var(--color-zinc-600);
+  --ds-border-default: var(--color-zinc-500);
+  --ds-border-inverse: var(--color-zinc-800);
+
+  /* ---- Primary ---- */
+  --ds-primary: var(--color-soft-pink-300);
+  --ds-primary-saturated: var(--color-soft-pink-200);
+  --ds-primary-faint: color-mix(in oklab, var(--color-soft-pink-300) 75%, transparent);
+  --ds-primary-fade: color-mix(in oklab, var(--color-soft-pink-300) 25%, transparent);
+
+  /* ---- Info ---- */
+  --ds-info: var(--color-blue-500);
+  --ds-info-faint: var(--color-blue-900);
+  --ds-info-fade: color-mix(in oklab, var(--color-blue-500) 25%, transparent);
+
+  /* ---- Secondary ---- */
+  --ds-secondary: var(--color-maroon-600);
+  --ds-secondary-faint: color-mix(in oklab, var(--color-maroon-600) 50%, transparent);
+  --ds-secondary-fade: color-mix(in oklab, var(--color-maroon-600) 25%, transparent);
+
+  /* ---- Success ---- */
+  --ds-success: var(--color-emerald-500);
+  --ds-success-faint: color-mix(in oklab, var(--color-emerald-500) 50%, transparent);
+  --ds-success-fade: color-mix(in oklab, var(--color-emerald-500) 25%, transparent);
+
+  /* ---- Warning ---- */
+  --ds-warning: var(--color-yellow-500);
+  --ds-warning-faint: color-mix(in oklab, var(--color-yellow-500) 50%, transparent);
+  --ds-warning-fade: color-mix(in oklab, var(--color-yellow-50) 25%, transparent);
+
+  /* ---- Danger ---- */
+  --ds-danger: var(--color-red-500);
+  --ds-danger-saturated: var(--color-red-400);
+  --ds-danger-faint: color-mix(in oklab, var(--color-red-500) 50%, transparent);
+  --ds-danger-fade: color-mix(in oklab, var(--color-red-50) 25%, transparent);
+
+  /* ---- Ring color (width handled by --default-ring-width) ---- */
+  --ds-ring: #473036;
+  --ds-ring-danger: #452b2c;
 }
 
+/* =============================================================================
+   Base layer — global element defaults
+   ========================================================================== */
 @layer base {
   * {
     @apply border-border outline-ring/50;

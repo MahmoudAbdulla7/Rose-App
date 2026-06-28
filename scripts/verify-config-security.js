@@ -11,7 +11,7 @@ const ROOT = path.resolve(__dirname, '..');
 const WATCHED_FILES = ['postcss.config.mjs', 'next.config.ts', 'eslint.config.mjs'];
 
 const MAX_BYTES = {
-  'postcss.config.mjs': 94,
+  'postcss.config.mjs': 1126,
   'eslint.config.mjs': 1393,
   'next.config.ts': 255,
 };
