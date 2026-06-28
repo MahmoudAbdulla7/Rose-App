@@ -82,9 +82,7 @@ export default function BreadcrumbsTestComponent() {
               {isLast ? (
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>
               ) : (
-                <BreadcrumbLink>
-                  <Link href={item.href}>{item.label}</Link>
-                </BreadcrumbLink>
+                <BreadcrumbLink render={<Link href={item.href} />}>{item.label}</BreadcrumbLink>
               )}
             </BreadcrumbItem>
           );
