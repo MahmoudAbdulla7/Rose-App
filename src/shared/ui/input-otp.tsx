@@ -1,6 +1,6 @@
 'use client';
 
-import { OTPInput, OTPInputContext } from 'input-otp';
+import { OTPInput, OTPInputContext, REGEXP_ONLY_DIGITS } from 'input-otp';
 import * as React from 'react';
 import { cn } from 'shared/lib/utils';
 
@@ -22,6 +22,8 @@ function InputOTP({
         containerClassName,
       )}
       spellCheck={false}
+      inputMode="numeric"
+      pattern={REGEXP_ONLY_DIGITS}
       className={cn(
         // Disabled State
         'disabled:cursor-not-allowed',
