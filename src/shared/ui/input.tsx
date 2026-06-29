@@ -80,10 +80,15 @@ function Input({
 
         <input
           id={inputId}
+          min={type === 'number' ? 0 : undefined}
+          step={type === 'number' ? 1 : undefined}
           type={type}
           aria-invalid={!!error}
           className={cn(
             inputShellClassName,
+
+            '[&::-webkit-inner-spin-button]:opacity-100',
+            '[&::-webkit-outer-spin-button]:opacity-100',
             // Internal Spacing
             'gap-2 px-4 py-4',
 

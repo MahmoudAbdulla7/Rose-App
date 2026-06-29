@@ -1,10 +1,11 @@
 'use client';
 
-import { ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 import * as RPNInput from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
 import { FieldLabel } from '@/shared/ui/field-label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 import { cn } from '@/shared/lib/utils';
 import { inputShellClassName } from './input';
 
@@ -45,7 +46,6 @@ const PhoneInput = React.forwardRef<React.ComponentRef<typeof RPNInput.default>,
       disabled,
       required,
       defaultCountry = 'EG',
-      countries = ['EG'],
       placeholder,
       ...props
     },
@@ -67,7 +67,6 @@ const PhoneInput = React.forwardRef<React.ComponentRef<typeof RPNInput.default>,
             ref={ref}
             id={inputId}
             defaultCountry={defaultCountry}
-            countries={countries}
             disabled={disabled}
             required={required}
             value={value}
@@ -127,51 +126,194 @@ const InputComponent = React.forwardRef<HTMLInputElement, React.ComponentProps<'
 
 InputComponent.displayName = 'InputComponent';
 
-type CountryEntry = { label: string; value: RPNInput.Country | undefined };
+type CountryEntry = { label: string; value: RPNInput.Country | undefined; divider?: boolean };
 
 type CountrySelectProps = {
   disabled?: boolean;
   readOnly?: boolean;
   value: RPNInput.Country | undefined;
   options: CountryEntry[];
-  onChange: (country: RPNInput.Country) => void;
+  onChange: (country: RPNInput.Country | undefined) => void;
   onFocus?: React.FocusEventHandler;
   onBlur?: React.FocusEventHandler;
+  'aria-label'?: string;
 };
 
-const CountrySelect = ({ value: selectedCountry, options: countryList }: CountrySelectProps) => {
-  const resolvedCountry = selectedCountry ?? ('EG' as RPNInput.Country);
-  const selectedEntry = countryList.find((entry) => entry.value === resolvedCountry);
+const countrySelectTriggerClassName = cn(
+  // Country Prefix Section
+  'flex shrink-0 items-center gap-2',
+
+  // Surface
+  'bg-transparent',
+
+  // Border Divider
+  'border-ds-border-soft border-0 border-e',
+
+  // Spacing
+  'h-full px-3',
+
+  // Interaction
+  'hover:bg-ds-muted/50',
+
+  // Focus
+  'focus-visible:outline-none',
+
+  // Disabled State
+  'disabled:cursor-not-allowed disabled:opacity-50',
+);
+
+const CountrySelect = ({
+  disabled,
+  readOnly,
+  value: selectedCountry,
+  options: countryList,
+  onChange,
+  onFocus,
+  onBlur,
+  'aria-label': ariaLabel = 'Select country',
+}: CountrySelectProps) => {
+  const [open, setOpen] = React.useState(false);
+  const [search, setSearch] = React.useState('');
+
+  const selectableCountries = React.useMemo(
+    () =>
+      countryList.filter(
+        (entry): entry is CountryEntry & { value: RPNInput.Country } =>
+          Boolean(entry.value) && !entry.divider,
+      ),
+    [countryList],
+  );
+
+  const resolvedCountry =
+    selectedCountry ?? selectableCountries[0]?.value ?? ('EG' as RPNInput.Country);
+  const selectedEntry = selectableCountries.find((entry) => entry.value === resolvedCountry);
   const countryCodeDisplay = resolvedCountry.toUpperCase();
   const flagTitle = selectedEntry?.label ?? countryCodeDisplay;
   const callingCode = RPNInput.getCountryCallingCode(resolvedCountry);
+  const isInteractive = !disabled && !readOnly;
 
-  return (
-    <div
-      aria-hidden
-      className={cn(
-        // Country Prefix Section
-        'flex shrink-0 items-center gap-2',
+  const filteredCountries = React.useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) {
+      return selectableCountries;
+    }
 
-        // Surface
-        'bg-transparent',
+    return selectableCountries.filter((entry) => {
+      const code = entry.value.toUpperCase();
+      const entryCallingCode = RPNInput.getCountryCallingCode(entry.value);
 
-        // Border Divider
-        'border-ds-border-soft border-0 border-e',
+      return (
+        entry.label.toLowerCase().includes(query) ||
+        code.toLowerCase().includes(query) ||
+        entryCallingCode.includes(query)
+      );
+    });
+  }, [search, selectableCountries]);
 
-        // Spacing
-        'px-3',
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
 
-        // Read Only State
-        'cursor-not-allowed opacity-50',
-      )}
-    >
+    if (!nextOpen) {
+      setSearch('');
+    }
+  };
+
+  const handleSelect = (country: RPNInput.Country) => {
+    onChange(country);
+    setOpen(false);
+    setSearch('');
+  };
+
+  const triggerContent = (
+    <>
       <FlagComponent country={resolvedCountry} countryName={flagTitle} />
       <span className="text-ds-text-plain truncate text-sm font-medium">
         {countryCodeDisplay} (+{callingCode})
       </span>
       <ChevronsUpDown className="text-ds-text-plain size-4 shrink-0" />
-    </div>
+    </>
+  );
+
+  if (!isInteractive) {
+    return (
+      <div aria-label={ariaLabel} className={cn(countrySelectTriggerClassName, 'cursor-default')}>
+        {triggerContent}
+      </div>
+    );
+  }
+
+  return (
+    <Popover open={open} onOpenChange={handleOpenChange}>
+      <PopoverTrigger
+        type="button"
+        disabled={disabled}
+        aria-label={ariaLabel}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        className={countrySelectTriggerClassName}
+      >
+        {triggerContent}
+      </PopoverTrigger>
+
+      <PopoverContent
+        align="start"
+        side="bottom"
+        className="border-ds-border-soft bg-ds-plain text-ds-text-plain w-72 p-0"
+      >
+        <div className="border-ds-border-soft border-b p-2">
+          <input
+            type="search"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search country..."
+            className={cn(
+              'border-ds-border-soft bg-ds-plain text-ds-text-plain placeholder:text-ds-text-muted w-full rounded-md border px-3 py-2 text-sm outline-none',
+              'focus:border-ds-primary focus:ring-ds-ring focus:ring',
+            )}
+          />
+        </div>
+
+        <ul
+          role="listbox"
+          aria-label={ariaLabel}
+          className="max-h-60 overflow-y-auto overscroll-contain p-1"
+        >
+          {filteredCountries.length === 0 ? (
+            <li className="text-ds-text-muted px-3 py-2 text-center text-sm">No countries found</li>
+          ) : (
+            filteredCountries.map((entry) => {
+              const isSelected = entry.value === resolvedCountry;
+              const optionCallingCode = RPNInput.getCountryCallingCode(entry.value);
+
+              return (
+                <li key={entry.value} role="presentation">
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={isSelected}
+                    onClick={() => handleSelect(entry.value)}
+                    className={cn(
+                      'flex w-full items-center gap-2 rounded-md px-3 py-2 text-start text-sm',
+                      'hover:bg-ds-muted data-selected:bg-ds-muted',
+                      isSelected && 'bg-ds-muted font-medium',
+                    )}
+                  >
+                    <FlagComponent country={entry.value} countryName={entry.label} />
+                    <span className="min-w-0 flex-1 truncate">{entry.label}</span>
+                    <span className="text-ds-text-muted shrink-0">
+                      {entry.value.toUpperCase()} (+{optionCallingCode})
+                    </span>
+                    {isSelected && <Check className="text-ds-primary size-4 shrink-0" />}
+                  </button>
+                </li>
+              );
+            })
+          )}
+        </ul>
+      </PopoverContent>
+    </Popover>
   );
 };
 
