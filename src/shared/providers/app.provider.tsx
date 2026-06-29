@@ -2,19 +2,27 @@
 import { NextIntlClientProvider } from 'next-intl';
 
 import ReactQueryProvider from './react-query.provider';
+import ThemeProvider from './theme.provider';
 
-import type { AbstractIntlMessages, Locale } from 'next-intl';
+import type { AbstractIntlMessages } from 'next-intl';
+import { Toaster } from '../ui/sonner';
+import type { NextIntlConfigProps } from '../lib/types/global';
 
 type AppProviderProps = {
   children: React.ReactNode;
-  locale: Locale;
+  nextIntelConfig: NextIntlConfigProps;
   messages: AbstractIntlMessages;
 };
 
-export default function AppProvider({ children, locale, messages }: AppProviderProps) {
+export default function AppProvider({ children, nextIntelConfig, messages }: AppProviderProps) {
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <ReactQueryProvider>{children}</ReactQueryProvider>
+    <NextIntlClientProvider {...nextIntelConfig} messages={messages}>
+      <ThemeProvider>
+        <ReactQueryProvider>
+          {children}
+          <Toaster duration={3000} closeButton />
+        </ReactQueryProvider>
+      </ThemeProvider>
     </NextIntlClientProvider>
   );
 }
