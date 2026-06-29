@@ -1,35 +1,46 @@
 'use client';
 
 import { Monitor, Moon, SunMedium } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
-import { startTransition, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '../lib/utils';
 
 const OPTIONS = [
-  { value: 'light', label: 'Light', Icon: SunMedium },
-  { value: 'system', label: 'System', Icon: Monitor },
-  { value: 'dark', label: 'Dark', Icon: Moon },
+  { value: 'light', labelKey: 'light', Icon: SunMedium },
+  { value: 'system', labelKey: 'system', Icon: Monitor },
+  { value: 'dark', labelKey: 'dark', Icon: Moon },
 ] as const;
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  // Translation
+  const t = useTranslations('common.theme');
+
+  // State
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => startTransition(() => setMounted(true)), []);
+  // Custom hooks
+  const { theme, setTheme } = useTheme();
+
+  // Effects
+  useEffect(() => setMounted(true), []);
 
   return (
     <div
       role="radiogroup"
-      aria-label="Theme"
+      aria-label={t('toggle')}
       className="border-ds-border-soft bg-ds-plain inline-flex w-fit items-center rounded-full border p-0.75"
     >
-      {OPTIONS.map(({ value, label, Icon }) => {
+      {OPTIONS.map(({ value, labelKey, Icon }) => {
         const isActive = mounted && theme === value;
+        const label = t(labelKey);
 
         return (
           <button
             key={value}
             type="button"
+            role="radio"
+            aria-checked={isActive}
             aria-label={label}
             onClick={() => setTheme(value)}
             className={cn(

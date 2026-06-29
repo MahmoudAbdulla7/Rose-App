@@ -67,7 +67,7 @@ export default async function RootLayout({ children, params }: Props): Promise<R
       suppressHydrationWarning
       className={`${locale === 'ar' ? tajawal.variable : sarabun.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col" suppressHydrationWarning>
+      <body className="flex min-h-full flex-col">
         <AppProvider nextIntelConfig={nextIntelConfig} messages={messages}>
           {children}
         </AppProvider>

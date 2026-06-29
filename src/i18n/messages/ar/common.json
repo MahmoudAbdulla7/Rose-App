@@ -6,6 +6,12 @@
   "landing-page": {
     "title": "الصفحة الرئيسيه"
   },
+  "theme": {
+    "toggle": "المظهر",
+    "light": "فاتح",
+    "system": "النظام",
+    "dark": "داكن"
+  },
   "toast": {
     "success": "نجاح",
     "error": "خطأ",

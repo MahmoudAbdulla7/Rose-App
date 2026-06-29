@@ -6,6 +6,12 @@
   "landing-page": {
     "title": "Landing Page"
   },
+  "theme": {
+    "toggle": "Theme",
+    "light": "Light",
+    "system": "System",
+    "dark": "Dark"
+  },
   "toast": {
     "success": "Success",
     "error": "Error",

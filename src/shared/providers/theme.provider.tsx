@@ -33,6 +33,10 @@ export default function ThemeProvider({ children, ...props }: ThemeProviderProps
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange
+      // Execute the theme script on the server only.
+      // On the client, use `text/plain` to prevent React 19 / Next 16 warnings.
+      // Hydration mismatch is handled by `suppressHydrationWarning`.
+      scriptProps={{ type: typeof window === 'undefined' ? 'text/javascript' : 'text/plain' }}
       {...props}
     >
       {children}
