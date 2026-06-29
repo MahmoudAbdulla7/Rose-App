@@ -5,5 +5,43 @@
   },
   "landing-page": {
     "title": "Landing Page"
+  },
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info"
+  },
+  "pagination": {
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "Message": {
+    "label": "Message",
+    "placeholder": "Type your message here.",
+    "error": "Message must be at least 10 characters"
+  },
+  "textarea": {
+    "placeholder": "Type your message here.",
+    "charCount": "{current}/{max} characters"
+  },
+  "select": {
+    "placeholder": "Select an option",
+    "noOptions": "No options found",
+    "search": "Search..."
+  },
+  "Input": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "fileSelected": "File selected",
+    "uploadFile": "Upload file",
+    "reviewCurrentImages": "Review current image(s)",
+    "removeFile": "Remove file",
+    "imagePreview": "Image preview",
+    "searchCountry": "Search country...",
+    "noCountryFound": "No country found.",
+    "searchPlaceholder": "Search..."
   }
 }
