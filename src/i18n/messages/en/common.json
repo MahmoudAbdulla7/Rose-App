@@ -43,5 +43,18 @@
     "searchCountry": "Search country...",
     "noCountryFound": "No country found.",
     "searchPlaceholder": "Search..."
+  },
+  "validation": {
+    "passwordWeak": {
+      "text": "Password must be at least 8 characters with uppercase, lowercase, number, and special character"
+    },
+    "passwordMatch": {
+      "text": "Passwords do not match"
+    }
+  },
+  "error": {
+    "networkError": {
+      "text": "Something went wrong. Please try again."
+    }
   }
 }
