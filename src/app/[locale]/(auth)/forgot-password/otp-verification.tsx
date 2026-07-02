@@ -1,16 +1,15 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-
 import { Button } from '@/shared/ui/button';
 
-type Step2OtpTempProps = {
+type OtpVerificationProps = {
   email: string;
   onBack: () => void;
   onContinue: () => void;
 };
 
-export default function ForgotPasswordStep2({ email, onBack, onContinue }: Step2OtpTempProps) {
+export default function OtpVerification({ email, onBack, onContinue }: OtpVerificationProps) {
   const t = useTranslations('auth');
 
   return (
