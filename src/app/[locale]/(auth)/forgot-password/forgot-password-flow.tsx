@@ -1,47 +1,58 @@
 'use client';
 
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { z } from 'zod';
 import { Link } from '@/i18n/navigation';
 import { requestForgotPassword } from '@/features/auth/api/forgot-password';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
+import ForgotPasswordStep2 from './step2-otp-temp';
 
 const step1Schema = z.object({
   email: z.email(),
 });
 
-type Step1Values = z.infer<typeof step1Schema>;
+type FormValues = {
+  email: string;
+};
+
+type Step = 'step1' | 'step2';
 
 export default function ForgotPasswordFlow() {
   const t = useTranslations('auth');
   const tCommon = useTranslations('common');
+  const [step, setStep] = useState<Step>('step1');
   const [serverError, setServerError] = useState<string | null>(null);
 
-  const step1Form = useForm<Step1Values>({
-    resolver: zodResolver(step1Schema),
-    defaultValues: { email: '' },
+  const form = useForm<FormValues>({
+    defaultValues: {
+      email: '',
+    },
   });
 
-  const submitStep1 = step1Form.handleSubmit(async ({ email }) => {
+  const forgotPasswordMutation = useMutation({
+    mutationFn: requestForgotPassword,
+    onSuccess: () => {
+      setStep('step2');
+    },
+    onError: (error) => {
+      setServerError(error instanceof Error ? error.message : tCommon('error.networkError.text'));
+    },
+  });
+
+  const submitStep1 = form.handleSubmit((values) => {
     setServerError(null);
-    try {
-      const response = await requestForgotPassword(email);
-      const token = typeof response.payload === 'string' ? response.payload : null;
-      if (!token) {
-        setServerError(response.message || t('forgotPw.step1.noAccount'));
-        return;
-      }
-    } catch (error) {
-      setServerError(
-        error instanceof Error && error.message
-          ? error.message
-          : tCommon('error.networkError.text'),
-      );
+
+    const parsed = step1Schema.safeParse({ email: values.email });
+    if (!parsed.success) {
+      form.setError('email', { type: 'validate', message: 'invalidEmail' });
+      return;
     }
+
+    forgotPasswordMutation.mutate(values.email);
   });
 
   return (
@@ -49,33 +60,43 @@ export default function ForgotPasswordFlow() {
       <div className="space-y-4">
         <div className="space-y-2">
           <h1 className="text-ds-text-plain text-3xl font-semibold tracking-tight">
-            {t('forgotPw.step1.title')}
+            {step === 'step1' ? t('forgotPw.step1.title') : t('forgotPw.step2.title')}
           </h1>
           <p className="text-ds-text-soft max-w-prose text-sm leading-6">
-            {t('forgotPw.step1.subtitle')}
+            {step === 'step1' ? t('forgotPw.step1.subtitle') : t('forgotPw.step2.subtitle')}
           </p>
         </div>
       </div>
 
-      <form onSubmit={submitStep1} className="space-y-5">
-        <Input
-          label={t('forgotPw.step1.emailLabel')}
-          placeholder={t('forgotPw.step1.emailPlaceholder')}
-          type="email"
-          autoComplete="email"
-          inputMode="email"
-          error={
-            step1Form.formState.errors.email?.message ? tCommon('Input.invalidEmail') : undefined
-          }
-          {...step1Form.register('email')}
+      {step === 'step1' ? (
+        <form onSubmit={submitStep1} className="space-y-5">
+          <Input
+            label={t('forgotPw.step1.emailLabel')}
+            placeholder={t('forgotPw.step1.emailPlaceholder')}
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            error={form.formState.errors.email?.message ? tCommon('Input.invalidEmail') : undefined}
+            {...form.register('email')}
+          />
+
+          {serverError && <div className="text-ds-danger px-4 py-3 text-sm">{serverError}</div>}
+
+          <Button
+            type="submit"
+            className="w-full"
+            loading={form.formState.isSubmitting || forgotPasswordMutation.isPending}
+          >
+            {t('forgotPw.step1.continue')}
+          </Button>
+        </form>
+      ) : (
+        <ForgotPasswordStep2
+          email={form.getValues('email')}
+          onBack={() => setStep('step1')}
+          onContinue={() => setStep('step2')}
         />
-
-        {serverError && <div className="text-ds-danger px-4 py-3 text-sm">{serverError}</div>}
-
-        <Button type="submit" className="w-full" loading={step1Form.formState.isSubmitting}>
-          {t('forgotPw.step1.continue')}
-        </Button>
-      </form>
+      )}
 
       <div className="text-ds-text-soft flex flex-col gap-3 p-5 text-sm">
         <Link
