@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
-import { requestForgotPassword } from '@/features/auth/api/forgot-password';
+import { requestForgotPassword } from '@/features/auth/lib/apis/forgot-password';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { useTranslations } from 'next-intl';
