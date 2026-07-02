@@ -11,13 +11,11 @@ export default function HeadlineComponent() {
   const t = useTranslations();
   const path = usePathname();
   return (
-    <div className="border-b-ds-border-soft mx-auto w-3/4 border-b pb-4 text-center">
-      {path.endsWith('/login') && (
-        <p className={`${Edwardian.className} text-ds-primary text-5xl`}>{t('auth.welcome')}</p>
-      )}
-      {path.endsWith('/register') && (
-        <p className={`${Edwardian.className} text-ds-primary text-5xl`}>{t('auth.greeting')}</p>
-      )}
+    <div
+      className={`${Edwardian.className} ${path.endsWith('/login') || path.endsWith('/register') ? '*:border-b-ds-border-soft *:border-b *:pb-4' : ''} text-ds-primary mx-auto mb-6 w-3/4 text-center text-5xl`}
+    >
+      {path.endsWith('/login') && <p>{t('auth.welcome')}</p>}
+      {path.endsWith('/register') && <p>{t('auth.greeting')}</p>}
     </div>
   );
 }
