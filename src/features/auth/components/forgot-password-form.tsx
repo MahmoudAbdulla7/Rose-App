@@ -5,40 +5,43 @@ import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import type { UseFormReturn } from 'react-hook-form';
-import type { FormValues } from '@/features/auth/lib/types/forgot-password';
+import { useFormContext } from 'react-hook-form';
 
-const step1Schema = z.object({
+const emailSchema = z.object({
   email: z.email(),
 });
 
-type ForgotPasswordFormProps = {
-  form: UseFormReturn<FormValues>;
-  onSuccess: () => void;
-};
-
-export default function ForgotPasswordForm({ form, onSuccess }: ForgotPasswordFormProps) {
+export default function ForgotPasswordForm({ goToStep }: { goToStep: (index: number) => void }) {
   const t = useTranslations('auth');
   const tCommon = useTranslations('common');
   const [serverError, setServerError] = useState<string | null>(null);
+  const {
+    register,
+    setError,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useFormContext();
 
+  // Mutation
   const forgotPasswordMutation = useMutation({
     mutationFn: requestForgotPassword,
-    onSuccess,
+    onSuccess: () => {
+      goToStep(1);
+    },
     onError: (error) => {
       setServerError(error instanceof Error ? error.message : tCommon('error.networkError.text'));
     },
   });
 
-  const submitStep1 = form.handleSubmit((values) => {
+  // Functions
+  const submitStep1 = handleSubmit((values) => {
     setServerError(null);
 
-    const parsed = step1Schema.safeParse({ email: values.email });
+    const parsed = emailSchema.safeParse({ email: values.email });
     if (!parsed.success) {
-      form.setError('email', { type: 'validate', message: 'invalidEmail' });
+      setError('email', { type: 'validate', message: 'invalidEmail' });
       return;
     }
-
     forgotPasswordMutation.mutate(values.email);
   });
 
@@ -50,8 +53,8 @@ export default function ForgotPasswordForm({ form, onSuccess }: ForgotPasswordFo
         type="email"
         autoComplete="email"
         inputMode="email"
-        error={form.formState.errors.email?.message ? tCommon('Input.invalidEmail') : undefined}
-        {...form.register('email')}
+        error={errors.email?.message ? tCommon('Input.invalidEmail') : undefined}
+        {...register('email')}
       />
 
       {serverError && <div className="text-ds-danger px-4 py-3 text-sm">{serverError}</div>}
@@ -59,7 +62,7 @@ export default function ForgotPasswordForm({ form, onSuccess }: ForgotPasswordFo
       <Button
         type="submit"
         className="w-full"
-        loading={form.formState.isSubmitting || forgotPasswordMutation.isPending}
+        loading={isSubmitting || forgotPasswordMutation.isPending}
       >
         {t('forgotPw.step1.continue')}
       </Button>
