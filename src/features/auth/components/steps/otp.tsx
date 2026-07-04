@@ -8,26 +8,25 @@ import { toast } from 'sonner';
 import { Button } from '@/shared/ui/button';
 import { FieldError } from '@/shared/ui/field';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/shared/ui/input-otp';
-import { confirmEmailAction } from '../lib/actions/confirm-email.action';
-import { verifyEmailAction } from '../lib/actions/verify-email.action';
-import { OTP_LENGTH } from '../lib/constants/otp.constant';
-import type { IRegisterFields } from '../lib/types/register';
-import { RegisterHeader } from './register-header';
+import { confirmEmailAction } from '../../lib/actions/confirm-email.action';
+import { OTP_LENGTH } from '../../lib/constants/otp.constant';
+import type { IRegisterFields } from '../../lib/types/register';
+import { RegisterHeader } from '../register-header';
+import { ResendTimer } from '../resend-timer';
 
 interface IOTPProps {
   onEdit: () => void;
   onVerified: () => void;
 }
 
-export default function OTP({ onEdit, onVerified }: IOTPProps) {
+export function OTP({ onEdit, onVerified }: IOTPProps) {
   // Translation
   const t = useTranslations('register');
 
-  // States
+  // State
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isResending, setIsResending] = useState(false);
 
   // Form
   const { getValues } = useFormContext<IRegisterFields>();
@@ -57,42 +56,20 @@ export default function OTP({ onEdit, onVerified }: IOTPProps) {
     }
   };
 
-  const handleResend = async () => {
-    setIsResending(true);
-    try {
-      const res = await verifyEmailAction(email);
-
-      if (!res.status) {
-        toast.error(res.message || t('messages.error'));
-        return;
-      }
-
-      setCode('');
-      setError(null);
-      toast.success(t('otp.resent'));
-    } catch {
-      toast.error(t('messages.error'));
-    } finally {
-      setIsResending(false);
-    }
-  };
-
   return (
     <form onSubmit={handleVerify} className="space-y-9">
-      {/* Header: page title + step header */}
       <RegisterHeader
         title={t('otp.title')}
         description={t.rich('otp.description', {
           email,
           edit: (chunks) => (
-            <button type="button" onClick={onEdit} className="font-medium text-blue-700 underline">
+            <button type="button" onClick={onEdit} className="text-ds-info font-medium underline">
               {chunks}
             </button>
           ),
         })}
       />
 
-      {/* OTP fields + resend */}
       <div className="flex flex-col items-end gap-4">
         <InputOTP
           maxLength={OTP_LENGTH}
@@ -100,7 +77,7 @@ export default function OTP({ onEdit, onVerified }: IOTPProps) {
           onChange={setCode}
           containerClassName="w-full justify-center"
         >
-          <InputOTPGroup className="">
+          <InputOTPGroup>
             {Array.from({ length: OTP_LENGTH }).map((_, index) => (
               <InputOTPSlot key={index} index={index} aria-invalid={!!error} />
             ))}
@@ -109,25 +86,16 @@ export default function OTP({ onEdit, onVerified }: IOTPProps) {
 
         {error && <FieldError className="w-full text-center">{error}</FieldError>}
 
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={handleResend}
-          loading={isResending}
-          size="lg"
-          className="h-11"
-        >
-          {t('otp.resend')}
-        </Button>
+        {/* Resend owns its own action call, loading state and cooldown. */}
+        <ResendTimer email={email} />
       </div>
 
-      {/* Submit */}
       <Button
         type="submit"
         size="lg"
         loading={isSubmitting}
         disabled={code.length !== OTP_LENGTH}
-        className="bg-maroon-600 hover:bg-maroon-700 h-10.25 w-full"
+        className="h-10.25 w-full"
       >
         {t('otp.verify')}
       </Button>

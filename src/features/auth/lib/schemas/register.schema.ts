@@ -10,9 +10,9 @@ const isEgyptianPhone = (value: string) => {
 };
 
 /** Translator scoped to the `register.validation` namespace. */
-type ValidationTranslator = (key: string) => string;
+type IValidationTranslator = (key: string) => string;
 
-export const createRegisterSchema = (t: ValidationTranslator) =>
+export const createRegisterSchema = (t: IValidationTranslator) =>
   z
     .object({
       firstName: z.string().trim().min(1, t('first-name-required')),

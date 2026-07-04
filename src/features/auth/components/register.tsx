@@ -5,27 +5,27 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 
-import Step from './step';
-
 import { Link } from '@/i18n/navigation';
 import { Separator } from '@/shared/ui/separator';
 import { GENDER } from '../lib/constants/gender.constant';
+import { REGISTER_STEP, type RegisterStep } from '../lib/constants/steps.constant';
 import { createRegisterSchema } from '../lib/schemas/register.schema';
 import type { IRegisterFields } from '../lib/types/register';
-import { EmailField } from './email-field';
-import OTP from './opt';
-import { Password } from './password';
-import { UserInfo } from './user-info';
+import { Step } from './step';
+import { EmailField } from './steps/email-field';
+import { OTP } from './steps/otp';
+import { Password } from './steps/password';
+import { UserInfo } from './steps/user-info';
 
 export default function Register() {
-  //Translations
+  // Translations
   const t = useTranslations('register');
   const tv = useTranslations('register.validation');
 
-  //state
-  const [step, setStep] = useState(1);
+  // State
+  const [step, setStep] = useState<RegisterStep>(REGISTER_STEP.EMAIL);
 
-  //Form
+  // Form
   const form = useForm<IRegisterFields>({
     resolver: zodResolver(createRegisterSchema(tv)),
     defaultValues: {
@@ -40,22 +40,34 @@ export default function Register() {
     },
   });
 
+  //Variable
+  const isEmailStep = step === REGISTER_STEP.EMAIL;
+
   return (
     <div className="space-y-9">
-      {step !== 1 && <Step currentStep={step} />}
+      {!isEmailStep && <Step currentStep={step} onStepClick={setStep} />}
 
       <FormProvider {...form}>
-        {/*Email Step*/}
-        {step === 1 && <EmailField onVerified={() => setStep(2)} />}
+        {/* Email step */}
+        {step === REGISTER_STEP.EMAIL && (
+          <EmailField onVerified={() => setStep(REGISTER_STEP.OTP)} />
+        )}
 
-        {/*OTP Step*/}
-        {step === 2 && <OTP onEdit={() => setStep(1)} onVerified={() => setStep(3)} />}
+        {/* OTP step */}
+        {step === REGISTER_STEP.OTP && (
+          <OTP
+            onEdit={() => setStep(REGISTER_STEP.EMAIL)}
+            onVerified={() => setStep(REGISTER_STEP.DETAILS)}
+          />
+        )}
 
-        {/*Details Step*/}
-        {step === 3 && <UserInfo onNext={() => setStep(4)} />}
+        {/* Details step */}
+        {step === REGISTER_STEP.DETAILS && (
+          <UserInfo onNext={() => setStep(REGISTER_STEP.PASSWORD)} />
+        )}
 
-        {/*Password Step*/}
-        {step === 4 && <Password />}
+        {/* Password step */}
+        {step === REGISTER_STEP.PASSWORD && <Password />}
       </FormProvider>
 
       {/* Footer: login link on the email step, help link on the rest */}
@@ -63,9 +75,9 @@ export default function Register() {
         {/* Separator */}
         <Separator />
 
-        {/* Footer Text */}
+        {/* Footer text */}
         <p className="text-ds-inverse text-sm">
-          {step === 1
+          {isEmailStep
             ? t.rich('footer.text', {
                 login: (chunks) => (
                   <Link href="/login" className="text-ds-primary font-bold">
@@ -73,7 +85,7 @@ export default function Register() {
                   </Link>
                 ),
               })
-            : /* Help Link */
+            : /* Help link */
               t.rich('footer.help', {
                 contact: (chunks) => (
                   <Link href="/contact" className="text-ds-primary font-bold">

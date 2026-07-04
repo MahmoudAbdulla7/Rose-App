@@ -50,6 +50,7 @@
     "title": "Enter the OTP Code",
     "description": "We have sent a 6-digit code to {email} <edit>Edit</edit>",
     "resend": "Send a new code",
+    "resend-in": "Send a new code in {seconds}s",
     "verify": "Verify Code",
     "resent": "A new code has been sent to your email.",
     "invalid": "Invalid or expired code. Please try again."

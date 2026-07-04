@@ -9,8 +9,8 @@ import { toast } from 'sonner';
 import { Button } from '@/shared/ui/button';
 import { Field } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
-import { verifyEmailAction } from '../lib/actions/verify-email.action';
-import type { IRegisterFields } from '../lib/types/register';
+import { sendEmailVerificationAction } from '../../lib/actions/send-email-verification.action';
+import type { IRegisterFields } from '../../lib/types/register';
 
 interface IEmailFieldProps {
   onVerified: () => void;
@@ -35,7 +35,7 @@ export function EmailField({ onVerified }: IEmailFieldProps) {
     setIsSubmitting(true);
     try {
       const email = getValues('email');
-      const res = await verifyEmailAction(email);
+      const res = await sendEmailVerificationAction(email);
 
       if (!res.status) {
         setError('email', { type: 'server', message: res.message });

@@ -10,11 +10,10 @@ import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/shared/ui/button';
 import { Field } from '@/shared/ui/field';
 import { PasswordInput } from '@/shared/ui/password-input';
-import { registerAction } from '../lib/actions/register.action';
-import type { IRegisterFields } from '../lib/types/register';
-import { RegisterHeader } from './register-header';
+import { registerAction } from '../../lib/actions/register.action';
+import type { IRegisterFields } from '../../lib/types/register';
+import { RegisterHeader } from '../register-header';
 
-/** Fields collected in this step; validated before submitting. */
 const STEP_FIELDS: (keyof IRegisterFields)[] = ['password', 'confirmPassword'];
 
 export function Password() {
@@ -34,20 +33,28 @@ export function Password() {
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    // Validate the fields in this step
     const isValid = await trigger(STEP_FIELDS);
     if (!isValid) return;
 
     setIsSubmitting(true);
     try {
+      // Submit the registration data to the server
       const res = await registerAction(getValues());
 
+      // Handle server response
       if (!res.status) {
         toast.error(res.message || t('messages.error'));
         return;
       }
 
+      // Show success message
       toast.success(t('messages.success'));
+
+      // Reset the form after successful registration
       reset();
+
+      // Navigate to the login page after successful registration
       router.push('/login');
     } catch {
       toast.error(t('messages.error'));
@@ -105,7 +112,7 @@ export function Password() {
         size="lg"
         loading={isSubmitting}
         rightIcon={<MoveRight className="size-4.5 rtl:rotate-180" />}
-        className="bg-maroon-600 hover:bg-maroon-700 h-10.25 w-full"
+        className="h-10.25 w-full"
       >
         {t('actions.next')}
       </Button>
