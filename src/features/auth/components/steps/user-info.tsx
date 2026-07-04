@@ -10,9 +10,9 @@ import { Field, FieldError, FieldLabel } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import { PhoneInput } from '@/shared/ui/phone-input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
-import { GENDER } from '../lib/constants/gender.constant';
-import type { IRegisterFields } from '../lib/types/register';
-import { RegisterHeader } from './register-header';
+import { GENDER } from '../../lib/constants/gender.constant';
+import type { IRegisterFields } from '../../lib/types/register';
+import { RegisterHeader } from '../register-header';
 
 interface IUserInfoProps {
   onNext: () => void;
