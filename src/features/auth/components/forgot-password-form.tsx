@@ -1,17 +1,22 @@
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
-import { requestForgotPassword } from '@/features/auth/lib/apis/forgot-password';
+import { requestForgotPassword } from '@/features/auth/lib/apis/forgot-password.api';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import type { Step } from './forgot-password-flow';
 
 const emailSchema = z.object({
   email: z.email(),
 });
 
-export default function ForgotPasswordForm({ goToStep }: { goToStep: (index: number) => void }) {
+type ForgotPasswordFormProps = {
+  goToStep: React.Dispatch<React.SetStateAction<Step>>;
+};
+
+export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps) {
   const t = useTranslations('auth');
   const tCommon = useTranslations('common');
   const [serverError, setServerError] = useState<string | null>(null);
@@ -26,7 +31,7 @@ export default function ForgotPasswordForm({ goToStep }: { goToStep: (index: num
   const forgotPasswordMutation = useMutation({
     mutationFn: requestForgotPassword,
     onSuccess: () => {
-      goToStep(1);
+      goToStep('SENT');
     },
     onError: (error) => {
       setServerError(error instanceof Error ? error.message : tCommon('error.networkError.text'));
@@ -48,8 +53,8 @@ export default function ForgotPasswordForm({ goToStep }: { goToStep: (index: num
   return (
     <form onSubmit={submitStep1} className="space-y-5">
       <Input
-        label={t('forgotPw.step1.emailLabel')}
-        placeholder={t('forgotPw.step1.emailPlaceholder')}
+        label={t('forgotPw.email.emailLabel')}
+        placeholder={t('forgotPw.email.emailPlaceholder')}
         type="email"
         autoComplete="email"
         inputMode="email"
@@ -57,14 +62,14 @@ export default function ForgotPasswordForm({ goToStep }: { goToStep: (index: num
         {...register('email')}
       />
 
-      {serverError && <div className="text-ds-danger px-4 py-3 text-sm">{serverError}</div>}
+      {serverError && <div className="text-ds-danger text-sm">{serverError}</div>}
 
       <Button
         type="submit"
-        className="w-full"
+        className="mt-9 w-full"
         loading={isSubmitting || forgotPasswordMutation.isPending}
       >
-        {t('forgotPw.step1.continue')}
+        {t('forgotPw.email.continue')}
       </Button>
     </form>
   );

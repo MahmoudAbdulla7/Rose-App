@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
-import OtpVerification from './otp-verification';
+import PasswordResetSent from './password-reset-sent';
 import ForgotPasswordForm from './forgot-password-form';
+import { Button } from '@/shared/ui/button';
+import { ChevronLeft } from 'lucide-react';
+import AuthFooter from './auth-footer';
 
 type FormData = {
   email: string;
@@ -14,42 +16,85 @@ type FormData = {
   confirmPassword: string;
 };
 
+export type Step = (typeof STEP)[keyof typeof STEP];
+
+const STEP = {
+  EMAIL: 'EMAIL',
+  SENT: 'SENT',
+} as const;
+
 export default function ForgotPasswordFlow() {
   const t = useTranslations('auth');
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState<Step>(STEP.SENT);
+
   const methods = useForm<FormData>({
-    defaultValues: { email: '', otp: '', newPassword: '', confirmPassword: '' },
+    defaultValues: {
+      email: '',
+      otp: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
   });
+
+  const stepConfig = {
+    [STEP.EMAIL]: {
+      title: t('forgotPw.email.title'),
+      description: t('forgotPw.email.description'),
+      footerText: t('forgotPw.email.footerText'),
+      footerLink: t('forgotPw.email.footerLink'),
+      href: '/register',
+    },
+    [STEP.SENT]: {
+      title: t('forgotPw.sent.title'),
+      description: t('forgotPw.sent.description'),
+      instruction: t('forgotPw.sent.instruction'),
+      spamHint: t('forgotPw.sent.spamHint'),
+      footerText: t('forgotPw.sent.footerText'),
+      footerLink: t('forgotPw.sent.footerLink'),
+      href: '',
+    },
+  };
+
+  const currentStep = stepConfig[step];
 
   return (
     <>
       {/* Header */}
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <h1 className="text-ds-text-plain text-3xl font-semibold tracking-tight">
-            {step === 0 ? t('forgotPw.step1.title') : t('forgotPw.step2.title')}
-          </h1>
-          <p className="text-ds-text-soft max-w-prose text-sm leading-6">
-            {step === 0 ? t('forgotPw.step1.subtitle') : t('forgotPw.step2.subtitle')}
-          </p>
-        </div>
+      <div className="flex items-center">
+        {step === STEP.SENT && (
+          <Button
+            type="button"
+            variant="primary"
+            size="icon"
+            onClick={() => setStep(STEP.EMAIL)}
+            className="me-2.5"
+          >
+            <ChevronLeft />
+          </Button>
+        )}
+
+        <h1 className="text-ds-text-plain text-3xl font-bold">{currentStep.title}</h1>
       </div>
+
+      <p>{currentStep.description}</p>
 
       {/* Body */}
       <FormProvider {...methods}>
-        {step === 0 && <ForgotPasswordForm goToStep={setStep} />}
-        {step === 1 && <OtpVerification goToStep={setStep} />}
+        {step === STEP.EMAIL && <ForgotPasswordForm goToStep={setStep} />}
+        {step === STEP.SENT && (
+          <PasswordResetSent
+            instruction={stepConfig[STEP.SENT].instruction}
+            spamHint={stepConfig[STEP.SENT].spamHint}
+          />
+        )}
       </FormProvider>
 
       {/* Footer */}
-      <div className="text-ds-text-soft flex flex-col gap-3 p-5 text-sm">
-        <Link
-          href="/register"
-          className="text-ds-primary hover:text-ds-primary-saturated font-medium transition-colors"
-        >
-          {t('forgotPw.step1.registerFooter')}
-        </Link>
-      </div>
+      <AuthFooter
+        text={currentStep.footerText}
+        linkText={currentStep.footerLink}
+        href={currentStep.href}
+      />
     </>
   );
 }

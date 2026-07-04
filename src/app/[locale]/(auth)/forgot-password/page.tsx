@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('auth');
-  return { title: t('forgotPw.step1.title') };
+  return { title: t('forgotPw.email.title') };
 }
 
 export default function ForgotPasswordPage() {
