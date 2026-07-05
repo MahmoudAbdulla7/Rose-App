@@ -1,21 +1,23 @@
+'use client';
+
 import { Button } from '@/shared/ui/button';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 import { requestResetPassword } from '../lib/apis/reset-password.api';
-import { createRegisterSchema } from '../lib/schemas/register.schema';
 import { useSearchParams } from 'next/navigation';
+import AuthFooter from './auth-footer';
+import { Separator } from '@/shared/ui/separator';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-const schemaInstance = createRegisterSchema((key: string) => key);
-
-export const resetPasswordSchema = z
+const resetPasswordSchema = z
   .object({
-    password: schemaInstance.shape.password,
-    confirmPassword: schemaInstance.shape.confirmPassword,
+    password: z.string().min(8, 'Required'),
+    confirmPassword: z.string().min(8, 'Required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
@@ -28,16 +30,27 @@ export default function ResetPassword() {
   const t = useTranslations('auth');
   const tCommon = useTranslations('common');
   const [serverError, setServerError] = useState<string | null>(null);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useFormContext<ResetPasswordInput>();
 
   const searchParams = useSearchParams();
   const token = searchParams.get('token') || '';
 
+  const methods = useForm<ResetPasswordInput>({
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
+
   const config = {
+    title: t('forgotPw.reset.title'),
+    description: t('forgotPw.reset.description'),
     newPasswordLabel: t('forgotPw.reset.newPasswordLabel'),
     confirmPasswordLabel: t('forgotPw.reset.confirmPasswordLabel'),
     newPasswordPlaceholder: t('forgotPw.reset.newPasswordPlaceholder'),
@@ -45,6 +58,9 @@ export default function ResetPassword() {
     reset: t('forgotPw.reset.reset'),
     success: t('forgotPw.reset.success'),
     differentFromCurrent: t('forgotPw.reset.differentFromCurrent'),
+    footerText: t('forgotPw.reset.footerText'),
+    footerLink: t('forgotPw.reset.footerLink'),
+    href: '',
   };
 
   // Mutation
@@ -75,32 +91,47 @@ export default function ResetPassword() {
   });
 
   return (
-    <form onSubmit={submitPassword} className="space-y-5">
-      <PasswordInput
-        label={config.newPasswordLabel}
-        placeholder={config.newPasswordPlaceholder}
-        error={errors.password?.message ? tCommon('validation.passwordWeak.text') : undefined}
-        {...register('password')}
-      />
+    <>
+      {/* Header */}
+      <div className="flex items-center">
+        <h1 className="text-ds-text-plain text-3xl font-bold">{config.title}</h1>
+      </div>
 
-      <PasswordInput
-        label={config.confirmPasswordLabel}
-        placeholder={config.confirmPasswordPlaceholder}
-        error={
-          errors.confirmPassword?.message ? tCommon('validation.passwordMatch.text') : undefined
-        }
-        {...register('confirmPassword')}
-      />
+      <p>{config.description}</p>
 
-      {serverError && (
-        <div className="border-ds-danger/20 bg-ds-danger-fade text-ds-danger rounded-lg border px-4 py-3 text-sm">
-          {serverError}
-        </div>
-      )}
+      <Separator className="mt-4 mb-6" />
 
-      <Button type="submit" className="w-full" loading={isSubmitting}>
-        {config.reset}
-      </Button>
-    </form>
+      {/* Form */}
+      <FormProvider {...methods}>
+        <form onSubmit={submitPassword} className="space-y-5">
+          <PasswordInput
+            label={config.newPasswordLabel}
+            placeholder={config.newPasswordPlaceholder}
+            error={errors.password?.message}
+            {...register('password')}
+          />
+
+          <PasswordInput
+            label={config.confirmPasswordLabel}
+            placeholder={config.confirmPasswordPlaceholder}
+            error={errors.confirmPassword?.message}
+            {...register('confirmPassword')}
+          />
+
+          {serverError && (
+            <div className="border-ds-danger/20 bg-ds-danger-fade text-ds-danger rounded-lg border px-4 py-3 text-sm">
+              {serverError}
+            </div>
+          )}
+
+          <Button type="submit" className="mt-9 w-full" loading={isSubmitting}>
+            {config.reset}
+          </Button>
+        </form>
+      </FormProvider>
+
+      {/* Footer */}
+      <AuthFooter text={config.footerText} linkText={config.footerLink} href={config.href} />
+    </>
   );
 }
