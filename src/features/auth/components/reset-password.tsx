@@ -13,11 +13,14 @@ import { useSearchParams } from 'next/navigation';
 import AuthFooter from './auth-footer';
 import { Separator } from '@/shared/ui/separator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createRegisterSchema } from '../lib/schemas/register.schema';
 
-const resetPasswordSchema = z
+const schemaInstance = createRegisterSchema((key: string) => key);
+
+export const resetPasswordSchema = z
   .object({
-    password: z.string().min(8, 'Required'),
-    confirmPassword: z.string().min(8, 'Required'),
+    password: schemaInstance.shape.password,
+    confirmPassword: schemaInstance.shape.confirmPassword,
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
