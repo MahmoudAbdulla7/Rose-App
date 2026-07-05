@@ -1,9 +1,9 @@
 import Header from '@/features/landing-page/components/header';
-import Image from 'next/image';
-import SeparatorComponent from './_components/separator';
-import HeadlineComponent from './_components/auth-headline';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
+import Headline from './_components/auth-headline';
+import Separator from './_components/separator';
 
 export async function generateMetadata(): Promise<Metadata> {
   const commonT = await getTranslations('common');
@@ -17,37 +17,29 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <section>
-        <div className="grid h-screen grid-cols-1 items-center justify-center md:grid-cols-2">
-          <div className="w-full max-w-3/5 place-self-center">
-            {/* Switch Language */}
-            <Header />
+    <section>
+      <div className="grid h-screen grid-cols-1 items-center justify-center md:grid-cols-2">
+        <div className="w-full max-w-3/5 place-self-center">
+          {/* Switch Language */}
+          <Header />
 
-            {/* Top Separator */}
-            <SeparatorComponent />
+          {/* Top Separator */}
+          <Separator />
 
-            {/* Headline */}
-            <HeadlineComponent />
+          {/* Headline */}
+          <Headline />
 
-            {children}
+          {children}
 
-            {/* Bottom Separator */}
-            <SeparatorComponent className="rotate-180" />
-          </div>
-
-          {/* Side Image */}
-          <div className="relative h-full w-full max-md:hidden">
-            <Image
-              src="/assets/images/image.png"
-              alt=""
-              fill
-              sizes="50vw"
-              className="text-ds-primary object-cover"
-            />
-          </div>
+          {/* Bottom Separator */}
+          <Separator className="rotate-180" />
         </div>
-      </section>
-    </>
+
+        {/* Side Image */}
+        <div className="relative h-full w-full max-md:hidden">
+          <Image src="/assets/images/image.png" alt="" fill sizes="50vw" className="object-cover" />
+        </div>
+      </div>
+    </section>
   );
 }
