@@ -8,7 +8,7 @@ export default function LayoutLayout({ children }: { children: React.ReactNode }
     <>
       <section>
         <div className="grid h-screen grid-cols-1 items-center justify-center md:grid-cols-2">
-          <div className="w-full max-w-10/12 place-self-center">
+          <div className="w-full max-w-3/5 place-self-center">
             {/* Switch Language */}
             <Header />
 
