@@ -21,6 +21,7 @@ export const createRegisterSchema = (t: IValidationTranslator) =>
       email: z
         .string()
         .trim()
+        .toLowerCase()
         .min(1, t('email-required'))
         .pipe(z.email(t('email-invalid'))),
       phone: z
