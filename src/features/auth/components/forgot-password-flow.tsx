@@ -8,6 +8,7 @@ import ForgotPasswordForm from './forgot-password-form';
 import { Button } from '@/shared/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import AuthFooter from './auth-footer';
+import ResetPassword from './reset-password';
 
 type FormData = {
   email: string;
@@ -21,11 +22,12 @@ export type Step = (typeof STEP)[keyof typeof STEP];
 const STEP = {
   EMAIL: 'EMAIL',
   SENT: 'SENT',
+  RESET: 'RESET',
 } as const;
 
 export default function ForgotPasswordFlow() {
   const t = useTranslations('auth');
-  const [step, setStep] = useState<Step>(STEP.SENT);
+  const [step, setStep] = useState<Step>(STEP.EMAIL);
 
   const methods = useForm<FormData>({
     defaultValues: {
@@ -51,6 +53,13 @@ export default function ForgotPasswordFlow() {
       spamHint: t('forgotPw.sent.spamHint'),
       footerText: t('forgotPw.sent.footerText'),
       footerLink: t('forgotPw.sent.footerLink'),
+      href: '',
+    },
+    [STEP.RESET]: {
+      title: t('forgotPw.reset.title'),
+      description: t('forgotPw.reset.description'),
+      footerText: t('forgotPw.reset.footerText'),
+      footerLink: t('forgotPw.reset.footerLink'),
       href: '',
     },
   };
@@ -87,6 +96,7 @@ export default function ForgotPasswordFlow() {
             spamHint={stepConfig[STEP.SENT].spamHint}
           />
         )}
+        {step === STEP.RESET && <ResetPassword />}
       </FormProvider>
 
       {/* Footer */}

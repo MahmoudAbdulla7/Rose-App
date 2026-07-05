@@ -39,7 +39,7 @@ export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps
   });
 
   // Functions
-  const submitStep1 = handleSubmit((values) => {
+  const submitEmail = handleSubmit((values) => {
     setServerError(null);
 
     const parsed = emailSchema.safeParse({ email: values.email });
@@ -51,7 +51,7 @@ export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps
   });
 
   return (
-    <form onSubmit={submitStep1} className="space-y-5">
+    <form onSubmit={submitEmail} className="space-y-5">
       <Input
         label={t('forgotPw.email.emailLabel')}
         placeholder={t('forgotPw.email.emailPlaceholder')}
