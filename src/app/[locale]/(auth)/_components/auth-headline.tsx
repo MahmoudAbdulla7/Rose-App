@@ -8,7 +8,7 @@ const Edwardian = localFont({
   src: '../../../../../public/assets/fonts/Edwardian Script ITC Regular.ttf',
 });
 
-export default function HeadlineComponent() {
+export default function Headline() {
   const t = useTranslations();
   const path = usePathname();
   return (
