@@ -20,9 +20,11 @@ export function EmailField({ onVerified }: IEmailFieldProps) {
   // Translation
   const t = useTranslations('register');
 
+  // State
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Form
   const { control, trigger, getValues, setError } = useFormContext<IRegisterFields>();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Functions
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
@@ -76,7 +78,6 @@ export function EmailField({ onVerified }: IEmailFieldProps) {
         type="submit"
         size="lg"
         loading={isSubmitting}
-        variant="primary"
         rightIcon={<MoveRight className="size-4.5 rtl:rotate-180" />}
         className="h-10.25 w-full"
       >

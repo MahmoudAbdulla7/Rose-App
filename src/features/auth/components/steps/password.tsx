@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, type SyntheticEvent } from 'react';
-import { MoveRight } from 'lucide-react';
+import { MoveRight, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Controller, useFormContext } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/shared/ui/button';
-import { Field } from '@/shared/ui/field';
+import { Field, FieldError } from '@/shared/ui/field';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { registerAction } from '../../lib/actions/register.action';
 import type { IRegisterFields } from '../../lib/types/register';
@@ -24,7 +24,15 @@ export function Password() {
   const router = useRouter();
 
   // Form
-  const { control, trigger, getValues, reset } = useFormContext<IRegisterFields>();
+  const {
+    control,
+    trigger,
+    getValues,
+    reset,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useFormContext<IRegisterFields>();
 
   // State
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,6 +40,9 @@ export function Password() {
   // Functions
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // Clear any previous server error
+    clearErrors('root.serverError');
 
     // Validate the fields in this step
     const isValid = await trigger(STEP_FIELDS);
@@ -44,20 +55,19 @@ export function Password() {
 
       // Handle server response
       if (!res.status) {
-        toast.error(res.message || t('messages.error'));
+        setError('root.serverError', {
+          message: res.message || t('messages.error'),
+        });
         return;
       }
 
-      // Show success message
       toast.success(t('messages.success'));
 
-      // Reset the form after successful registration
       reset();
 
-      // Navigate to the login page after successful registration
       router.push('/login');
     } catch {
-      toast.error(t('messages.error'));
+      setError('root.serverError', { message: t('messages.error') });
     } finally {
       setIsSubmitting(false);
     }
@@ -105,6 +115,21 @@ export function Password() {
           )}
         />
       </div>
+
+      {/* Server error */}
+      {errors.root?.serverError?.message && (
+        <div
+          role="alert"
+          className="border-ds-danger/40 bg-ds-danger/5 min-h-input relative flex flex-col items-center justify-center rounded-lg border px-2 py-3.5 shadow-sm"
+        >
+          <span className="bg-background text-ds-danger absolute -top-3 left-1/2 flex -translate-x-1/2 px-1">
+            <XCircle className="size-5.5" />
+          </span>
+          <FieldError className="text-center text-sm leading-relaxed">
+            {errors.root.serverError.message}
+          </FieldError>
+        </div>
+      )}
 
       {/* Submit */}
       <Button
