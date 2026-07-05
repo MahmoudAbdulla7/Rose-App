@@ -2,8 +2,20 @@ import Header from '@/features/landing-page/components/header';
 import Image from 'next/image';
 import SeparatorComponent from './_components/separator';
 import HeadlineComponent from './_components/auth-headline';
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
-export default function LayoutLayout({ children }: { children: React.ReactNode }) {
+export async function generateMetadata(): Promise<Metadata> {
+  const commonT = await getTranslations('common');
+  const authT = await getTranslations('auth');
+
+  return {
+    title: `${authT('pageTitle')} | ${commonT('app.title')}`,
+    description: commonT('app.description'),
+  };
+}
+
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <section>
@@ -28,7 +40,7 @@ export default function LayoutLayout({ children }: { children: React.ReactNode }
           <div className="relative h-full w-full max-md:hidden">
             <Image
               src="/assets/images/image.png"
-              alt="auth-img"
+              alt=""
               fill
               sizes="50vw"
               className="text-ds-primary object-cover"

@@ -1,20 +1,20 @@
-'use client';
 import { cn } from '@/shared/lib/utils';
-import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
-interface className {
+interface SeparatorComponentProps {
   className?: string;
 }
 
-export default function SeparatorComponent({ className }: className) {
-  const { resolvedTheme } = useTheme();
-
-  const isDark = resolvedTheme === 'dark';
-
+export default function SeparatorComponent({ className }: SeparatorComponentProps) {
   return (
-    <div className={cn(`relative mx-auto my-10 h-8 w-1/2 ${className}`)}>
-      <Image src={`/assets/images/separator${isDark ? '-dark' : ''}.png`} alt="separator" fill />
+    <div className={cn('relative mx-auto my-10 h-8 w-1/2', className)}>
+      <Image src="/assets/images/separator.png" alt="Separator" fill className="dark:hidden" />
+      <Image
+        src="/assets/images/separator-dark.png"
+        alt="Separator"
+        fill
+        className="hidden dark:block"
+      />
     </div>
   );
 }
