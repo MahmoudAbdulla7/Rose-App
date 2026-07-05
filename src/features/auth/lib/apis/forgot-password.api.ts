@@ -1,13 +1,4 @@
-export type ForgotPasswordResponse = {
-  status: boolean;
-  code: number;
-  message: string;
-  payload?: string | null;
-};
-
-type ForgotPasswordRequestBody = {
-  email: string;
-};
+import type { ForgotPasswordResponse, ForgotPasswordRequestBody } from '../types/forgot-password';
 
 export async function requestForgotPassword(email: string): Promise<ForgotPasswordResponse> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/forgot-password`, {

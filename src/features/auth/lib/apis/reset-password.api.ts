@@ -1,12 +1,8 @@
-export type ResetPasswordResponse = {
-  status: boolean;
-  code: number;
-  message: string;
-};
+import type { ResetPasswordResponse } from '../types/forgot-password';
 
 export async function requestResetPassword(input: {
   token: string;
-  password: string;
+  newPassword: string;
   confirmPassword: string;
 }): Promise<ResetPasswordResponse> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/reset-password`, {

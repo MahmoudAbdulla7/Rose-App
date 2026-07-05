@@ -4,34 +4,23 @@ import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
 import { ChevronLeft } from 'lucide-react';
 import { useFormContext } from 'react-hook-form';
-import type { Step } from './forgot-password-flow';
-import { STEP } from './forgot-password-flow';
 import { useTranslations } from 'next-intl';
+import type { Step } from '../lib/types/forgot-password';
+import { STEP } from '../lib/constants/forgot-pw.constants';
 
 type PasswordResetSentProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;
-  instruction: string;
-  spamHint: string;
 };
 
-export default function PasswordResetSent({
-  goToStep,
-  instruction,
-  spamHint,
-}: PasswordResetSentProps) {
+export default function PasswordResetSent({ goToStep }: PasswordResetSentProps) {
+  // Translation
   const t = useTranslations('auth');
-  const { getValues } = useFormContext();
-  const email = getValues('email');
 
-  const config = {
-    title: t('forgotPw.sent.title'),
-    description: t('forgotPw.sent.description'),
-    instruction: t('forgotPw.sent.instruction'),
-    spamHint: t('forgotPw.sent.spamHint'),
-    footerText: t('forgotPw.sent.footerText'),
-    footerLink: t('forgotPw.sent.footerLink'),
-    href: '',
-  };
+  // Context
+  const { getValues } = useFormContext();
+
+  // Variables
+  const email = getValues('email');
 
   return (
     <>
@@ -47,16 +36,16 @@ export default function PasswordResetSent({
           <ChevronLeft />
         </Button>
 
-        <h1 className="text-ds-text-plain text-3xl font-bold">{config.title}</h1>
+        <h1 className="text-ds-text-plain text-3xl font-bold">{t('forgotPw.sent.title')}</h1>
       </div>
 
-      <p>{config.description}</p>
+      <p>{t('forgotPw.sent.description')}</p>
 
       {/* Body */}
       <p className="text-ds-info">{email || '-'}</p>
       <Separator className="mt-4 mb-6" />
-      <p className="text-ds-text-plain mb-4">{instruction}</p>
-      <p className="text-ds-text-default">{spamHint}</p>
+      <p className="text-ds-text-plain mb-4">{t('forgotPw.sent.instruction')}</p>
+      <p className="text-ds-text-default">{t('forgotPw.sent.spamHint')}</p>
     </>
   );
 }

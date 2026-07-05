@@ -1,45 +1,34 @@
 import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod';
 import { requestForgotPassword } from '@/features/auth/lib/apis/forgot-password.api';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { Step } from './forgot-password-flow';
 import AuthFooter from './auth-footer';
 import { Separator } from '@/shared/ui/separator';
-
-const emailSchema = z.object({
-  email: z.email(),
-});
+import { emailSchema } from '../lib/schemas/forgot-password.schema';
+import type { Step } from '../lib/types/forgot-password';
 
 type ForgotPasswordFormProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;
 };
 
 export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps) {
+  // Translation
   const t = useTranslations('auth');
   const tCommon = useTranslations('common');
+
+  // State
   const [serverError, setServerError] = useState<string | null>(null);
+
+  // Context
   const {
     register,
     setError,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useFormContext();
-
-  const config = {
-    title: t('forgotPw.email.title'),
-    description: t('forgotPw.email.description'),
-    emailLabel: t('forgotPw.email.emailLabel'),
-    emailPlaceholder: t('forgotPw.email.emailPlaceholder'),
-    continue: t('forgotPw.email.continue'),
-    noAccount: t('forgotPw.email.noAccount'),
-    footerText: t('forgotPw.email.footerText'),
-    footerLink: t('forgotPw.email.footerLink'),
-    href: '/register',
-  };
 
   // Mutation
   const forgotPasswordMutation = useMutation({
@@ -68,10 +57,10 @@ export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps
     <>
       {/* Header */}
       <div className="flex items-center">
-        <h1 className="text-ds-text-plain text-3xl font-bold">{config.title}</h1>
+        <h1 className="text-ds-text-plain text-3xl font-bold">{t('forgotPw.email.title')}</h1>
       </div>
 
-      <p>{config.description}</p>
+      <p>{t('forgotPw.email.description')}</p>
 
       <Separator className="mt-4 mb-6" />
 
@@ -99,7 +88,11 @@ export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps
       </form>
 
       {/* Footer */}
-      <AuthFooter text={config.footerText} linkText={config.footerLink} href={config.href} />
+      <AuthFooter
+        text={t('forgotPw.email.footerText')}
+        linkText={t('forgotPw.email.footerLink')}
+        href="/register"
+      />
     </>
   );
 }
