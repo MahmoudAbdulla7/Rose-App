@@ -5,9 +5,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import PasswordResetSent from './password-reset-sent';
 import ForgotPasswordForm from './forgot-password-form';
-import { Button } from '@/shared/ui/button';
-import { ChevronLeft } from 'lucide-react';
-import AuthFooter from './auth-footer';
 import ResetPassword from './reset-password';
 
 type FormData = {
@@ -19,7 +16,7 @@ type FormData = {
 
 export type Step = (typeof STEP)[keyof typeof STEP];
 
-const STEP = {
+export const STEP = {
   EMAIL: 'EMAIL',
   SENT: 'SENT',
   RESET: 'RESET',
@@ -64,47 +61,17 @@ export default function ForgotPasswordFlow() {
     },
   };
 
-  const currentStep = stepConfig[step];
-
   return (
-    <>
-      {/* Header */}
-      <div className="flex items-center">
-        {step === STEP.SENT && (
-          <Button
-            type="button"
-            variant="primary"
-            size="icon"
-            onClick={() => setStep(STEP.EMAIL)}
-            className="me-2.5"
-          >
-            <ChevronLeft />
-          </Button>
-        )}
-
-        <h1 className="text-ds-text-plain text-3xl font-bold">{currentStep.title}</h1>
-      </div>
-
-      <p>{currentStep.description}</p>
-
-      {/* Body */}
-      <FormProvider {...methods}>
-        {step === STEP.EMAIL && <ForgotPasswordForm goToStep={setStep} />}
-        {step === STEP.SENT && (
-          <PasswordResetSent
-            instruction={stepConfig[STEP.SENT].instruction}
-            spamHint={stepConfig[STEP.SENT].spamHint}
-          />
-        )}
-        {step === STEP.RESET && <ResetPassword />}
-      </FormProvider>
-
-      {/* Footer */}
-      <AuthFooter
-        text={currentStep.footerText}
-        linkText={currentStep.footerLink}
-        href={currentStep.href}
-      />
-    </>
+    <FormProvider {...methods}>
+      {step === STEP.EMAIL && <ForgotPasswordForm goToStep={setStep} />}
+      {step === STEP.SENT && (
+        <PasswordResetSent
+          goToStep={setStep}
+          instruction={stepConfig[STEP.SENT].instruction}
+          spamHint={stepConfig[STEP.SENT].spamHint}
+        />
+      )}
+      {step === STEP.RESET && <ResetPassword />}
+    </FormProvider>
   );
 }

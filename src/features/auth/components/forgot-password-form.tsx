@@ -7,6 +7,8 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { Step } from './forgot-password-flow';
+import AuthFooter from './auth-footer';
+import { Separator } from '@/shared/ui/separator';
 
 const emailSchema = z.object({
   email: z.email(),
@@ -26,6 +28,18 @@ export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useFormContext();
+
+  const config = {
+    title: t('forgotPw.email.title'),
+    description: t('forgotPw.email.description'),
+    emailLabel: t('forgotPw.email.emailLabel'),
+    emailPlaceholder: t('forgotPw.email.emailPlaceholder'),
+    continue: t('forgotPw.email.continue'),
+    noAccount: t('forgotPw.email.noAccount'),
+    footerText: t('forgotPw.email.footerText'),
+    footerLink: t('forgotPw.email.footerLink'),
+    href: '/register',
+  };
 
   // Mutation
   const forgotPasswordMutation = useMutation({
@@ -51,26 +65,41 @@ export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps
   });
 
   return (
-    <form onSubmit={submitEmail} className="space-y-5">
-      <Input
-        label={t('forgotPw.email.emailLabel')}
-        placeholder={t('forgotPw.email.emailPlaceholder')}
-        type="email"
-        autoComplete="email"
-        inputMode="email"
-        error={errors.email?.message ? tCommon('Input.invalidEmail') : undefined}
-        {...register('email')}
-      />
+    <>
+      {/* Header */}
+      <div className="flex items-center">
+        <h1 className="text-ds-text-plain text-3xl font-bold">{config.title}</h1>
+      </div>
 
-      {serverError && <div className="text-ds-danger text-sm">{serverError}</div>}
+      <p>{config.description}</p>
 
-      <Button
-        type="submit"
-        className="mt-9 w-full"
-        loading={isSubmitting || forgotPasswordMutation.isPending}
-      >
-        {t('forgotPw.email.continue')}
-      </Button>
-    </form>
+      <Separator className="mt-4 mb-6" />
+
+      {/* Form */}
+      <form onSubmit={submitEmail} className="space-y-5">
+        <Input
+          label={t('forgotPw.email.emailLabel')}
+          placeholder={t('forgotPw.email.emailPlaceholder')}
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          error={errors.email?.message ? tCommon('Input.invalidEmail') : undefined}
+          {...register('email')}
+        />
+
+        {serverError && <div className="text-ds-danger text-sm">{serverError}</div>}
+
+        <Button
+          type="submit"
+          className="mt-9 w-full"
+          loading={isSubmitting || forgotPasswordMutation.isPending}
+        >
+          {t('forgotPw.email.continue')}
+        </Button>
+      </form>
+
+      {/* Footer */}
+      <AuthFooter text={config.footerText} linkText={config.footerLink} href={config.href} />
+    </>
   );
 }
