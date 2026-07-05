@@ -174,7 +174,7 @@ export function UserInfo({ onNext }: IUserInfoProps) {
         type="submit"
         size="lg"
         rightIcon={<MoveRight className="size-4.5 rtl:rotate-180" />}
-        className="bg-maroon-600 hover:bg-maroon-700 h-10.25 w-full"
+        className="h-10.25 w-full"
       >
         {t('actions.next')}
       </Button>
