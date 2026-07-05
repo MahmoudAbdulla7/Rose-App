@@ -17,10 +17,8 @@ export function ResendTimer({ email }: IResendTimerProps) {
   // state
   const { secondsLeft, isResending, resend } = useResendTimer({ email });
 
-  // Not initialized yet: render nothing until the cooldown is known.
   if (secondsLeft === null) return null;
 
-  // Cooldown still running: show the remaining time.
   if (secondsLeft > 0) {
     return (
       <p className="text-muted-foreground h-11 text-sm">
