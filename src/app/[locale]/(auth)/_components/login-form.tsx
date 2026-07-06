@@ -91,7 +91,7 @@ export default function LoginForm() {
       <div className="flex items-center justify-end gap-3">
         <Link
           href="/forgot-password"
-          className="text-ds-primary hover:text-ds-primary-saturated text-sm whitespace-nowrap"
+          className="font-primary text-ds-primary-saturated hover:text-ds-primary text-sm leading-none font-semibold whitespace-nowrap"
         >
           {t('actions.forgotPassword')}
         </Link>
@@ -107,18 +107,20 @@ export default function LoginForm() {
             />
           )}
         />
-        <span className="text-ds-text-default text-sm">{t('actions.rememberMe')}</span>
+        <span className="font-inter text-ds-text-plain text-sm leading-none">
+          {t('actions.rememberMe')}
+        </span>
       </label>
 
       <Button type="submit" variant="primary" loading={isSubmitting} className="w-full">
         {t('actions.submit')}
       </Button>
 
-      <p className="text-ds-text-soft text-center text-sm">
+      <p className="font-primary text-ds-text-plain text-center text-sm leading-none">
         {t('footer.noAccount')}{' '}
         <Link
           href="/register"
-          className="text-ds-primary hover:text-ds-primary-saturated font-medium"
+          className="text-ds-primary-saturated hover:text-ds-primary font-bold"
         >
           {t('actions.createAccount')}
         </Link>
