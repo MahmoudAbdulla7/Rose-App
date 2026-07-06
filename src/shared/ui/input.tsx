@@ -90,7 +90,7 @@ function Input({
             '[&::-webkit-inner-spin-button]:opacity-100',
             '[&::-webkit-outer-spin-button]:opacity-100',
             // Internal Spacing
-            'gap-2 px-4 py-4',
+            'px-4 leading-normal',
 
             // Focus Ring Enhancement
             'focus-visible:ring-2',

@@ -1,24 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useLocale } from 'next-intl';
-
 import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'shared/lib/utils';
+import { useLocale } from 'next-intl';
 
-export default function LanguageSwitcher() {
-  // Navigation
-  const locale = useLocale();
+export default function LanguageSwitcherComponent() {
+  const currentLocale = useLocale();
   const pathname = usePathname();
-
-  //States
-  const [query, setQuery] = useState<Record<string, string>>({});
-
-  //Effects
-  useEffect(() => {
-    setQuery(Object.fromEntries(new URLSearchParams(window.location.search).entries()));
-  }, [pathname]);
 
   return (
     <div
@@ -27,15 +16,12 @@ export default function LanguageSwitcher() {
       className="border-border bg-background/80 inline-flex rounded-full border p-1 shadow-sm backdrop-blur-sm"
     >
       {routing.locales.map((nextLocale) => {
-        const isActive = locale === nextLocale;
+        const isActive = currentLocale === nextLocale;
 
         return (
           <Link
             key={nextLocale}
-            href={{
-              pathname,
-              query,
-            }}
+            href={pathname}
             locale={nextLocale}
             aria-current={isActive ? 'true' : undefined}
             className={cn(
