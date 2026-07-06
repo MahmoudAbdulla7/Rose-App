@@ -1,20 +1,33 @@
-'use server';
-
 import { API_HEADERS } from '@/shared/lib/apis/headers.api';
 import type { ILoginPayload } from '../types/login';
 import type { ILoginResponse } from '../types/auth';
 
 export const login = async (payload: ILoginPayload): Promise<IAPIResponse<ILoginResponse>> => {
-  if (!payload.username || !payload.password) {
-    throw new Error('Username and password are required');
+  const baseUrl = process.env.NEXT_BASE_URL;
+
+  if (!baseUrl) {
+    return {
+      status: false,
+      code: 500,
+      message: 'NEXT_BASE_URL is not configured',
+    };
   }
 
-  const response = await fetch(`${process.env.NEXT_BASE_URL}auth/login`, {
+  if (!payload.username || !payload.password) {
+    return {
+      status: false,
+      code: 400,
+      message: 'Username and password are required',
+    };
+  }
+
+  const response = await fetch(`${baseUrl}auth/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
       ...API_HEADERS.JSON,
     },
+    cache: 'no-store',
   });
 
   const data: IAPIResponse<ILoginResponse> = await response.json();
