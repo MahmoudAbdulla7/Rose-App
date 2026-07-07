@@ -5,21 +5,27 @@ import { PasswordInput } from '@/shared/ui/password-input';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { requestResetPassword } from '../lib/apis/reset-password.api';
 import { useSearchParams } from 'next/navigation';
 import AuthFooter from './auth-footer';
 import { Separator } from '@/shared/ui/separator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { resetPasswordSchema } from '../lib/schemas/forgot-password.schema';
-import type { ResetPasswordInput } from '../lib/types/forgot-password';
+import { createResetPasswordSchema } from '../lib/schemas/forgot-password.schema';
 import { useRouter } from '@/i18n/navigation';
+import { resetPasswordAction } from '../lib/actions/forgot-password.action';
+import type z from 'zod';
 
 export default function ResetPassword() {
   // Translation
   const t = useTranslations('auth');
   const tCommon = useTranslations('common');
+  const tValidation = useTranslations('register.validation');
+
+  // Schema
+  const resetPasswordSchema = createResetPasswordSchema(tValidation);
+
+  type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 
   // Navigation
   const router = useRouter();
@@ -29,7 +35,7 @@ export default function ResetPassword() {
 
   // Mutation
   const resetPasswordMutation = useMutation({
-    mutationFn: requestResetPassword,
+    mutationFn: resetPasswordAction,
     onSuccess: () => {
       toast(t('forgotPw.reset.success'));
       router.push('/login');
@@ -43,21 +49,20 @@ export default function ResetPassword() {
   const searchParams = useSearchParams();
 
   // Form
-  const methods = useForm<ResetPasswordInput>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ResetPasswordInput>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       password: '',
       confirmPassword: '',
     },
-    resolver: zodResolver(resetPasswordSchema),
   });
 
   // Variables
   const token = searchParams.get('token') || '';
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
 
   // Functions
   const submitPassword = handleSubmit((values) => {
@@ -86,29 +91,31 @@ export default function ResetPassword() {
       <Separator className="mt-4 mb-6" />
 
       {/* Form */}
-      <FormProvider {...methods}>
-        <form onSubmit={submitPassword} className="space-y-5">
-          <PasswordInput
-            label={t('forgotPw.reset.newPasswordLabel')}
-            placeholder={t('forgotPw.reset.newPasswordPlaceholder')}
-            error={errors.password?.message}
-            {...register('password')}
-          />
+      <form onSubmit={submitPassword} className="space-y-5">
+        <PasswordInput
+          label={t('forgotPw.reset.newPasswordLabel')}
+          placeholder={t('forgotPw.reset.newPasswordPlaceholder')}
+          error={errors.password?.message}
+          {...register('password')}
+        />
 
-          <PasswordInput
-            label={t('forgotPw.reset.confirmPasswordLabel')}
-            placeholder={t('forgotPw.reset.confirmPasswordPlaceholder')}
-            error={errors.confirmPassword?.message}
-            {...register('confirmPassword')}
-          />
+        <PasswordInput
+          label={t('forgotPw.reset.confirmPasswordLabel')}
+          placeholder={t('forgotPw.reset.confirmPasswordPlaceholder')}
+          error={errors.confirmPassword?.message}
+          {...register('confirmPassword')}
+        />
 
-          {serverError && <div className="text-ds-danger text-sm">{serverError}</div>}
+        {serverError && <div className="text-ds-danger text-sm">{serverError}</div>}
 
-          <Button type="submit" className="mt-9 w-full" loading={resetPasswordMutation.isPending}>
-            {t('forgotPw.reset.reset')}
-          </Button>
-        </form>
-      </FormProvider>
+        <Button
+          type="submit"
+          className="mt-9 w-full"
+          loading={isSubmitting || resetPasswordMutation.isPending}
+        >
+          {t('forgotPw.reset.reset')}
+        </Button>
+      </form>
 
       {/* Footer */}
       <AuthFooter
