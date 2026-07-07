@@ -3,24 +3,17 @@
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
 import { ChevronLeft } from 'lucide-react';
-import { useFormContext } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import type { Step } from '../lib/types/forgot-password';
-import { STEP } from '../lib/constants/forgot-pw.constants';
+import type { Step } from '../lib/constants/forgot-password.constant';
+import { STEP } from '../lib/constants/forgot-password.constant';
 
 type PasswordResetSentProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;
+  email: string;
 };
 
-export default function PasswordResetSent({ goToStep }: PasswordResetSentProps) {
-  // Translation
+export default function PasswordResetSent({ goToStep, email }: PasswordResetSentProps) {
   const t = useTranslations('auth');
-
-  // Context
-  const { getValues } = useFormContext();
-
-  // Variables
-  const email = getValues('email');
 
   return (
     <>

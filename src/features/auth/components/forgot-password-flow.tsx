@@ -1,30 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
 import PasswordResetSent from './password-reset-sent';
 import ForgotPasswordForm from './forgot-password-form';
-import ResetPassword from './reset-password';
-import type { FormData, Step } from '../lib/types/forgot-password';
-import { STEP } from '../lib/constants/forgot-pw.constants';
+import type { Step } from '../lib/constants/forgot-password.constant';
+import { STEP } from '../lib/constants/forgot-password.constant';
 
 export default function ForgotPasswordFlow() {
   const [step, setStep] = useState<Step>(STEP.EMAIL);
-
-  const methods = useForm<FormData>({
-    defaultValues: {
-      email: '',
-      otp: '',
-      newPassword: '',
-      confirmPassword: '',
-    },
-  });
+  const [email, setEmail] = useState('');
 
   return (
-    <FormProvider {...methods}>
-      {step === STEP.EMAIL && <ForgotPasswordForm goToStep={setStep} />}
-      {step === STEP.SENT && <PasswordResetSent goToStep={setStep} />}
-      {step === STEP.RESET && <ResetPassword />}
-    </FormProvider>
+    <>
+      {step === STEP.EMAIL && <ForgotPasswordForm goToStep={setStep} setEmail={setEmail} />}
+      {step === STEP.SENT && <PasswordResetSent goToStep={setStep} email={email} />}
+    </>
   );
 }

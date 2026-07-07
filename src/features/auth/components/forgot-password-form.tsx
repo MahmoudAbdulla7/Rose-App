@@ -1,56 +1,65 @@
 import { useMutation } from '@tanstack/react-query';
-import { requestForgotPassword } from '@/features/auth/lib/apis/forgot-password.api';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import AuthFooter from './auth-footer';
 import { Separator } from '@/shared/ui/separator';
-import { emailSchema } from '../lib/schemas/forgot-password.schema';
-import type { Step } from '../lib/types/forgot-password';
+import { forgotPasswordAction } from '../lib/actions/forgot-password.action';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createForgotPasswordSchema } from '../lib/schemas/forgot-password.schema';
+import type z from 'zod';
+import type { Step } from '../lib/constants/forgot-password.constant';
+import { STEP } from '../lib/constants/forgot-password.constant';
 
 type ForgotPasswordFormProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function ForgotPasswordForm({ goToStep }: ForgotPasswordFormProps) {
+export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswordFormProps) {
   // Translation
   const t = useTranslations('auth');
   const tCommon = useTranslations('common');
+  const tValidation = useTranslations('register.validation');
+
+  // Schema
+  const forgotPasswordSchema = createForgotPasswordSchema(tValidation);
+
+  type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 
   // State
   const [serverError, setServerError] = useState<string | null>(null);
 
-  // Context
-  const {
-    register,
-    setError,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useFormContext();
-
   // Mutation
   const forgotPasswordMutation = useMutation({
-    mutationFn: requestForgotPassword,
-    onSuccess: () => {
-      goToStep('SENT');
+    mutationFn: forgotPasswordAction,
+    onSuccess: (_, variables) => {
+      setEmail(variables.email);
+      goToStep(STEP.SENT);
     },
     onError: (error) => {
       setServerError(error instanceof Error ? error.message : tCommon('error.networkError.text'));
     },
   });
 
+  // Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ForgotPasswordInput>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+
   // Functions
   const submitEmail = handleSubmit((values) => {
     setServerError(null);
-
-    const parsed = emailSchema.safeParse({ email: values.email });
-    if (!parsed.success) {
-      setError('email', { type: 'validate', message: 'invalidEmail' });
-      return;
-    }
-    forgotPasswordMutation.mutate(values.email);
+    forgotPasswordMutation.mutate(values);
   });
 
   return (

@@ -1,18 +1,26 @@
-import z from 'zod';
+import * as z from 'zod';
 import { createRegisterSchema } from './register.schema';
 
-export const emailSchema = z.object({
-  email: z.email(),
-});
+type IValidationTranslator = (key: string) => string;
 
-const schemaInstance = createRegisterSchema((key: string) => key);
+export const createForgotPasswordSchema = (t: IValidationTranslator) => {
+  const registerSchema = createRegisterSchema(t);
 
-export const resetPasswordSchema = z
-  .object({
-    password: schemaInstance.shape.password,
-    confirmPassword: schemaInstance.shape.confirmPassword,
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
+  return z.object({
+    email: registerSchema.shape.email,
   });
+};
+
+export const createResetPasswordSchema = (t: IValidationTranslator) => {
+  const registerSchema = createRegisterSchema(t);
+
+  return z
+    .object({
+      password: registerSchema.shape.password,
+      confirmPassword: registerSchema.shape.confirmPassword,
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('passwords-mismatch'),
+      path: ['confirmPassword'],
+    });
+};
