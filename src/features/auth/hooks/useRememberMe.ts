@@ -18,8 +18,10 @@ export function useRememberMe<T extends FieldValues>({
     const username = localStorage.getItem(USERNAME_KEY);
 
     if (remembered && username) {
+      // The hook is generic, so we cast well-known login field names to Path<T>.
       setValue('username' as Path<T>, username as T[Path<T>]);
       setValue('rememberMe' as Path<T>, true as T[Path<T>]);
+      // UX: when username is prefilled, jump directly to password.
       setFocus('password' as Path<T>);
     }
   }, [setValue, setFocus]);

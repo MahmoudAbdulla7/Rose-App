@@ -59,6 +59,7 @@ async function POST(req: NextRequest, context: RouteContext<'/api/auth/[...nexta
     return handler(req, context);
   }
 
+  // Clone before reading body so NextAuth can still consume the original request stream.
   const clonedBody = await req.clone().text();
   const rememberMe = new URLSearchParams(clonedBody).get('rememberMe') === 'true';
   const response = await handler(req, context);

@@ -52,6 +52,7 @@ export default function LoginForm() {
       redirect: false,
       username: data.username,
       password: data.password,
+      // NextAuth credentials fields are serialized as strings.
       rememberMe: data.rememberMe ? 'true' : 'false',
     });
 
@@ -63,7 +64,10 @@ export default function LoginForm() {
 
     const { message, fieldErrors } = parseSignInError(res?.error, t('messages.invalidCredentials'));
 
-    fieldErrors?.forEach(({ path, message }) => setError(path, { message }));
+    // Map backend field-level errors to RHF so each message appears under its input.
+    fieldErrors?.forEach(({ path, message: fieldMessage }) =>
+      setError(path, { message: fieldMessage }),
+    );
 
     if (!fieldErrors?.length) {
       toast.error(tToast('error'), { description: message });
