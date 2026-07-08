@@ -11,6 +11,7 @@ type ParsedSignInError = {
 const LOGIN_FIELD_PATHS = new Set(['username', 'password']);
 
 function normalizeFieldPath(path: string): FieldError['path'] | null {
+  // Accept nested paths (e.g. "body.username") and keep only supported login fields.
   const segment = path.split('.').pop() ?? path;
   return LOGIN_FIELD_PATHS.has(segment) ? (segment as FieldError['path']) : null;
 }
