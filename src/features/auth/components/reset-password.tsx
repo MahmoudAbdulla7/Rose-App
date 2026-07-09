@@ -9,12 +9,12 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useSearchParams } from 'next/navigation';
 import AuthFooter from './auth-footer';
-import { Separator } from '@/shared/ui/separator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createResetPasswordSchema } from '../lib/schemas/forgot-password.schema';
 import { useRouter } from '@/i18n/navigation';
 import { resetPasswordAction } from '../lib/actions/forgot-password.action';
 import type z from 'zod';
+import AuthHeader from './auth-header';
 
 export default function ResetPassword() {
   // Translation
@@ -37,7 +37,7 @@ export default function ResetPassword() {
   const resetPasswordMutation = useMutation({
     mutationFn: resetPasswordAction,
     onSuccess: () => {
-      toast(t('forgotPw.reset.success'));
+      toast.success(t('forgotPw.reset.success'));
       router.push('/login');
     },
     onError: (error) => {
@@ -82,13 +82,7 @@ export default function ResetPassword() {
   return (
     <>
       {/* Header */}
-      <div className="flex items-center">
-        <h1 className="text-ds-text-plain text-3xl font-bold">{t('forgotPw.reset.title')}</h1>
-      </div>
-
-      <p>{t('forgotPw.reset.description')}</p>
-
-      <Separator className="mt-4 mb-6" />
+      <AuthHeader title={t('forgotPw.reset.title')} description={t('forgotPw.reset.description')} />
 
       {/* Form */}
       <form onSubmit={submitPassword} className="space-y-5">
@@ -121,7 +115,7 @@ export default function ResetPassword() {
       <AuthFooter
         text={t('forgotPw.reset.footerText')}
         linkText={t('forgotPw.reset.footerLink')}
-        href=""
+        href={null}
       />
     </>
   );

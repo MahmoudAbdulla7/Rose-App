@@ -78,7 +78,7 @@
     "password-digit": "Password must contain a digit",
     "password-special": "Password must contain a special character",
     "confirm-password-required": "Please confirm your password",
-    "passwords-mismatch": "Password do not match"
+    "passwords-mismatch": "Passwords do not match"
   },
   "messages": {
     "error": "Something went wrong. Please try again.",
