@@ -9,7 +9,8 @@ export const login = async (payload: ILoginPayload): Promise<IAPIResponse<ILogin
     throw new Error('Username and password are required');
   }
 
-  const response = await fetch(`${process.env.NEXT_BASE_URL}auth/login`, {
+  const baseUrl = process.env.NEXT_BASE_URL?.replace(/\/$/, '') ?? '';
+  const response = await fetch(`${baseUrl}/auth/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
