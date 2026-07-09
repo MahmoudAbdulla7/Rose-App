@@ -5,13 +5,13 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthFooter from './auth-footer';
-import { Separator } from '@/shared/ui/separator';
 import { forgotPasswordAction } from '../lib/actions/forgot-password.action';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createForgotPasswordSchema } from '../lib/schemas/forgot-password.schema';
 import type z from 'zod';
 import type { Step } from '../lib/constants/forgot-password.constant';
 import { STEP } from '../lib/constants/forgot-password.constant';
+import AuthHeader from './auth-header';
 
 type ForgotPasswordFormProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;
@@ -65,13 +65,7 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
   return (
     <>
       {/* Header */}
-      <div className="flex items-center">
-        <h1 className="text-ds-text-plain text-3xl font-bold">{t('forgotPw.email.title')}</h1>
-      </div>
-
-      <p>{t('forgotPw.email.description')}</p>
-
-      <Separator className="mt-4 mb-6" />
+      <AuthHeader title={t('forgotPw.email.title')} description={t('forgotPw.email.description')} />
 
       {/* Form */}
       <form onSubmit={submitEmail} className="space-y-5">
@@ -81,7 +75,7 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
           type="email"
           autoComplete="email"
           inputMode="email"
-          error={errors.email?.message ? tCommon('Input.invalidEmail') : undefined}
+          error={errors.email?.message}
           {...register('email')}
         />
 

@@ -6,6 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Step } from '../lib/constants/forgot-password.constant';
 import { STEP } from '../lib/constants/forgot-password.constant';
+import AuthFooter from './auth-footer';
 
 type PasswordResetSentProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;
@@ -34,11 +35,20 @@ export default function PasswordResetSent({ goToStep, email }: PasswordResetSent
 
       <p>{t('forgotPw.sent.description')}</p>
 
-      {/* Body */}
       <p className="text-ds-info">{email || '-'}</p>
+
       <Separator className="mt-4 mb-6" />
+
+      {/* Body */}
       <p className="text-ds-text-plain mb-4">{t('forgotPw.sent.instruction')}</p>
       <p className="text-ds-text-default">{t('forgotPw.sent.spamHint')}</p>
+
+      {/* Footer */}
+      <AuthFooter
+        text={t('forgotPw.sent.footerText')}
+        linkText={t('forgotPw.sent.footerLink')}
+        href={null}
+      />
     </>
   );
 }
