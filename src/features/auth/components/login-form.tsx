@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -10,22 +11,28 @@ import { useRememberMe } from '@/features/auth/hooks/useRememberMe';
 import { createLoginSchema, type LoginFormValues } from '@/features/auth/lib/schemas/login.schema';
 import { Link, useRouter } from '@/i18n/navigation';
 import { parseSignInError } from '@/lib/auth/parseSignInError';
+import { safeCallbackUrl } from '@/shared/lib/utils/callback-url.utils';
 import { Button } from '@/shared/ui/button';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { Input } from '@/shared/ui/input';
 import { PasswordInput } from '@/shared/ui/password-input';
 
 export default function LoginForm() {
+  // Translations
   const t = useTranslations('login');
+  const tCommon = useTranslations('common');
   const tToast = useTranslations('common.toast');
-  const router = useRouter();
+  const networkErrorMessage = tCommon('error.networkError.text');
 
+  // Navigation
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Form
   const loginSchema = createLoginSchema({
     usernameRequired: t('validation.usernameRequired'),
     usernameFormat: t('validation.usernameFormat'),
     passwordRequired: t('validation.passwordRequired'),
-    passwordNumber: t('validation.passwordNumber'),
-    passwordSpecial: t('validation.passwordSpecial'),
   });
 
   const {
@@ -35,6 +42,7 @@ export default function LoginForm() {
     setValue,
     setFocus,
     setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -47,31 +55,52 @@ export default function LoginForm() {
 
   const { saveRememberedUser } = useRememberMe<LoginFormValues>({ setValue, setFocus });
 
+  // Functions
   const onSubmit = async (data: LoginFormValues) => {
-    const res = await signIn('credentials', {
-      redirect: false,
-      username: data.username,
-      password: data.password,
-      // NextAuth credentials fields are serialized as strings.
-      rememberMe: data.rememberMe ? 'true' : 'false',
-    });
+    clearErrors('root');
 
-    if (res?.ok) {
-      saveRememberedUser(data.rememberMe, data.username);
-      router.push('/');
+    let res;
+    try {
+      res = await signIn('credentials', {
+        redirect: false,
+        username: data.username,
+        password: data.password,
+        // NextAuth credentials fields are serialized as strings.
+        rememberMe: data.rememberMe ? 'true' : 'false',
+      });
+    } catch {
+      toast.error(tToast('error'), { description: networkErrorMessage });
       return;
     }
 
-    const { message, fieldErrors } = parseSignInError(res?.error, t('messages.invalidCredentials'));
+    if (res?.ok) {
+      saveRememberedUser(data.rememberMe, data.username);
+      router.push(safeCallbackUrl(searchParams.get('callbackUrl'), window.location.origin));
+      return;
+    }
+
+    const { kind, message, fieldErrors } = parseSignInError(
+      res?.error,
+      t('messages.invalidCredentials'),
+      networkErrorMessage,
+    );
 
     // Map backend field-level errors to RHF so each message appears under its input.
     fieldErrors?.forEach(({ path, message: fieldMessage }) =>
       setError(path, { message: fieldMessage }),
     );
 
-    if (!fieldErrors?.length) {
-      toast.error(tToast('error'), { description: message });
+    if (fieldErrors?.length) {
+      return;
     }
+
+    // Keep invalid credentials visible inline while the user corrects input.
+    if (kind === 'credentials') {
+      setError('root', { message });
+      return;
+    }
+
+    toast.error(tToast('error'), { description: message });
   };
 
   return (
@@ -115,6 +144,12 @@ export default function LoginForm() {
           {t('actions.rememberMe')}
         </span>
       </label>
+
+      {errors.root?.message && (
+        <p role="alert" className="text-ds-danger font-inter text-sm">
+          {errors.root.message}
+        </p>
+      )}
 
       <Button type="submit" variant="primary" loading={isSubmitting} className="w-full">
         {t('actions.submit')}

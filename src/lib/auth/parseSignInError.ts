@@ -3,7 +3,10 @@ type FieldError = {
   message: string;
 };
 
+export type SignInErrorKind = 'credentials' | 'unexpected';
+
 type ParsedSignInError = {
+  kind: SignInErrorKind;
   message: string;
   fieldErrors?: FieldError[];
 };
@@ -16,19 +19,37 @@ function normalizeFieldPath(path: string): FieldError['path'] | null {
   return LOGIN_FIELD_PATHS.has(segment) ? (segment as FieldError['path']) : null;
 }
 
+function isUnexpectedCode(code: unknown): boolean {
+  return typeof code === 'number' && code !== 401;
+}
+
+function isNetworkSentinel(message: unknown): boolean {
+  return message === 'NETWORK_ERROR';
+}
+
 export function parseSignInError(
   error: string | null | undefined,
-  fallbackMessage: string,
+  credentialsMessage: string,
+  unexpectedMessage: string,
 ): ParsedSignInError {
   if (!error) {
-    return { message: fallbackMessage };
+    return { kind: 'unexpected', message: unexpectedMessage };
   }
 
   try {
     const parsed = JSON.parse(error) as {
+      code?: number;
+      kind?: SignInErrorKind;
       message?: string;
       messages?: Array<string | FieldError>;
     };
+
+    const kind: SignInErrorKind =
+      parsed.kind === 'credentials' || parsed.kind === 'unexpected'
+        ? parsed.kind
+        : isNetworkSentinel(parsed.message) || isUnexpectedCode(parsed.code)
+          ? 'unexpected'
+          : 'credentials';
 
     if (Array.isArray(parsed.messages) && parsed.messages.length > 0) {
       const fieldErrors: FieldError[] = [];
@@ -51,27 +72,40 @@ export function parseSignInError(
         }
       }
 
+      if (kind === 'unexpected') {
+        return {
+          kind,
+          message: unexpectedMessage,
+          fieldErrors: fieldErrors.length > 0 ? fieldErrors : undefined,
+        };
+      }
+
       const message =
         generalMessages.length > 0
           ? generalMessages.join(' | ')
-          : (parsed.message ?? fallbackMessage);
+          : (parsed.message ?? credentialsMessage);
 
       return {
-        message,
+        kind,
+        message: isNetworkSentinel(message) ? unexpectedMessage : message,
         fieldErrors: fieldErrors.length > 0 ? fieldErrors : undefined,
       };
     }
 
-    if (parsed.message) {
-      return { message: parsed.message };
+    if (kind === 'unexpected') {
+      return { kind, message: unexpectedMessage };
     }
 
-    return { message: fallbackMessage };
+    if (parsed.message && !isNetworkSentinel(parsed.message)) {
+      return { kind, message: parsed.message };
+    }
+
+    return { kind, message: credentialsMessage };
   } catch {
     if (error === 'CredentialsSignin') {
-      return { message: fallbackMessage };
+      return { kind: 'credentials', message: credentialsMessage };
     }
 
-    return { message: error || fallbackMessage };
+    return { kind: 'unexpected', message: unexpectedMessage };
   }
 }

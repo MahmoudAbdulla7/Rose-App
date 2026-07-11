@@ -4,8 +4,6 @@ type LoginSchemaMessages = {
   usernameRequired: string;
   usernameFormat: string;
   passwordRequired: string;
-  passwordNumber: string;
-  passwordSpecial: string;
 };
 
 export function createLoginSchema(messages: LoginSchemaMessages) {
@@ -14,11 +12,7 @@ export function createLoginSchema(messages: LoginSchemaMessages) {
       .string()
       .min(1, messages.usernameRequired)
       .regex(/^[a-zA-Z0-9_]+$/, messages.usernameFormat),
-    password: z
-      .string()
-      .min(1, messages.passwordRequired)
-      .regex(/[0-9]/, messages.passwordNumber)
-      .regex(/[^a-zA-Z0-9]/, messages.passwordSpecial),
+    password: z.string().min(1, messages.passwordRequired),
     rememberMe: z.boolean(),
   });
 }

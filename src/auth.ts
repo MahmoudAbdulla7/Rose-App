@@ -28,9 +28,16 @@ export const authOptions: NextAuthOptions = {
 
         const apiMessage = 'message' in response ? response.message : undefined;
         const apiErrors = 'errors' in response ? response.errors : undefined;
+        const apiCode = 'code' in response ? response.code : undefined;
+        const kind =
+          apiMessage === 'NETWORK_ERROR' || (typeof apiCode === 'number' && apiCode !== 401)
+            ? 'unexpected'
+            : 'credentials';
 
         throw new Error(
           JSON.stringify({
+            code: apiCode,
+            kind,
             message: apiMessage,
             messages: apiErrors?.length
               ? apiErrors.map((error) => ({ path: error.path, message: error.message }))
