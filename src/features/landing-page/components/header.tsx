@@ -1,9 +1,9 @@
-import LanguageSwitcher from '@/shared/components/language-switcher';
+import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 
 export default function Header() {
   return (
     <header>
-      <LanguageSwitcher />
+      <LanguageSwitcherComponent />
     </header>
   );
 }

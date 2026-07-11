@@ -1,6 +1,7 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import createMiddleware from 'next-intl/middleware';
+import type { NextRequest } from 'next/server';
 import type { Locale } from 'next-intl';
 
 import { routing } from './i18n/routing';
@@ -43,5 +44,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'],
+  // Add 'assets' to prevent redirecting in
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|assets).*)'],
 };

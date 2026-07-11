@@ -43,5 +43,18 @@
     "searchCountry": "ابحث عن دولة...",
     "noCountryFound": "لم يتم العثور على دولة.",
     "searchPlaceholder": "بحث..."
+  },
+  "validation": {
+    "passwordWeak": {
+      "text": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل وتشمل: حرف كبير وصغير ورقم ورمز خاص"
+    },
+    "passwordMatch": {
+      "text": "كلمتا المرور غير متطابقتين"
+    }
+  },
+  "error": {
+    "networkError": {
+      "text": "حدث خطأ ما. يرجى المحاولة مجدداً."
+    }
   }
 }
