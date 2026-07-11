@@ -9,6 +9,7 @@ declare module 'next-auth' {
     id: string;
     user: IUser;
     accessToken: string;
+    rememberMe?: boolean;
   }
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
@@ -23,5 +24,6 @@ declare module 'next-auth/jwt' {
   interface JWT {
     user: IUser;
     accessToken: string;
+    rememberMe?: boolean;
   }
 }

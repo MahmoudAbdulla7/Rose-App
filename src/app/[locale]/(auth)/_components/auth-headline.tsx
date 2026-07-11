@@ -17,8 +17,8 @@ export default function Headline() {
         `${path.includes('/en') ? Edwardian.className : ''} ${path.endsWith('/login') || path.endsWith('/register') ? '*:border-b-ds-border-soft *:border-b *:pb-4' : ''} text-ds-primary mx-auto mb-6 w-3/4 text-center text-5xl`,
       )}
     >
-      {path.endsWith('/login') && <p>{t('auth.welcome')}</p>}
-      {path.endsWith('/register') && <p>{t('auth.greeting')}</p>}
+      {path.endsWith('/login') && <p>{t('auth.login.meta.welcome')}</p>}
+      {path.endsWith('/register') && <p>{t('auth.login.meta.greeting')}</p>}
     </div>
   );
 }
