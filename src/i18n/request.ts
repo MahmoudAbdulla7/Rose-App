@@ -23,6 +23,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       auth: { ...auth.default, ...forgotPassword.default },
       register: register.default,
       button: button.default,
+      login: auth.default.login,
     },
   };
 });

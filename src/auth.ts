@@ -9,6 +9,7 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         username: { label: 'username', type: 'text' },
         password: { label: 'password', type: 'password' },
+        rememberMe: { label: 'rememberMe', type: 'text' },
       },
       async authorize(credentials) {
         const response = await login({
@@ -21,11 +22,27 @@ export const authOptions: NextAuthOptions = {
             id: response.payload.user.id,
             user: response.payload.user,
             accessToken: response.payload.token,
+            rememberMe: credentials?.rememberMe === 'true',
           };
         }
 
+        const apiMessage = 'message' in response ? response.message : undefined;
+        const apiErrors = 'errors' in response ? response.errors : undefined;
+        const apiCode = 'code' in response ? response.code : undefined;
+        const kind =
+          apiMessage === 'NETWORK_ERROR' || (typeof apiCode === 'number' && apiCode !== 401)
+            ? 'unexpected'
+            : 'credentials';
+
         throw new Error(
-          typeof response.message === 'string' ? response.message : 'CredentialsSignin',
+          JSON.stringify({
+            code: apiCode,
+            kind,
+            message: apiMessage,
+            messages: apiErrors?.length
+              ? apiErrors.map((error) => ({ path: error.path, message: error.message }))
+              : undefined,
+          }),
         );
       },
     }),
@@ -39,6 +56,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.accessToken = user.accessToken;
         token.user = user.user;
+        token.rememberMe = user.rememberMe;
       }
 
       if (session && trigger === 'update') {
