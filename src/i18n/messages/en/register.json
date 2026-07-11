@@ -1,0 +1,87 @@
+{
+  "title": "Create your account",
+  "subtitle": "Fill in your details to get started",
+  "heading": "Create Account",
+  "details": {
+    "title": "Tell us more about you",
+    "subtitle": "A few details to get started"
+  },
+  "password": {
+    "title": "Create a strong password",
+    "subtitle": "Choose a secure password to protect your account",
+    "show": "Show password",
+    "hide": "Hide password"
+  },
+  "fields": {
+    "first-name": "First name",
+    "last-name": "Last name",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone",
+    "gender": "Gender",
+    "password": "Password",
+    "confirm-password": "Confirm Password"
+  },
+  "placeholder": {
+    "first-name": "Jonathan",
+    "last-name": "Adrian",
+    "username": "zoe123",
+    "email": "user@example.com",
+    "phone": "1012345678",
+    "gender": "Select gender",
+    "password": "Enter your password",
+    "confirm-password": "Re-enter your password"
+  },
+  "gender-options": {
+    "male": "Male",
+    "female": "Female"
+  },
+  "actions": {
+    "submit": "Create Account",
+    "next": "Next",
+    "verify-email": "Verify",
+    "email-verified": "Verified"
+  },
+  "footer": {
+    "text": "Already have an account? <login>Login</login>",
+    "help": "Need help? <contact>Contact us</contact>"
+  },
+  "otp": {
+    "title": "Enter the OTP Code",
+    "description": "We have sent a 6-digit code to {email} <edit>Edit</edit>",
+    "resend": "Send a new code",
+    "resend-in": "Send a new code in {seconds}s",
+    "verify": "Verify Code",
+    "resent": "A new code has been sent to your email.",
+    "invalid": "Invalid or expired code. Please try again."
+  },
+  "verify-dialog": {
+    "title": "Verify your email",
+    "description": "We sent a verification code to {email}. Enter it below to confirm your email.",
+    "confirm": "Confirm",
+    "success": "Email verified successfully",
+    "error": "Invalid or expired code. Please try again.",
+    "email-not-verified": "Please verify your email before creating your account."
+  },
+  "validation": {
+    "first-name-required": "First name is required",
+    "last-name-required": "Last name is required",
+    "username-required": "Username is required",
+    "email-required": "Email is required",
+    "email-invalid": "Enter a valid email address",
+    "phone-required": "Phone number is required",
+    "phone-invalid": "Enter a valid phone number",
+    "gender-required": "Select a gender",
+    "password-min": "Password must be at least 8 characters",
+    "password-lowercase": "Password must contain a lowercase letter",
+    "password-uppercase": "Password must contain an uppercase letter",
+    "password-digit": "Password must contain a digit",
+    "password-special": "Password must contain a special character",
+    "confirm-password-required": "Please confirm your password",
+    "passwords-mismatch": "Passwords do not match"
+  },
+  "messages": {
+    "error": "Something went wrong. Please try again.",
+    "success": "Account created successfully."
+  }
+}
