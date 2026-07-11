@@ -20,6 +20,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       common: common.default,
       auth: auth.default,
       button: button.default,
+      login: auth.default.login,
     },
   };
 });

@@ -48,7 +48,14 @@ export default async function AuthLayout({ children, params }: Props) {
 
         {/* Side Image */}
         <div className="relative h-full w-full max-md:hidden">
-          <Image src="/assets/images/image.png" alt="" fill sizes="50vw" className="object-cover" />
+          <Image
+            src="/assets/images/image.png"
+            alt=""
+            fill
+            sizes="50vw"
+            priority
+            className="object-cover"
+          />
         </div>
       </div>
     </section>
