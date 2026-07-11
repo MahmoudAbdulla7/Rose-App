@@ -35,7 +35,13 @@ const inter = Inter({
 
 type Props = LayoutProps<'/[locale]'>;
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: Locale };
+}): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations('common');
   return {
     title: t('app.title'),
@@ -49,16 +55,14 @@ export function generateStaticParams() {
 
 export default async function RootLayout({ children, params }: Props): Promise<ReactNode> {
   const { locale } = await params;
-  const timeZone = await getTimeZone({ locale: locale as Locale });
-  const nextIntelConfig: NextIntlConfigProps = { timeZone, locale: locale as Locale };
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
-  setRequestLocale(locale);
-
   const messages = await getMessages({ locale });
+  const timeZone = await getTimeZone({ locale: locale as Locale });
+  const nextIntlConfig: NextIntlConfigProps = { timeZone, locale: locale as Locale, messages };
 
   return (
     <html
@@ -68,9 +72,7 @@ export default async function RootLayout({ children, params }: Props): Promise<R
       className={`${locale === 'ar' ? tajawal.variable : sarabun.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
-        <AppProvider nextIntelConfig={nextIntelConfig} messages={messages}>
-          {children}
-        </AppProvider>
+        <AppProvider nextIntlConfig={nextIntlConfig}>{children}</AppProvider>
       </body>
     </html>
   );
