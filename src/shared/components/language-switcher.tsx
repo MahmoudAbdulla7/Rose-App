@@ -7,15 +7,15 @@ import { useLocale, useTranslations } from 'next-intl';
 export default function LanguageSwitcherComponent() {
   const currentLocale = useLocale();
   const pathname = usePathname();
-  const t = useTranslations();
+  const t = useTranslations('auth.meta');
 
   const otherLocale =
     routing.locales.find((locale) => locale !== currentLocale) || routing.defaultLocale;
 
   return (
     <header className="w-full text-end">
-      <Link href={pathname} locale={otherLocale} aria-label={t('auth.langLabel')}>
-        {t('auth.switchLang')}
+      <Link href={pathname} locale={otherLocale} aria-label={t('langLabel')}>
+        {t('switchLang')}
       </Link>
     </header>
   );

@@ -18,7 +18,8 @@ const STEP_FIELDS: (keyof IRegisterFields)[] = ['password', 'confirmPassword'];
 
 export function Password() {
   // Translations
-  const t = useTranslations('register');
+  const t = useTranslations('auth.register');
+  const tShared = useTranslations('auth.shared');
 
   // Navigation
   const router = useRouter();
@@ -87,8 +88,8 @@ export function Password() {
             <Field data-invalid={fieldState.invalid}>
               <PasswordInput
                 id="password"
-                label={t('fields.password')}
-                placeholder={t('placeholder.password')}
+                label={tShared('fields.password')}
+                placeholder={tShared('placeholder.password')}
                 autoComplete="new-password"
                 error={fieldState.error?.message}
                 {...field}
@@ -105,8 +106,8 @@ export function Password() {
             <Field data-invalid={fieldState.invalid}>
               <PasswordInput
                 id="confirmPassword"
-                label={t('fields.confirm-password')}
-                placeholder={t('placeholder.confirm-password')}
+                label={t('fields.confirmPassword')}
+                placeholder={t('placeholder.confirmPassword')}
                 autoComplete="new-password"
                 error={fieldState.error?.message}
                 {...field}

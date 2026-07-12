@@ -19,8 +19,8 @@ import { UserInfo } from './steps/user-info';
 
 export default function Register() {
   // Translations
-  const t = useTranslations('register');
-  const tv = useTranslations('register.validation');
+  const t = useTranslations('auth.register');
+  const tv = useTranslations('auth.register.validation');
 
   // State
   const [step, setStep] = useState<RegisterStep>(REGISTER_STEP.EMAIL);

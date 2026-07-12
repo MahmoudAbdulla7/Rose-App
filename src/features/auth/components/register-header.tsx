@@ -10,7 +10,7 @@ interface IRegisterHeaderProps {
 
 export function RegisterHeader({ title, description }: IRegisterHeaderProps) {
   // Translation
-  const t = useTranslations('register');
+  const t = useTranslations('auth.register');
 
   return (
     <div className="border-ds-border-muted flex flex-col gap-4 border-b pb-4">

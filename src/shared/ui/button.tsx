@@ -79,7 +79,7 @@ function Button({
   rightIcon,
   ...props
 }: ButtonProps) {
-  const t = useTranslations('button');
+  const t = useTranslations('common');
 
   return (
     <ButtonPrimitive
@@ -94,7 +94,7 @@ function Button({
         </span>
       )}
 
-      {loading ? t('loading') : props.children}
+      {loading ? t('button.loading') : props.children}
 
       {!loading && rightIcon && <span className="inline-flex items-center">{rightIcon}</span>}
     </ButtonPrimitive>

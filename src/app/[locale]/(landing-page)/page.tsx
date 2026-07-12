@@ -1,59 +1,13 @@
-import Header from '@/features/landing-page/components/header';
-import ThemeToggle from '@/shared/components/theme-toggle';
-import { Input } from '@/shared/ui/input';
-import { SearchInput } from '@/shared/ui/search-input';
-import { getTranslations } from 'next-intl/server';
-import { FileInputDemo } from './_components/file-input-demo';
-import { PhoneInput } from '@/shared/ui/phone-input';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/shared/ui/input-otp';
-import { PasswordInput } from '@/shared/ui/password-input';
+import ProductCard from '@/features/landing-page/components/product-card';
+import { PRODUCT_CARD_DUMMY_DATA } from '@/features/landing-page/lib/constants/product.constant';
+import ProductCardSkeleton from '@/features/landing-page/skeletons/product-card.skeleton';
+
 export default async function LandingPage() {
-  const t = await getTranslations('common');
   return (
-    <>
-      <Header />
-      <h1 className="bg-ds-plain text-ds-text-plain ring-ds-ring-danger mx-10 my-10 rounded-lg ring">
-        {t('landing-page.title')}
-      </h1>
-      <ThemeToggle />
-      <div className="h-screen w-full p-4">
-        {/* text input */}
-        <div className="mt-4 grid w-full grid-cols-4 items-center justify-center gap-2">
-          <Input label="Label" placeholder="Placeholder" />
-        </div>
-        {/* search input */}
-        <div className="mt-4 grid w-full grid-cols-4 items-center justify-center gap-2">
-          <SearchInput label="Label" placeholder="Search..." />
-        </div>
-        {/* number input */}
-        <div className="mt-4 grid w-full grid-cols-4 items-center justify-center gap-2">
-          <Input label="Label" placeholder="Placeholder" type="number" />
-        </div>
+    <div className="space-y-4 p-2">
+      <ProductCard product={PRODUCT_CARD_DUMMY_DATA} />
 
-        {/* file input */}
-        <div className="w-full">
-          <FileInputDemo />
-        </div>
-        {/* phone input */}
-        <div className="mt-4 grid w-full grid-cols-4 items-center justify-center gap-2">
-          <PhoneInput label="Label" placeholder="Placeholder" defaultCountry="EG" />
-        </div>
-        {/* input OTP */}
-        <div className="mt-4 grid w-full grid-cols-4 items-center justify-center gap-2">
-          <InputOTP maxLength={6}>
-            <InputOTPGroup>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <InputOTPSlot key={i} index={i} />
-              ))}
-            </InputOTPGroup>
-          </InputOTP>
-        </div>
-
-        {/* password input */}
-        <div className="mt-4 grid w-full grid-cols-4 items-center justify-center gap-2">
-          <PasswordInput label="Label" placeholder="Placeholder" />
-        </div>
-      </div>
-    </>
+      <ProductCardSkeleton />
+    </div>
   );
 }

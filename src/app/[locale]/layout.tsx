@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 import { routing } from '@/i18n/routing';
+import { getFormats } from '@/i18n/formats';
 import AppProvider from '@/shared/providers/app.provider';
 import { notFound } from 'next/navigation';
 import type { NextIntlConfigProps } from '@/shared/lib/types/global';
@@ -62,7 +63,12 @@ export default async function RootLayout({ children, params }: Props): Promise<R
 
   const messages = await getMessages({ locale });
   const timeZone = await getTimeZone({ locale: locale as Locale });
-  const nextIntlConfig: NextIntlConfigProps = { timeZone, locale: locale as Locale, messages };
+  const nextIntlConfig: NextIntlConfigProps = {
+    timeZone,
+    locale: locale as Locale,
+    messages,
+    formats: getFormats(locale as Locale),
+  };
 
   return (
     <html
