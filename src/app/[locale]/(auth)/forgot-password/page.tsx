@@ -16,11 +16,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const t = await getTranslations({
     locale,
-    namespace: 'auth',
+    namespace: 'auth.forgotPassword',
   });
 
   return {
-    title: t('forgotPw.email.title'),
+    title: t('email.title'),
   };
 }
 

@@ -3,23 +3,17 @@
     "title": "تطبيق روز",
     "description": "اكتشف واطلب زهور وهدايا بسهولة مع تطبيق روز."
   },
-  "landing-page": {
-    "title": "الصفحة الرئيسيه"
-  },
   "toast": {
-    "success": "نجاح",
-    "error": "خطأ",
-    "warning": "تحذير",
-    "info": "معلومة"
+    "error": "خطأ"
   },
-  "pagination": {
-    "next": "التالي",
-    "previous": "السابق"
-  },
-  "Message": {
-    "label": "الرسالة",
-    "placeholder": "اكتب رسالتك هنا.",
-    "error": "يجب ألا تقل الرسالة عن 10 أحرف"
+  "input": {
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "uploadFile": "رفع ملف",
+    "reviewCurrentImages": "معاينة الصورة الحالية",
+    "removeFile": "حذف الملف",
+    "imagePreview": "معاينة الصورة",
+    "searchPlaceholder": "بحث..."
   },
   "textarea": {
     "placeholder": "اكتب رسالتك هنا.",
@@ -30,31 +24,10 @@
     "noOptions": "لا توجد خيارات",
     "search": "بحث..."
   },
-  "Input": {
-    "required": "هذا الحقل مطلوب",
-    "invalidEmail": "عنوان بريد إلكتروني غير صالح",
-    "showPassword": "إظهار كلمة المرور",
-    "hidePassword": "إخفاء كلمة المرور",
-    "fileSelected": "تم اختيار الملف",
-    "uploadFile": "رفع ملف",
-    "reviewCurrentImages": "معاينة الصورة الحالية",
-    "removeFile": "حذف الملف",
-    "imagePreview": "معاينة الصورة",
-    "searchCountry": "ابحث عن دولة...",
-    "noCountryFound": "لم يتم العثور على دولة.",
-    "searchPlaceholder": "بحث..."
-  },
-  "validation": {
-    "passwordWeak": {
-      "text": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل وتشمل: حرف كبير وصغير ورقم ورمز خاص"
-    },
-    "passwordMatch": {
-      "text": "كلمتا المرور غير متطابقتين"
-    }
+  "button": {
+    "loading": "جاري التحميل..."
   },
   "error": {
-    "networkError": {
-      "text": "حدث خطأ ما. يرجى المحاولة مجدداً."
-    }
+    "networkError": "حدث خطأ ما. يرجى المحاولة مجدداً."
   }
 }

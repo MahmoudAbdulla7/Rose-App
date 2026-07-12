@@ -9,39 +9,39 @@ const isEgyptianPhone = (value: string) => {
   return parsed?.country === 'EG' && parsed.isValid();
 };
 
-/** Translator scoped to the `register.validation` namespace. */
+/** Translator scoped to the `auth.register.validation` namespace. */
 type IValidationTranslator = (key: string) => string;
 
 export const createRegisterSchema = (t: IValidationTranslator) =>
   z
     .object({
-      firstName: z.string().trim().min(1, t('first-name-required')),
-      lastName: z.string().trim().min(1, t('last-name-required')),
-      username: z.string().trim().min(1, t('username-required')),
+      firstName: z.string().trim().min(1, t('firstNameRequired')),
+      lastName: z.string().trim().min(1, t('lastNameRequired')),
+      username: z.string().trim().min(1, t('usernameRequired')),
       email: z
         .string()
         .trim()
         .toLowerCase()
-        .min(1, t('email-required'))
-        .pipe(z.email(t('email-invalid'))),
+        .min(1, t('emailRequired'))
+        .pipe(z.email(t('emailInvalid'))),
       phone: z
         .string()
         .trim()
-        .min(1, t('phone-required'))
-        .refine(isEgyptianPhone, t('phone-invalid')),
+        .min(1, t('phoneRequired'))
+        .refine(isEgyptianPhone, t('phoneInvalid')),
       gender: z.enum(Object.values(GENDER), {
-        error: t('gender-required'),
+        error: t('genderRequired'),
       }),
       password: z
         .string()
-        .min(8, t('password-min'))
-        .regex(/[a-z]/, t('password-lowercase'))
-        .regex(/[A-Z]/, t('password-uppercase'))
-        .regex(/\d/, t('password-digit'))
-        .regex(/[^A-Za-z0-9]/, t('password-special')),
-      confirmPassword: z.string().min(1, t('confirm-password-required')),
+        .min(8, t('passwordMin'))
+        .regex(/[a-z]/, t('passwordLowercase'))
+        .regex(/[A-Z]/, t('passwordUppercase'))
+        .regex(/\d/, t('passwordDigit'))
+        .regex(/[^A-Za-z0-9]/, t('passwordSpecial')),
+      confirmPassword: z.string().min(1, t('confirmPasswordRequired')),
     })
     .refine((data) => data.password === data.confirmPassword, {
-      message: t('passwords-mismatch'),
+      message: t('passwordsMismatch'),
       path: ['confirmPassword'],
     });

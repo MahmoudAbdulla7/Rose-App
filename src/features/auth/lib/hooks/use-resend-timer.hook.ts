@@ -15,7 +15,7 @@ interface IUseResendTimerParams {
 
 export function useResendTimer({ email }: IUseResendTimerParams) {
   // Translation
-  const t = useTranslations('register');
+  const t = useTranslations('auth.register');
 
   // State
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);

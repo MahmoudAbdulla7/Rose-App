@@ -1,0 +1,11 @@
+{
+  "price": "{price, number, currency}",
+  "badges": "شارات المنتج",
+  "currentPrice": "السعر",
+  "originalPrice": "السعر الأصلي",
+  "outOfStock": "غير متوفر",
+  "rating": "{rating} من {maxRating} نجوم",
+  "addToCart": "أضف {name} إلى السلة",
+  "addToWishlist": "أضف {name} إلى المفضلة",
+  "removeFromWishlist": "إزالة {name} من المفضلة"
+}

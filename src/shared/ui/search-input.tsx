@@ -11,7 +11,7 @@ function SearchInput({
   defaultValue,
   ...props
 }: Omit<InputProps, 'type' | 'leftIcon' | 'rightIcon'>) {
-  const t = useTranslations('common.Input');
+  const t = useTranslations('common.input');
   const [searchValue, setSearchValue] = React.useState<string>(String(defaultValue ?? value ?? ''));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
