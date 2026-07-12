@@ -286,7 +286,7 @@
   --ds-border-inverse: var(--color-white);
 
   /* ---- Primary ---- */
-  --ds-primary: var(--color-maroon-800);
+  --ds-primary: var(--color-maroon-600);
   --ds-primary-saturated: var(--color-maroon-700);
   --ds-primary-faint: var(--color-maroon-100);
   --ds-primary-fade: var(--color-maroon-50);
