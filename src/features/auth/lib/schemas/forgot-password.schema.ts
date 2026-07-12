@@ -20,7 +20,7 @@ export const createResetPasswordSchema = (t: IValidationTranslator) => {
       confirmPassword: registerSchema.shape.confirmPassword,
     })
     .refine((data) => data.password === data.confirmPassword, {
-      message: t('passwords-mismatch'),
+      message: t('passwordsMismatch'),
       path: ['confirmPassword'],
     });
 };

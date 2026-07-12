@@ -14,7 +14,7 @@ type PasswordResetSentProps = {
 };
 
 export default function PasswordResetSent({ goToStep, email }: PasswordResetSentProps) {
-  const t = useTranslations('auth');
+  const t = useTranslations('auth.forgotPassword');
 
   return (
     <>
@@ -30,25 +30,21 @@ export default function PasswordResetSent({ goToStep, email }: PasswordResetSent
           <ChevronLeft className="rtl:rotate-180" />
         </Button>
 
-        <h1 className="text-ds-text-plain text-2xl font-bold">{t('forgotPw.sent.title')}</h1>
+        <h1 className="text-ds-text-plain text-2xl font-bold">{t('sent.title')}</h1>
       </div>
 
-      <p className="text-ds-text-default mt-2 text-sm">{t('forgotPw.sent.description')}</p>
+      <p className="text-ds-text-default mt-2 text-sm">{t('sent.description')}</p>
 
       <p className="text-ds-info mb-2 text-sm">{email || '-'}</p>
 
       <Separator className="mt-4 mb-6" />
 
       {/* Body */}
-      <p className="text-ds-text-default mb-2 text-sm">{t('forgotPw.sent.instruction')}</p>
-      <p className="text-ds-text-default text-sm">{t('forgotPw.sent.spamHint')}</p>
+      <p className="text-ds-text-default mb-2 text-sm">{t('sent.instruction')}</p>
+      <p className="text-ds-text-default text-sm">{t('sent.spamHint')}</p>
 
       {/* Footer */}
-      <AuthFooter
-        text={t('forgotPw.sent.footerText')}
-        linkText={t('forgotPw.sent.footerLink')}
-        href={null}
-      />
+      <AuthFooter text={t('helpFooter.text')} linkText={t('helpFooter.link')} href={null} />
     </>
   );
 }

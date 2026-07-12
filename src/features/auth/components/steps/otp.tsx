@@ -21,7 +21,7 @@ interface IOTPProps {
 
 export function OTP({ onEdit, onVerified }: IOTPProps) {
   // Translation
-  const t = useTranslations('register');
+  const t = useTranslations('auth.register');
 
   // State
   const [code, setCode] = useState('');

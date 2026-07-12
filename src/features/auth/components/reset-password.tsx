@@ -18,9 +18,9 @@ import AuthHeader from './auth-header';
 
 export default function ResetPassword() {
   // Translation
-  const t = useTranslations('auth');
+  const t = useTranslations('auth.forgotPassword');
   const tCommon = useTranslations('common');
-  const tValidation = useTranslations('register.validation');
+  const tValidation = useTranslations('auth.register.validation');
 
   // Schema
   const resetPasswordSchema = createResetPasswordSchema(tValidation);
@@ -37,11 +37,11 @@ export default function ResetPassword() {
   const resetPasswordMutation = useMutation({
     mutationFn: resetPasswordAction,
     onSuccess: () => {
-      toast.success(t('forgotPw.reset.success'));
+      toast.success(t('reset.success'));
       router.push('/login');
     },
     onError: (error) => {
-      setServerError(error instanceof Error ? error.message : tCommon('error.networkError.text'));
+      setServerError(error instanceof Error ? error.message : tCommon('error.networkError'));
     },
   });
 
@@ -82,20 +82,20 @@ export default function ResetPassword() {
   return (
     <>
       {/* Header */}
-      <AuthHeader title={t('forgotPw.reset.title')} description={t('forgotPw.reset.description')} />
+      <AuthHeader title={t('reset.title')} description={t('reset.description')} />
 
       {/* Form */}
       <form onSubmit={submitPassword} className="flex flex-col gap-5">
         <PasswordInput
-          label={t('forgotPw.reset.newPasswordLabel')}
-          placeholder={t('forgotPw.reset.newPasswordPlaceholder')}
+          label={t('reset.newPasswordLabel')}
+          placeholder={t('reset.newPasswordPlaceholder')}
           error={errors.password?.message}
           {...register('password')}
         />
 
         <PasswordInput
-          label={t('forgotPw.reset.confirmPasswordLabel')}
-          placeholder={t('forgotPw.reset.confirmPasswordPlaceholder')}
+          label={t('reset.confirmPasswordLabel')}
+          placeholder={t('reset.confirmPasswordPlaceholder')}
           error={errors.confirmPassword?.message}
           {...register('confirmPassword')}
         />
@@ -107,16 +107,12 @@ export default function ResetPassword() {
           className="w-full"
           loading={isSubmitting || resetPasswordMutation.isPending}
         >
-          {t('forgotPw.reset.reset')}
+          {t('reset.reset')}
         </Button>
       </form>
 
       {/* Footer */}
-      <AuthFooter
-        text={t('forgotPw.reset.footerText')}
-        linkText={t('forgotPw.reset.footerLink')}
-        href={null}
-      />
+      <AuthFooter text={t('helpFooter.text')} linkText={t('helpFooter.link')} href={null} />
     </>
   );
 }
