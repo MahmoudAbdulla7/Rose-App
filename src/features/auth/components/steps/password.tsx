@@ -134,10 +134,9 @@ export function Password() {
       {/* Submit */}
       <Button
         type="submit"
-        size="lg"
         loading={isSubmitting}
         rightIcon={<MoveRight className="size-4.5 rtl:rotate-180" />}
-        className="h-10.25 w-full"
+        className="w-full"
       >
         {t('actions.next')}
       </Button>

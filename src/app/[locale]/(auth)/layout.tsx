@@ -2,8 +2,6 @@ import Header from '@/features/landing-page/components/header';
 import type { Metadata } from 'next';
 import type { Locale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import Image from 'next/image';
-import Headline from './_components/auth-headline';
 import Separator from './_components/separator';
 
 type Props = LayoutProps<'/[locale]'>;
@@ -30,33 +28,25 @@ export default async function AuthLayout({ children, params }: Props) {
   return (
     <section>
       <div className="grid h-screen grid-cols-1 items-center justify-center md:grid-cols-2">
-        <div className="w-full max-w-3/5 place-self-center">
+        <div className="w-full max-w-lg place-self-center px-6">
           {/* Switch Language */}
           <Header />
 
           {/* Top Separator */}
           <Separator />
 
-          {/* Headline */}
-          <Headline />
-
-          {children}
+          <div>{children}</div>
 
           {/* Bottom Separator */}
           <Separator className="rotate-180" />
         </div>
 
         {/* Side Image */}
-        <div className="relative h-full w-full max-md:hidden">
-          <Image
-            src="/assets/images/image.png"
-            alt=""
-            fill
-            sizes="50vw"
-            priority
-            className="object-cover"
-          />
-        </div>
+        <div
+          className="h-full w-full bg-[url('/assets/images/image.png')] bg-cover bg-center bg-no-repeat max-md:hidden"
+          role="img"
+          aria-hidden="true"
+        />
       </div>
     </section>
   );

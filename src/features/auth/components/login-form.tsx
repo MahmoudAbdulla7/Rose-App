@@ -16,6 +16,7 @@ import { Button } from '@/shared/ui/button';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { Input } from '@/shared/ui/input';
 import { PasswordInput } from '@/shared/ui/password-input';
+import { Separator } from '@/shared/ui/separator';
 
 export default function LoginForm() {
   // Translations
@@ -104,7 +105,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex w-full flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5">
       <Input
         type="text"
         label={t('fields.username')}
@@ -121,7 +122,22 @@ export default function LoginForm() {
         {...register('password')}
       />
 
-      <div className="flex items-center justify-end gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <label className="flex cursor-pointer items-center gap-2">
+          <Controller
+            name="rememberMe"
+            control={control}
+            render={({ field }) => (
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={(checked) => field.onChange(checked === true)}
+              />
+            )}
+          />
+          <span className="font-inter text-ds-text-plain text-sm leading-none">
+            {t('actions.rememberMe')}
+          </span>
+        </label>
         <Link
           href="/forgot-password"
           className="font-primary text-ds-primary-saturated hover:text-ds-primary text-sm leading-none font-semibold whitespace-nowrap"
@@ -129,27 +145,14 @@ export default function LoginForm() {
           {t('actions.forgotPassword')}
         </Link>
       </div>
-      <label className="my-4 flex cursor-pointer items-center gap-2">
-        <Controller
-          name="rememberMe"
-          control={control}
-          render={({ field }) => (
-            <Checkbox
-              checked={field.value}
-              onCheckedChange={(checked) => field.onChange(checked === true)}
-            />
-          )}
-        />
-        <span className="font-inter text-ds-text-plain text-sm leading-none">
-          {t('actions.rememberMe')}
-        </span>
-      </label>
 
       {errors.root?.message && (
         <p role="alert" className="text-ds-danger font-inter text-sm">
           {errors.root.message}
         </p>
       )}
+
+      <Separator />
 
       <Button type="submit" variant="primary" loading={isSubmitting} className="w-full">
         {t('actions.submit')}

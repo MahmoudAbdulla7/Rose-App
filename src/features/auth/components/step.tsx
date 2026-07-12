@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/utils';
 import { REGISTER_STEP_ORDER, type RegisterStep } from '../lib/constants/steps.constant';
 
 interface IStepperProps {
@@ -20,7 +21,9 @@ export function Step({ currentStep, onStepClick }: IStepperProps) {
           <div key={step} className="contents">
             {/* Connector line before every step except the first */}
             {index > 0 && (
-              <div className={`h-px flex-1 ${isActive ? 'bg-ds-primary' : 'bg-ds-primary-fade'}`} />
+              <div
+                className={cn('h-px flex-1', isActive ? 'bg-ds-primary' : 'bg-ds-primary-fade')}
+              />
             )}
 
             {/* Step circle */}
@@ -29,9 +32,11 @@ export function Step({ currentStep, onStepClick }: IStepperProps) {
               disabled={!isClickable}
               onClick={() => onStepClick?.(step)}
               aria-current={isCurrent ? 'step' : undefined}
-              className={`flex size-6.25 shrink-0 items-center justify-center rounded-full text-sm font-medium enabled:cursor-pointer ${
-                isActive ? 'bg-ds-primary text-white' : 'bg-ds-primary-fade text-ds-primary'
-              } ${isCurrent ? 'ring' : ''}`}
+              className={cn(
+                'flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-medium enabled:cursor-pointer',
+                isActive ? 'bg-ds-primary text-white' : 'bg-ds-primary-fade text-ds-primary',
+                isCurrent && 'ring',
+              )}
             >
               {index + 1}
             </button>

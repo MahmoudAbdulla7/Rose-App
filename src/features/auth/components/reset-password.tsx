@@ -85,7 +85,7 @@ export default function ResetPassword() {
       <AuthHeader title={t('forgotPw.reset.title')} description={t('forgotPw.reset.description')} />
 
       {/* Form */}
-      <form onSubmit={submitPassword} className="space-y-5">
+      <form onSubmit={submitPassword} className="flex flex-col gap-5">
         <PasswordInput
           label={t('forgotPw.reset.newPasswordLabel')}
           placeholder={t('forgotPw.reset.newPasswordPlaceholder')}
@@ -104,7 +104,7 @@ export default function ResetPassword() {
 
         <Button
           type="submit"
-          className="mt-9 w-full"
+          className="w-full"
           loading={isSubmitting || resetPasswordMutation.isPending}
         >
           {t('forgotPw.reset.reset')}
