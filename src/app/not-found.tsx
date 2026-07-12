@@ -16,7 +16,7 @@ export default function NotFoundPage() {
           </div>
 
           <div className="mb-2 flex items-center gap-2">
-            <span className="text-3xl">🌹</span>
+            <span className="text-2xl">🌹</span>
             <h1 className="text-foreground text-2xl font-bold">Page Not Found</h1>
           </div>
 
