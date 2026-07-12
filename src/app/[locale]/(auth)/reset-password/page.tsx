@@ -3,10 +3,10 @@ import { getTranslations } from 'next-intl/server';
 import ResetPassword from '@/features/auth/components/reset-password';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('auth');
+  const t = await getTranslations('auth.forgotPassword');
 
   return {
-    title: t('forgotPw.reset.title'),
+    title: t('reset.title'),
   };
 }
 

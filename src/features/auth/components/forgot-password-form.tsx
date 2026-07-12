@@ -20,9 +20,9 @@ type ForgotPasswordFormProps = {
 
 export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswordFormProps) {
   // Translation
-  const t = useTranslations('auth');
+  const t = useTranslations('auth.forgotPassword');
   const tCommon = useTranslations('common');
-  const tValidation = useTranslations('register.validation');
+  const tValidation = useTranslations('auth.register.validation');
 
   // Schema
   const forgotPasswordSchema = createForgotPasswordSchema(tValidation);
@@ -40,7 +40,7 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
       goToStep(STEP.SENT);
     },
     onError: (error) => {
-      setServerError(error instanceof Error ? error.message : tCommon('error.networkError.text'));
+      setServerError(error instanceof Error ? error.message : tCommon('error.networkError'));
     },
   });
 
@@ -65,13 +65,13 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
   return (
     <>
       {/* Header */}
-      <AuthHeader title={t('forgotPw.email.title')} description={t('forgotPw.email.description')} />
+      <AuthHeader title={t('email.title')} description={t('email.description')} />
 
       {/* Form */}
       <form onSubmit={submitEmail} className="flex flex-col gap-5">
         <Input
-          label={t('forgotPw.email.emailLabel')}
-          placeholder={t('forgotPw.email.emailPlaceholder')}
+          label={t('email.emailLabel')}
+          placeholder={t('email.emailPlaceholder')}
           type="email"
           autoComplete="email"
           inputMode="email"
@@ -86,16 +86,12 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
           className="w-full"
           loading={isSubmitting || forgotPasswordMutation.isPending}
         >
-          {t('forgotPw.email.continue')}
+          {t('email.continue')}
         </Button>
       </form>
 
       {/* Footer */}
-      <AuthFooter
-        text={t('forgotPw.email.footerText')}
-        linkText={t('forgotPw.email.footerLink')}
-        href="/register"
-      />
+      <AuthFooter text={t('email.footerText')} linkText={t('email.footerLink')} href="/register" />
     </>
   );
 }

@@ -3,7 +3,7 @@ import AuthHeadline from '@/shared/components/auth-headline';
 import { getTranslations } from 'next-intl/server';
 
 export default async function LoginPage() {
-  const t = await getTranslations('auth.login.meta');
+  const t = await getTranslations('auth.meta');
 
   return (
     <>

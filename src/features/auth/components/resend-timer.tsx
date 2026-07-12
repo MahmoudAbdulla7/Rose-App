@@ -12,7 +12,7 @@ interface IResendTimerProps {
 
 export function ResendTimer({ email }: IResendTimerProps) {
   // Translation
-  const t = useTranslations('register');
+  const t = useTranslations('auth.register');
 
   // state
   const { secondsLeft, isResending, resend } = useResendTimer({ email });
@@ -22,7 +22,7 @@ export function ResendTimer({ email }: IResendTimerProps) {
   if (secondsLeft > 0) {
     return (
       <p className="text-muted-foreground flex min-h-7 items-center text-sm">
-        {t('otp.resend-in', { seconds: secondsLeft })}
+        {t('otp.resendIn', { seconds: secondsLeft })}
       </p>
     );
   }
