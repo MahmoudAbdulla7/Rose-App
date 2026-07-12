@@ -92,10 +92,9 @@ export function OTP({ onEdit, onVerified }: IOTPProps) {
 
       <Button
         type="submit"
-        size="lg"
         loading={isSubmitting}
         disabled={code.length !== OTP_LENGTH}
-        className="h-10.25 w-full"
+        className="w-full"
       >
         {t('otp.verify')}
       </Button>

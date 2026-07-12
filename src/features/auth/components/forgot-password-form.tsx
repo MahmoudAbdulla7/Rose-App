@@ -68,7 +68,7 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
       <AuthHeader title={t('forgotPw.email.title')} description={t('forgotPw.email.description')} />
 
       {/* Form */}
-      <form onSubmit={submitEmail} className="space-y-5">
+      <form onSubmit={submitEmail} className="flex flex-col gap-5">
         <Input
           label={t('forgotPw.email.emailLabel')}
           placeholder={t('forgotPw.email.emailPlaceholder')}
@@ -83,7 +83,7 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
 
         <Button
           type="submit"
-          className="mt-9 w-full"
+          className="w-full"
           loading={isSubmitting || forgotPasswordMutation.isPending}
         >
           {t('forgotPw.email.continue')}

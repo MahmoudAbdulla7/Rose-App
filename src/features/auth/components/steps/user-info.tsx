@@ -172,9 +172,8 @@ export function UserInfo({ onNext }: IUserInfoProps) {
       {/* Submit */}
       <Button
         type="submit"
-        size="lg"
         rightIcon={<MoveRight className="size-4.5 rtl:rotate-180" />}
-        className="h-10.25 w-full"
+        className="w-full"
       >
         {t('actions.next')}
       </Button>

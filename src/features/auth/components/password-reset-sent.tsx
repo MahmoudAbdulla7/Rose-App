@@ -27,21 +27,21 @@ export default function PasswordResetSent({ goToStep, email }: PasswordResetSent
           onClick={() => goToStep(STEP.EMAIL)}
           className="me-2.5"
         >
-          <ChevronLeft />
+          <ChevronLeft className="rtl:rotate-180" />
         </Button>
 
-        <h1 className="text-ds-text-plain text-3xl font-bold">{t('forgotPw.sent.title')}</h1>
+        <h1 className="text-ds-text-plain text-2xl font-bold">{t('forgotPw.sent.title')}</h1>
       </div>
 
-      <p>{t('forgotPw.sent.description')}</p>
+      <p className="text-ds-text-default mt-2 text-sm">{t('forgotPw.sent.description')}</p>
 
-      <p className="text-ds-info">{email || '-'}</p>
+      <p className="text-ds-info mb-2 text-sm">{email || '-'}</p>
 
       <Separator className="mt-4 mb-6" />
 
       {/* Body */}
-      <p className="text-ds-text-plain mb-4">{t('forgotPw.sent.instruction')}</p>
-      <p className="text-ds-text-default">{t('forgotPw.sent.spamHint')}</p>
+      <p className="text-ds-text-default mb-2 text-sm">{t('forgotPw.sent.instruction')}</p>
+      <p className="text-ds-text-default text-sm">{t('forgotPw.sent.spamHint')}</p>
 
       {/* Footer */}
       <AuthFooter

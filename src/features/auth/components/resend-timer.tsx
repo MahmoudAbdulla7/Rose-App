@@ -21,21 +21,14 @@ export function ResendTimer({ email }: IResendTimerProps) {
 
   if (secondsLeft > 0) {
     return (
-      <p className="text-muted-foreground h-11 text-sm">
+      <p className="text-muted-foreground flex min-h-7 items-center text-sm">
         {t('otp.resend-in', { seconds: secondsLeft })}
       </p>
     );
   }
 
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="lg"
-      className="h-11"
-      loading={isResending}
-      onClick={resend}
-    >
+    <Button type="button" variant="ghost" size="sm" loading={isResending} onClick={resend}>
       {t('otp.resend')}
     </Button>
   );
