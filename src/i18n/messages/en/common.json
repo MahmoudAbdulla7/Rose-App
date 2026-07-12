@@ -3,23 +3,17 @@
     "title": "Rose App",
     "description": "Discover and order beautiful flowers and gifts with Rose App."
   },
-  "landing-page": {
-    "title": "Landing Page"
-  },
   "toast": {
-    "success": "Success",
-    "error": "Error",
-    "warning": "Warning",
-    "info": "Info"
+    "error": "Error"
   },
-  "pagination": {
-    "next": "Next",
-    "previous": "Previous"
-  },
-  "Message": {
-    "label": "Message",
-    "placeholder": "Type your message here.",
-    "error": "Message must be at least 10 characters"
+  "input": {
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "uploadFile": "Upload file",
+    "reviewCurrentImages": "Review current image(s)",
+    "removeFile": "Remove file",
+    "imagePreview": "Image preview",
+    "searchPlaceholder": "Search..."
   },
   "textarea": {
     "placeholder": "Type your message here.",
@@ -30,31 +24,10 @@
     "noOptions": "No options found",
     "search": "Search..."
   },
-  "Input": {
-    "required": "This field is required",
-    "invalidEmail": "Invalid email address",
-    "showPassword": "Show password",
-    "hidePassword": "Hide password",
-    "fileSelected": "File selected",
-    "uploadFile": "Upload file",
-    "reviewCurrentImages": "Review current image(s)",
-    "removeFile": "Remove file",
-    "imagePreview": "Image preview",
-    "searchCountry": "Search country...",
-    "noCountryFound": "No country found.",
-    "searchPlaceholder": "Search..."
-  },
-  "validation": {
-    "passwordWeak": {
-      "text": "Password must be at least 8 characters with uppercase, lowercase, number, and special character"
-    },
-    "passwordMatch": {
-      "text": "Passwords do not match"
-    }
+  "button": {
+    "loading": "Loading..."
   },
   "error": {
-    "networkError": {
-      "text": "Something went wrong. Please try again."
-    }
+    "networkError": "Something went wrong. Please try again."
   }
 }

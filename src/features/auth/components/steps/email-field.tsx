@@ -18,7 +18,7 @@ interface IEmailFieldProps {
 
 export function EmailField({ onVerified }: IEmailFieldProps) {
   // Translation
-  const t = useTranslations('register');
+  const t = useTranslations('auth.register');
 
   // State
   const [isSubmitting, setIsSubmitting] = useState(false);

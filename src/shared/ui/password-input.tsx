@@ -37,7 +37,7 @@ function PasswordInput({ ...props }: Omit<InputProps, 'type' | 'leftIcon' | 'rig
           type="button"
           onClick={() => setVisible((current) => !current)}
           className={toggleButtonClassName}
-          aria-label={visible ? t('Input.hidePassword') : t('Input.showPassword')}
+          aria-label={visible ? t('input.hidePassword') : t('input.showPassword')}
           disabled={props.disabled}
         >
           {visible ? (
