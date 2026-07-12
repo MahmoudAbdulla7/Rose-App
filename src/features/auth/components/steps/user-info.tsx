@@ -29,7 +29,8 @@ const STEP_FIELDS: (keyof IRegisterFields)[] = [
 
 export function UserInfo({ onNext }: IUserInfoProps) {
   // Translation
-  const t = useTranslations('register');
+  const t = useTranslations('auth.register');
+  const tShared = useTranslations('auth.shared');
 
   // Form
   const { control, trigger } = useFormContext<IRegisterFields>();
@@ -61,8 +62,8 @@ export function UserInfo({ onNext }: IUserInfoProps) {
                 <Input
                   id="firstName"
                   type="text"
-                  label={t('fields.first-name')}
-                  placeholder={t('placeholder.first-name')}
+                  label={t('fields.firstName')}
+                  placeholder={t('placeholder.firstName')}
                   autoComplete="given-name"
                   error={fieldState.error?.message}
                   {...field}
@@ -80,8 +81,8 @@ export function UserInfo({ onNext }: IUserInfoProps) {
                 <Input
                   id="lastName"
                   type="text"
-                  label={t('fields.last-name')}
-                  placeholder={t('placeholder.last-name')}
+                  label={t('fields.lastName')}
+                  placeholder={t('placeholder.lastName')}
                   autoComplete="family-name"
                   error={fieldState.error?.message}
                   {...field}
@@ -100,7 +101,7 @@ export function UserInfo({ onNext }: IUserInfoProps) {
               <Input
                 id="username"
                 type="text"
-                label={t('fields.username')}
+                label={tShared('fields.username')}
                 placeholder={t('placeholder.username')}
                 autoComplete="username"
                 error={fieldState.error?.message}
@@ -148,7 +149,7 @@ export function UserInfo({ onNext }: IUserInfoProps) {
                     <SelectValue placeholder={t('placeholder.gender')}>
                       {(value) =>
                         value
-                          ? t(`gender-options.${(value as string).toLowerCase()}`)
+                          ? t(`genderOptions.${(value as string).toLowerCase()}`)
                           : t('placeholder.gender')
                       }
                     </SelectValue>
@@ -156,7 +157,7 @@ export function UserInfo({ onNext }: IUserInfoProps) {
                   <SelectContent>
                     {Object.values(GENDER).map((option) => (
                       <SelectItem key={option} value={option}>
-                        {t(`gender-options.${option.toLowerCase()}`)}
+                        {t(`genderOptions.${option.toLowerCase()}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>

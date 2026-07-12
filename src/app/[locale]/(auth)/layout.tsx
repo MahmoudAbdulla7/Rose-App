@@ -13,7 +13,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const commonT = await getTranslations({ locale, namespace: 'common' });
-  const authT = await getTranslations({ locale, namespace: 'auth' });
+  const authT = await getTranslations({ locale, namespace: 'auth.meta' });
 
   return {
     title: `${authT('pageTitle')} | ${commonT('app.title')}`,

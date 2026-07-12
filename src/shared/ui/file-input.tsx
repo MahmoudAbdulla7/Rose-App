@@ -30,7 +30,7 @@ function FileInput({
   onChange,
   wrapperClassName,
 }: FileInputProps) {
-  const t = useTranslations('common.Input');
+  const t = useTranslations('common.input');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const id = React.useId();
   const [previewOpen, setPreviewOpen] = React.useState(false);

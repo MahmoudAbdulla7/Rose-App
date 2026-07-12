@@ -20,10 +20,11 @@ import { Separator } from '@/shared/ui/separator';
 
 export default function LoginForm() {
   // Translations
-  const t = useTranslations('login');
+  const t = useTranslations('auth.login');
+  const tShared = useTranslations('auth.shared');
   const tCommon = useTranslations('common');
   const tToast = useTranslations('common.toast');
-  const networkErrorMessage = tCommon('error.networkError.text');
+  const networkErrorMessage = tCommon('error.networkError');
 
   // Navigation
   const router = useRouter();
@@ -108,7 +109,7 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5">
       <Input
         type="text"
-        label={t('fields.username')}
+        label={tShared('fields.username')}
         placeholder={t('placeholder.username')}
         error={errors.username?.message}
         className="font-inter"
@@ -116,8 +117,8 @@ export default function LoginForm() {
       />
 
       <PasswordInput
-        label={t('fields.password')}
-        placeholder={t('placeholder.password')}
+        label={tShared('fields.password')}
+        placeholder={tShared('placeholder.password')}
         error={errors.password?.message}
         {...register('password')}
       />

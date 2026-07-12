@@ -19,7 +19,7 @@ export default function AuthHeadline({ text, className }: AuthHeadlineProps) {
   return (
     <div
       className={cn(
-        'text-ds-primary border-ds-border-soft mx-auto mb-6 border-b pb-4 text-center text-5xl',
+        'text-ds-primary border-ds-border-soft mx-auto mb-6 border-b pb-4 text-center ltr:text-5xl rtl:text-4xl',
         locale === 'en' && edwardian.className,
         className,
       )}

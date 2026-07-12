@@ -1,0 +1,11 @@
+{
+  "price": "{price, number, currency}",
+  "badges": "Product badges",
+  "currentPrice": "Price",
+  "originalPrice": "Original price",
+  "outOfStock": "Out of stock",
+  "rating": "{rating} out of {maxRating} stars",
+  "addToCart": "Add {name} to cart",
+  "addToWishlist": "Add {name} to wishlist",
+  "removeFromWishlist": "Remove {name} from wishlist"
+}
