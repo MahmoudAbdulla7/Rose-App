@@ -7,7 +7,7 @@ interface SeparatorComponentProps {
 
 export default function Separator({ className }: SeparatorComponentProps) {
   return (
-    <div className={cn('relative mx-auto my-10 h-8 w-1/2', className)}>
+    <div className={cn('relative mx-auto my-7 h-8 w-1/2 2xl:my-10', className)}>
       <Image
         src="/assets/images/separator.png"
         alt="Separator"

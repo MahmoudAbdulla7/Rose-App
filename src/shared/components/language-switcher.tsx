@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 export default function LanguageSwitcherComponent() {
   const currentLocale = useLocale();
   const pathname = usePathname();
-  const t = useTranslations('auth.meta');
+  const t = useTranslations('auth');
 
   const otherLocale =
     routing.locales.find((locale) => locale !== currentLocale) || routing.defaultLocale;

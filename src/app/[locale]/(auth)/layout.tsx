@@ -1,52 +1,30 @@
 import Header from '@/features/landing-page/components/header';
-import type { Metadata } from 'next';
-import type { Locale } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import Image from 'next/image';
 import Separator from './_components/separator';
 
 type Props = LayoutProps<'/[locale]'>;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const commonT = await getTranslations({ locale, namespace: 'common' });
-  const authT = await getTranslations({ locale, namespace: 'auth.meta' });
-
-  return {
-    title: `${authT('pageTitle')} | ${commonT('app.title')}`,
-    description: commonT('app.description'),
-  };
-}
-
-export default async function AuthLayout({ children, params }: Props) {
-  const { locale } = await params;
-  setRequestLocale(locale as Locale);
-
+export default async function AuthLayout({ children }: Props) {
   return (
-    <section>
+    <section className="max-h-screen overflow-hidden">
       <div className="grid h-screen grid-cols-1 items-center justify-center md:grid-cols-2">
-        <div className="w-full max-w-lg place-self-center px-6">
+        <div className="max-h-screen w-full max-w-3/5 place-self-center">
           {/* Switch Language */}
           <Header />
 
           {/* Top Separator */}
           <Separator />
 
-          <div>{children}</div>
+          {children}
 
           {/* Bottom Separator */}
           <Separator className="rotate-180" />
         </div>
 
         {/* Side Image */}
-        <div
-          className="h-full w-full bg-[url('/assets/images/image.png')] bg-cover bg-center bg-no-repeat max-md:hidden"
-          role="img"
-          aria-hidden="true"
-        />
+        <div className="relative h-full w-full max-md:hidden">
+          <Image src="/assets/images/image.png" alt="" fill sizes="50vw" className="object-fill" />
+        </div>
       </div>
     </section>
   );
