@@ -4,6 +4,7 @@ import { API_HEADERS } from '@/shared/lib/apis/headers.api';
 
 type ForgotPasswordBody = {
   email: string;
+  redirectUrl: string;
 };
 
 type ResetPasswordBody = {
@@ -12,13 +13,13 @@ type ResetPasswordBody = {
   confirmPassword: string;
 };
 
-export async function forgotPasswordAction(body: ForgotPasswordBody): Promise<IAPIResponse<null>> {
+export async function forgotPasswordAction(input: ForgotPasswordBody): Promise<IAPIResponse<null>> {
   const response = await fetch(`${process.env.NEXT_BASE_URL}auth/forgot-password`, {
     method: 'POST',
     headers: {
       ...API_HEADERS.JSON,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(input),
   });
 
   const data = (await response.json()) as IAPIResponse<null>;
@@ -30,13 +31,13 @@ export async function forgotPasswordAction(body: ForgotPasswordBody): Promise<IA
   return data;
 }
 
-export async function resetPasswordAction(body: ResetPasswordBody): Promise<IAPIResponse<null>> {
+export async function resetPasswordAction(input: ResetPasswordBody): Promise<IAPIResponse<null>> {
   const response = await fetch(`${process.env.NEXT_BASE_URL}auth/reset-password`, {
     method: 'POST',
     headers: {
       ...API_HEADERS.JSON,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(input),
   });
 
   const data = (await response.json()) as IAPIResponse<null>;
