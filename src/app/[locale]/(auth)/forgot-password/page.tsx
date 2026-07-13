@@ -1,26 +1,17 @@
 import ForgotPasswordFlow from '@/features/auth/components/forgot-password-flow';
-import type { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-type Locale = (typeof routing.locales)[number];
-
-type Props = {
-  params: Promise<{
-    locale: Locale;
-  }>;
-};
+type Props = LayoutProps<'/[locale]'>;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const t = await getTranslations({
-    locale,
-    namespace: 'auth.forgotPassword',
-  });
+  const t = await getTranslations({ locale: locale as 'en' | 'ar', namespace: 'auth' });
+  const commonT = await getTranslations({ locale: locale as 'en' | 'ar', namespace: 'common' });
 
   return {
-    title: t('email.title'),
+    title: `${t('forgotPassword.pageTitle')} | ${commonT('app.title')}`,
   };
 }
 
