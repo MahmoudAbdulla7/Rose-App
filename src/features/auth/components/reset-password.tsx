@@ -82,7 +82,11 @@ export default function ResetPassword() {
   return (
     <>
       {/* Header */}
-      <AuthHeader title={t('reset.title')} description={t('reset.description')} />
+      <AuthHeader
+        variant="secondary"
+        title={t('reset.title')}
+        description={t('reset.description')}
+      />
 
       {/* Form */}
       <form onSubmit={submitPassword} className="flex flex-col gap-5">
