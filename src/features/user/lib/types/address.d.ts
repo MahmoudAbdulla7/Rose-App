@@ -1,3 +1,7 @@
+export type AddressesPayload = {
+  addresses: Address[];
+};
+
 export type Address = {
   title: string;
   isPrimary: boolean;
@@ -6,8 +10,4 @@ export type Address = {
   phone: string;
   latitude: number;
   longitude: number;
-};
-
-export type AddressesPayload = {
-  addresses: Address[];
 };
