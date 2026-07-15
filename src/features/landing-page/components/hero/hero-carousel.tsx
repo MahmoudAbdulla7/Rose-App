@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { CAROUSEL_SLIDES } from '../../lib/constants/carousel.constant';
 
 export default function HeroCarousel() {
   // Carousel API state
@@ -43,12 +44,7 @@ export default function HeroCarousel() {
     };
   }, [api]);
 
-  const slides = [
-    { image: '/assets/images/home/hero/carousel/img-1.png', alt: 'Hero Image 1' },
-    { image: '/assets/images/home/hero/carousel/img-2.png', alt: 'Hero Image 2' },
-    { image: '/assets/images/home/hero/carousel/img-3.png', alt: 'Hero Image 3' },
-    { image: '/assets/images/home/hero/carousel/img-4.png', alt: 'Hero Image 4' },
-  ];
+  const slides = CAROUSEL_SLIDES;
 
   const SLIDES_COUNT = slides.length;
 
@@ -74,6 +70,7 @@ export default function HeroCarousel() {
             />
           ))}
         </div>
+
         {/* Main Slides */}
         <CarouselContent className="aspect-video object-cover">
           {slides.map((slide, index) => (
@@ -83,12 +80,14 @@ export default function HeroCarousel() {
             </CarouselItem>
           ))}
         </CarouselContent>
+
         {/* Carousel Title */}
         <div className="absolute bottom-0 w-full p-9">
           <div className="space-y-1.5">
             <h3 className="text-4xl font-semibold">{t('carousel.title')}</h3>
             <p>{t('carousel.description')}</p>
           </div>
+
           <div className="mt-6 flex items-center justify-between gap-4">
             <Link
               href="/products"
@@ -96,21 +95,20 @@ export default function HeroCarousel() {
             >
               {t('carousel.cta')}
             </Link>
+
             {/* Carousel Nav Buttons */}
-            <div
-              className={`bg-maroon-50 flex items-center justify-evenly rounded-full *:bg-transparent *:p-3.5 *:hover:bg-transparent *:disabled:bg-transparent ${path.includes('/ar') ? '*:rotate-180' : ''}`}
-            >
+            <div className="bg-maroon-50 *:text-maroon-700 flex items-center justify-evenly rounded-full *:bg-transparent *:p-3.5 *:hover:bg-transparent *:disabled:bg-transparent rtl:*:rotate-180">
               <Button
                 onClick={() => api?.scrollPrev()}
                 disabled={!canScrollPrev || slides.length <= 1}
               >
-                <ChevronLeft strokeWidth={1.5} className="size-6" />
+                <ChevronLeft strokeWidth={2} className="size-6" />
               </Button>
               <Button
                 onClick={() => api?.scrollNext()}
                 disabled={!canScrollNext || slides.length <= 1}
               >
-                <ChevronRight strokeWidth={1.5} className="size-6" />
+                <ChevronRight strokeWidth={2} className="size-6" />
               </Button>
             </div>
           </div>

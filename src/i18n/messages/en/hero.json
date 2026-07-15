@@ -14,19 +14,16 @@
   "occasions": {
     "occasion": [
       {
-        "image": "/assets/images/hero/img-1.png",
         "title": "Celebrate Her Forever with a Gift She'll Always Remember",
         "badge": "Wedding",
         "slug": "wedding"
       },
       {
-        "image": "/assets/images/hero/img-2.png",
         "title": "Honor the Beginning of a Beautiful Journey Together",
         "badge": "Engagement",
         "slug": "engagement"
       },
       {
-        "image": "/assets/images/hero/img-3.png",
         "title": "Mark Every Year of Love with a Meaningful Surprise",
         "badge": "Anniversary",
         "slug": "anniversary"
