@@ -1,13 +1,17 @@
-import ProductCard from '@/features/landing-page/components/product-card';
-import { PRODUCT_CARD_DUMMY_DATA } from '@/features/landing-page/lib/constants/product.constant';
-import ProductCardSkeleton from '@/features/landing-page/skeletons/product-card.skeleton';
+import BestSellingSection from '@/features/landing-page/components/best-selling-section';
+import PopularProductsSection from '@/features/landing-page/components/popular-products-section';
 
-export default async function LandingPage() {
+type LandingPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function LandingPage({ searchParams }: LandingPageProps) {
+  const resolvedSearchParams = await searchParams;
+
   return (
-    <div className="space-y-4 p-2">
-      <ProductCard product={PRODUCT_CARD_DUMMY_DATA} />
-
-      <ProductCardSkeleton />
-    </div>
+    <main className="container flex flex-col gap-32 overflow-hidden py-8">
+      <BestSellingSection />
+      <PopularProductsSection searchParams={resolvedSearchParams} />
+    </main>
   );
 }

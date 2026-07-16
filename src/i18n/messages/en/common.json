@@ -29,5 +29,9 @@
   },
   "error": {
     "networkError": "Something went wrong. Please try again."
+  },
+  "emptyState": {
+    "title": "Nothing here yet",
+    "description": "We couldn't find any {entity} to show. Try adjusting your filters or check back soon."
   }
 }

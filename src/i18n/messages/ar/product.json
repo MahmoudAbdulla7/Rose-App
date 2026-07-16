@@ -7,5 +7,22 @@
   "rating": "{rating} من {maxRating} نجوم",
   "addToCart": "أضف {name} إلى السلة",
   "addToWishlist": "أضف {name} إلى المفضلة",
-  "removeFromWishlist": "إزالة {name} من المفضلة"
+  "removeFromWishlist": "إزالة {name} من المفضلة",
+  "bestSelling": {
+    "label": "الأكثر مبيعًا",
+    "headline": "<accent>اطّلع على</accent> ما يشتريه الجميع <accent>الآن</accent>",
+    "description": "مش متأكد تختار إيه؟ ابدأ بالأفضل مبيعًا؛ الهدايا اللي عملاؤنا بيرجعوا يطلبوها تاني. سواء بتحتفل بعيد ميلاد أو ذكرى أو فرح، اختياراتنا الأولى هتسيب انطباع مايتنسيش.",
+    "exploreButton": "استكشف الهدايا",
+    "previousSlide": "المنتجات السابقة",
+    "nextSlide": "المنتجات التالية"
+  },
+  "popularProducts": {
+    "sectionTitle": "الأكثر شعبية",
+    "viewMore": "عرض المزيد",
+    "filterLabel": "تصفية حسب المناسبة",
+    "emptyState": {
+      "title": "لا توجد اختيارات شائعة بعد",
+      "description": "لا توجد منتجات لهذه المناسبة حالياً. جرّب مناسبة أخرى أو استكشف مجموعتنا الكاملة."
+    }
+  }
 }

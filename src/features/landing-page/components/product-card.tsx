@@ -1,12 +1,15 @@
 import Image from 'next/image';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 
 import ProductCartButton from '@/features/landing-page/components/product-cart-button';
 import ProductRating from '@/features/landing-page/components/product-rating';
 import ProductWishlistButton from '@/features/landing-page/components/product-wishlist-button';
 import { PRODUCT_BADGE_VARIANT_CLASSES } from '@/shared/lib/constants/product-badge.constant';
+import type { IProduct } from '@/shared/lib/types/product';
 import { cn } from '@/shared/lib/utils';
-import type { IProduct } from '@/features/landing-page/lib/types/product';
+import { getProductDisplayPrice } from '@/shared/lib/utils/product-price.utils';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 
 export interface IProductCardProps {
   product: IProduct;
@@ -15,64 +18,56 @@ export interface IProductCardProps {
 
 export default async function ProductCard({ product, className }: IProductCardProps) {
   // Translations
-  const locale = await getLocale();
-  const isRTL = locale === 'ar';
   const t = await getTranslations('product');
 
-  // Product data
-  const {
-    id,
-    nameEn,
-    nameAr,
-    imageUrl,
-    price,
-    originalPrice,
-    rating,
-    maxRating,
-    badges,
-    outOfStock,
-    isWishlisted,
-  } = product;
+  // user status
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+  const isAuthenticated = !!user;
 
-  const name = isRTL ? nameAr : nameEn;
+  // Product data
+  const { id, title, cover, rating, stock, discountType, discountValue } = product;
+  const { price, originalPrice } = getProductDisplayPrice({
+    price: product.price,
+    discountType,
+    discountValue,
+  });
+  const outOfStock = stock <= 0;
   const nameId = `product-name-${id}`;
   const stockId = `product-stock-${id}`;
   const hasSalePrice = originalPrice != null && originalPrice > price;
-  const hasBadges = Boolean(badges && badges.length > 0);
 
   return (
     <article
-      className={cn('flex w-full max-w-xs flex-col gap-4 rounded-4xl', className)}
+      className={cn('flex w-full min-w-68 flex-col gap-4 rounded-4xl', className)}
       data-product-id={id}
       aria-labelledby={nameId}
       aria-describedby={outOfStock ? stockId : undefined}
     >
       {/* Image */}
       <div className="relative h-72 w-full overflow-hidden rounded-2xl">
-        {imageUrl ? (
-          <Image src={imageUrl} alt="" fill className="object-cover" priority sizes="20rem" />
+        {cover ? (
+          <Image src={cover} alt="" fill className="object-cover" priority sizes="20rem" />
         ) : (
           <div className="bg-maroon-50 size-full" aria-hidden="true" />
         )}
 
         {/* Actions and badges */}
         <div className="absolute inset-0 z-10 flex items-start justify-between p-2.5">
-          <ProductWishlistButton productId={id} productName={name} isWishlisted={isWishlisted} />
+          {isAuthenticated && <ProductWishlistButton productId={id} productName={title} />}
 
-          {hasBadges && badges && (
+          {outOfStock && (
             <ul className="m-0 flex list-none items-center gap-1.5 p-0" aria-label={t('badges')}>
-              {badges.map((badge) => (
-                <li key={`${badge.variant}-${isRTL ? badge.labelAr : badge.labelEn}`}>
-                  <span
-                    className={cn(
-                      'inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs leading-none font-medium whitespace-nowrap',
-                      PRODUCT_BADGE_VARIANT_CLASSES[badge.variant],
-                    )}
-                  >
-                    {isRTL ? badge.labelAr : badge.labelEn}
-                  </span>
-                </li>
-              ))}
+              <li>
+                <span
+                  className={cn(
+                    'inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs leading-none font-medium whitespace-nowrap',
+                    PRODUCT_BADGE_VARIANT_CLASSES.outOfStock,
+                  )}
+                >
+                  {t('outOfStock')}
+                </span>
+              </li>
             </ul>
           )}
         </div>
@@ -83,10 +78,10 @@ export default async function ProductCard({ product, className }: IProductCardPr
         {/* Name */}
         <h3
           id={nameId}
-          title={name}
+          title={title}
           className="text-maroon-700 dark:text-soft-pink-200 truncate text-lg leading-none font-semibold"
         >
-          {name}
+          {title}
         </h3>
 
         {outOfStock && (
@@ -99,7 +94,7 @@ export default async function ProductCard({ product, className }: IProductCardPr
         <div className="flex items-center gap-2.5">
           <div className="flex min-w-0 flex-1 flex-col gap-1">
             {/* Rating */}
-            <ProductRating rating={rating} maxRating={maxRating} />
+            <ProductRating rating={rating} />
 
             {/* Price */}
             <p className="text-maroon-700 dark:text-soft-pink-200 text-base leading-none font-medium">
@@ -120,7 +115,9 @@ export default async function ProductCard({ product, className }: IProductCardPr
           </div>
 
           {/* Cart button */}
-          <ProductCartButton productId={id} productName={name} outOfStock={outOfStock} />
+          {isAuthenticated && (
+            <ProductCartButton productMetadata={{ id, name: title, outOfStock }} />
+          )}
         </div>
       </div>
     </article>

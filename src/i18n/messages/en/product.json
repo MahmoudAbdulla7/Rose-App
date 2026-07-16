@@ -7,5 +7,22 @@
   "rating": "{rating} out of {maxRating} stars",
   "addToCart": "Add {name} to cart",
   "addToWishlist": "Add {name} to wishlist",
-  "removeFromWishlist": "Remove {name} from wishlist"
+  "removeFromWishlist": "Remove {name} from wishlist",
+  "bestSelling": {
+    "label": "Best Selling",
+    "headline": "<accent>Check Out</accent> What Everyone's <accent>Buying</accent> Right Now",
+    "description": "Not sure what to choose? Start with our best sellers, these are the gifts our customers keep coming back for. Whether you're celebrating a birthday, anniversary or wedding, our top picks are guaranteed to leave a lasting impression.",
+    "exploreButton": "Explore gifts",
+    "previousSlide": "Previous products",
+    "nextSlide": "Next products"
+  },
+  "popularProducts": {
+    "sectionTitle": "Most Popular",
+    "viewMore": "View More",
+    "filterLabel": "Filter by occasion",
+    "emptyState": {
+      "title": "No popular picks yet",
+      "description": "We don't have products for this occasion right now. Try another occasion or explore our full collection."
+    }
+  }
 }
