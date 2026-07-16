@@ -1,7 +1,11 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+
 import { getUserDataAction } from '@/features/user/lib/actions/get-user-data.action';
+import { Link } from '@/i18n/navigation';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -9,26 +13,29 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
-import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
 
 export default function HeaderDropdown() {
+  const tGreeting = useTranslations('header.greeting');
+  const tUserMenu = useTranslations('header.userMenu');
+
+  const menuItemClasses =
+    'text-ds-text-plain flex w-full items-center gap-2 font-medium cursor-pointer';
+
   const { data: user } = useQuery({
     queryKey: ['user-data'],
     queryFn: getUserDataAction,
   });
 
-  const handleSignOut = () => {};
-
   return (
     <div className="flex">
       <div className="flex flex-col">
-        <span className="text-xs text-zinc-500">Hello</span>
-
+        {/* Greeting */}
+        <span className="text-xs text-zinc-500"> {tGreeting('hello')}</span>
         <span className="text-ds-primary-saturated font-medium">{user?.firstName}</span>
       </div>
 
       <DropdownMenu>
+        {/* Trigger */}
         <DropdownMenuTrigger
           render={
             <button className="group text-muted-foreground hover:text-foreground cursor-pointer items-center p-1" />
@@ -42,51 +49,52 @@ export default function HeaderDropdown() {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="w-56">
-          <DropdownMenuItem className="text-ds-primary-saturated hover:text-ds-primary-saturated dark:hover:text-ds-primary-saturated font-semibold hover:bg-transparent dark:hover:bg-transparent">
-            {user?.firstName + ' ' + user?.lastName}
-          </DropdownMenuItem>
+          {/* Name */}
+          <div className="text-ds-primary-saturated hover:text-ds-primary-saturated dark:hover:text-ds-primary-saturated px-2 py-1.5 font-semibold hover:bg-transparent dark:hover:bg-transparent">
+            {user?.firstName ?? ''} {user?.lastName ?? ''}
+          </div>
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem
-            render={<Link href="/account" className="flex w-full cursor-pointer gap-2" />}
-          >
+          {/* Account */}
+          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
             <User size={16} strokeWidth={1.5} />
-            <span className="font-medium">Account</span>
+            <span>{tUserMenu('account')}</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem
-            render={<Link href="/addresses" className="flex w-full cursor-pointer gap-2" />}
-          >
+          {/* Addresses */}
+          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
             <MapPinHouse size={16} strokeWidth={1.5} />
-            <span className="font-medium">Addresses</span>
+            <span>{tUserMenu('addresses')}</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem
-            render={<Link href="/orders" className="flex w-full cursor-pointer gap-2" />}
-          >
+          {/* Orders */}
+          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
             <ScrollText size={16} strokeWidth={1.5} />
-            <span className="font-medium">Orders</span>
+            <span>{tUserMenu('orders')}</span>
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem
-            render={<Link href="/dashboard" className="flex w-full cursor-pointer gap-2" />}
-          >
-            <Settings size={16} strokeWidth={1.5} />
-            <span className="font-medium">Dashboard</span>
-          </DropdownMenuItem>
+          {/* Dashboard */}
+          {user?.role === 'ADMIN' && (
+            <>
+              <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+                <Settings size={16} strokeWidth={1.5} />
+                <span>{tUserMenu('dashboard')}</span>
+              </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
+              <DropdownMenuSeparator />
+            </>
+          )}
 
+          {/* Log out */}
           <DropdownMenuItem
             nativeButton
-            onClick={handleSignOut}
             render={<button className="flex w-full cursor-pointer gap-2" />}
           >
             <LogOut size={16} strokeWidth={1.5} />
-            <span className="font-medium">Log out</span>
+            <span className="text-ds-text-plain font-medium">{tUserMenu('logout')}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
