@@ -4,22 +4,38 @@ import { ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 
+import { useLoginDialog } from '@/features/auth/providers/login-dialog.provider';
+import { stopEvent } from '@/shared/lib/utils/event.utils';
+
 type ProductCartButtonProps = {
   productMetadata: {
     id: string;
     name: string;
     outOfStock: boolean;
   };
+  isAuthenticated: boolean;
 };
 
-export default function ProductCartButton({ productMetadata }: ProductCartButtonProps) {
+export default function ProductCartButton({
+  productMetadata,
+  isAuthenticated,
+}: ProductCartButtonProps) {
   const t = useTranslations('product');
+  const { openLoginDialog } = useLoginDialog();
 
-  const { id, name, outOfStock } = productMetadata;
+  const { name, outOfStock } = productMetadata;
 
-  const onAdd = useCallback(() => {
-    console.log('onAdd', id);
-  }, [id]);
+  const onAdd = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      stopEvent(e);
+
+      if (!isAuthenticated) {
+        openLoginDialog();
+        return;
+      }
+    },
+    [isAuthenticated, openLoginDialog],
+  );
 
   return (
     <button

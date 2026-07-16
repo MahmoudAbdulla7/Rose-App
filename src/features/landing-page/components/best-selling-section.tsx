@@ -49,7 +49,7 @@ export default async function BestSellingSection() {
         </div>
 
         <Link
-          href="/"
+          href="/products"
           className={cn(
             buttonVariants({ variant: 'primary' }),
             'dark:bg-soft-pink-200 dark:hover:bg-soft-pink-300 mt-auto max-h-9 w-fit min-w-38.75 gap-2.5 rounded-xl px-4 py-2.5 text-base font-normal',

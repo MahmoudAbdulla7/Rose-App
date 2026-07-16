@@ -10,6 +10,7 @@ import { cn } from '@/shared/lib/utils';
 import { getProductDisplayPrice } from '@/shared/lib/utils/product-price.utils';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
+import HoveredLink from '@/shared/components/hovered-link';
 
 export interface IProductCardProps {
   product: IProduct;
@@ -38,7 +39,8 @@ export default async function ProductCard({ product, className }: IProductCardPr
   const hasSalePrice = originalPrice != null && originalPrice > price;
 
   return (
-    <article
+    <HoveredLink
+      href={`/products/${id}`}
       className={cn('flex w-full min-w-68 flex-col gap-4 rounded-4xl', className)}
       data-product-id={id}
       aria-labelledby={nameId}
@@ -54,7 +56,10 @@ export default async function ProductCard({ product, className }: IProductCardPr
 
         {/* Actions and badges */}
         <div className="absolute inset-0 z-10 flex items-start justify-between p-2.5">
-          {isAuthenticated && <ProductWishlistButton productId={id} productName={title} />}
+          <ProductWishlistButton
+            productMetadata={{ id, name: title }}
+            isAuthenticated={isAuthenticated}
+          />
 
           {outOfStock && (
             <ul className="m-0 flex list-none items-center gap-1.5 p-0" aria-label={t('badges')}>
@@ -115,11 +120,12 @@ export default async function ProductCard({ product, className }: IProductCardPr
           </div>
 
           {/* Cart button */}
-          {isAuthenticated && (
-            <ProductCartButton productMetadata={{ id, name: title, outOfStock }} />
-          )}
+          <ProductCartButton
+            productMetadata={{ id, name: title, outOfStock }}
+            isAuthenticated={isAuthenticated}
+          />
         </div>
       </div>
-    </article>
+    </HoveredLink>
   );
 }

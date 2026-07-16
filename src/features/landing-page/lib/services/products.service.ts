@@ -14,10 +14,8 @@ export async function getBestSellingProducts({ searchParams, options }: GetProdu
   cacheLife(PRODUCTS_OPTIONS.CACHE_LIFE);
   cacheTag(...PRODUCTS_OPTIONS.BEST_SELLING_TAGS);
 
-  const limit = options.isMobile ? PRODUCTS_OPTIONS.MOBILE_LIMIT : PRODUCTS_OPTIONS.DESKTOP_LIMIT;
-
   const response = await getProducts(
-    { limit: limit.toString(), ...searchParams },
+    { limit: PRODUCTS_OPTIONS.BEST_SELLING_LIMIT.toString(), ...searchParams },
     { locale: options.locale },
   );
   if (!response?.status) {

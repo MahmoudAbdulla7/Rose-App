@@ -1,10 +1,8 @@
 'use client';
-import Link from 'next/link';
-import type { LinkProps } from 'next/link';
-import { useState, type AnchorHTMLAttributes } from 'react';
+import { Link } from '@/i18n/navigation';
+import { useState, type ComponentProps } from 'react';
 
-export interface HoveredLinkProps
-  extends LinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> {}
+export type HoveredLinkProps = ComponentProps<typeof Link>;
 
 export default function HoveredLink({ href, children, ...props }: HoveredLinkProps) {
   const [isHovered, setIsHovered] = useState(false);
