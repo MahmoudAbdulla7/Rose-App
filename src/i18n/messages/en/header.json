@@ -1,0 +1,24 @@
+{
+  "greeting": {
+    "hello": "Hello"
+  },
+  "delivery": {
+    "deliverTo": "Deliver to"
+  },
+  "userMenu": {
+    "account": "Account",
+    "addresses": "Addresses",
+    "orders": "Orders",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "clearAll": "Clear all notifications",
+    "markRead": "Mark as read",
+    "delete": "Delete",
+    "empty": "No notifications yet",
+    "error": "Could not load notifications"
+  }
+}
