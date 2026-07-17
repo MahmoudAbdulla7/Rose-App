@@ -10,7 +10,7 @@ export function useNotifications() {
     queryFn: ({ pageParam }) =>
       getNotificationAction({
         page: pageParam,
-        limit: 3,
+        limit: 6,
       }),
 
     getNextPageParam: (lastPage) => {
@@ -18,5 +18,10 @@ export function useNotifications() {
 
       return page < totalPages ? page + 1 : undefined;
     },
+
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
+    refetchInterval: 60_000,
   });
 }
