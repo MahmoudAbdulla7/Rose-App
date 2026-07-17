@@ -10,7 +10,7 @@ export function useNotifications() {
     queryFn: ({ pageParam }) =>
       getNotificationAction({
         page: pageParam,
-        limit: 6,
+        limit: 4,
       }),
 
     getNextPageParam: (lastPage) => {

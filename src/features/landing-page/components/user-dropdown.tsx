@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
+import { signOut } from 'next-auth/react';
 
 export default function HeaderDropdown() {
   const tGreeting = useTranslations('header.greeting');
@@ -25,6 +26,12 @@ export default function HeaderDropdown() {
     queryKey: ['user-data'],
     queryFn: getUserDataAction,
   });
+
+  const handleLogout = () => {
+    signOut({
+      callbackUrl: '/',
+    });
+  };
 
   return (
     <div className="flex">
@@ -91,7 +98,7 @@ export default function HeaderDropdown() {
           {/* Log out */}
           <DropdownMenuItem
             nativeButton
-            render={<button className="flex w-full cursor-pointer gap-2" />}
+            render={<button onClick={handleLogout} className="flex w-full cursor-pointer gap-2" />}
           >
             <LogOut size={16} strokeWidth={1.5} />
             <span className="text-ds-text-plain font-medium">{tUserMenu('logout')}</span>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Bell, BellOff, BrushCleaning, Check, CheckCheck, Trash2 } from 'lucide-react';
+import { Bell, BellOff, BrushCleaning, CheckCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import {
@@ -9,13 +9,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuSeparator,
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
 } from '@/shared/ui/dropdown-menu';
-import { cn } from '@/shared/lib/utils';
 import { useNotifications } from '@/features/user/lib/hooks/use-notification';
+import NotificationItem from './notification-item';
 
 export default function Notifications() {
   // Translation
@@ -117,62 +113,9 @@ export default function Notifications() {
             <DropdownMenuSeparator />
 
             {/* Notifications dropdown */}
-            <div onScroll={handleScroll} className="max-h-124 overflow-x-hidden overflow-y-auto">
+            <div onScroll={handleScroll} className="max-h-120 overflow-x-hidden overflow-y-auto">
               {notifications.map((notification) => (
-                <div key={notification.id}>
-                  <DropdownMenuItem
-                    className={cn(
-                      'flex cursor-pointer flex-col p-4',
-                      notification.isRead && 'bg-ds-soft',
-                    )}
-                  >
-                    <div className="flex w-full justify-between">
-                      {/* Title */}
-                      <p className="text-ds-text-plain font-semibold">{notification.title}</p>
-
-                      {/* Sub dropdown */}
-                      <DropdownMenuSub>
-                        <DropdownMenuSubTrigger />
-
-                        {/* Mark as read */}
-                        <DropdownMenuSubContent className="w-52">
-                          <DropdownMenuItem
-                            nativeButton
-                            render={
-                              <button
-                                className={cn(
-                                  'text-ds-text-plain flex w-full cursor-pointer gap-2.5 font-medium',
-                                  notification.isRead && 'text-zinc-400',
-                                )}
-                              />
-                            }
-                          >
-                            <Check size={18} strokeWidth={1.5} />
-                            <span>{tNotifications('markRead')}</span>
-                          </DropdownMenuItem>
-
-                          {/* Delete */}
-                          <DropdownMenuItem
-                            nativeButton
-                            render={<button className="flex w-full cursor-pointer gap-2.5" />}
-                          >
-                            <Trash2 size={18} strokeWidth={1.5} className="text-ds-danger" />
-                            <span className="text-ds-text-plain font-medium">
-                              {tNotifications('delete')}
-                            </span>
-                          </DropdownMenuItem>
-                        </DropdownMenuSubContent>
-                      </DropdownMenuSub>
-                    </div>
-
-                    {/* Message */}
-                    <p className="line-clamp-3 w-full text-start text-sm text-zinc-500 dark:text-zinc-400">
-                      {notification.message}
-                    </p>
-                  </DropdownMenuItem>
-
-                  <DropdownMenuSeparator />
-                </div>
+                <NotificationItem key={notification.id} notification={notification} />
               ))}
             </div>
           </>
