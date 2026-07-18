@@ -45,7 +45,8 @@ export default function Notifications() {
   });
 
   // Custom hooks
-  const { data, fetchNextPage, hasNextPage, refetch, isFetchingNextPage } = useNotifications();
+  const { data, fetchNextPage, hasNextPage, refetch, isFetchingNextPage, error } =
+    useNotifications();
 
   // Variables
   const notifications = useMemo(() => data?.pages.flatMap((page) => page.data) ?? [], [data]);
@@ -82,7 +83,7 @@ export default function Notifications() {
         <Bell strokeWidth={1.5} className="cursor-pointer" />
 
         {/* Count */}
-        {unreadCount > 0 && (
+        {!error && unreadCount > 0 && (
           <span className="bg-ds-danger text-ds-text-inverse absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs leading-none font-medium">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
@@ -93,10 +94,16 @@ export default function Notifications() {
       <DropdownMenuContent className="w-96">
         {/* Header */}
         <div className="bg-ds-primary-saturated text-ds-text-inverse p-4 text-xl font-bold">
-          {tNotifications('title')} ({unreadCount})
+          {tNotifications('title')}
+          {!error && ` (${unreadCount})`}
         </div>
 
-        {notifications.length === 0 ? (
+        {/* Error */}
+        {error ? (
+          <div className="flex justify-center p-8">
+            <p className="text-center text-sm">{tNotifications('error')}</p>
+          </div>
+        ) : notifications.length === 0 ? (
           <>
             {/* Empty, header */}
             <div className="flex cursor-default justify-between p-2.5 text-xs text-zinc-400">
