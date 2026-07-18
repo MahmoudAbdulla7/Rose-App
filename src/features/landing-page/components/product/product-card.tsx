@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
-import ProductCartButton from '@/features/landing-page/components/product-cart-button';
-import ProductRating from '@/features/landing-page/components/product-rating';
-import ProductWishlistButton from '@/features/landing-page/components/product-wishlist-button';
+import ProductCartButton from '@/features/landing-page/components/product/product-cart-button';
+import ProductRating from '@/features/landing-page/components/product/product-rating';
+import ProductWishlistButton from '@/features/landing-page/components/product/product-wishlist-button';
 import { PRODUCT_BADGE_VARIANT_CLASSES } from '@/shared/lib/constants/product-badge.constant';
 import type { IProduct } from '@/shared/lib/types/product';
 import { cn } from '@/shared/lib/utils';

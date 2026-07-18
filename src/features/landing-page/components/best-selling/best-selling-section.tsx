@@ -1,13 +1,13 @@
 import { ArrowRight } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import BestSellingProducts from '@/features/landing-page/components/best-selling-products';
+import BestSellingProducts from '@/features/landing-page/components/best-selling/best-selling-products';
+import { getBestSellingProducts } from '@/features/landing-page/lib/services/best-selling-products.service';
 import { Link } from '@/i18n/navigation';
 import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 import { cn } from '@/shared/lib/utils';
 import { isMobileDevice } from '@/shared/lib/utils/device.utils';
 import { buttonVariants } from '@/shared/ui/button';
-import { getBestSellingProducts } from '../lib/services/products.service';
 
 export default function BestSellingSection() {
   return (

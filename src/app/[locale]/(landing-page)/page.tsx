@@ -1,5 +1,5 @@
-import BestSellingSection from '@/features/landing-page/components/best-selling-section';
-import PopularProductsSection from '@/features/landing-page/components/popular-products-section';
+import BestSellingSection from '@/features/landing-page/components/best-selling/best-selling-section';
+import PopularProductsSection from '@/features/landing-page/components/popular-products/popular-products-section';
 
 type LandingPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

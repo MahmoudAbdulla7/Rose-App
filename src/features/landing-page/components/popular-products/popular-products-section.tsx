@@ -2,15 +2,15 @@ import { MoveRight } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
-import PopularProductsGrid from '@/features/landing-page/components/popular-products-grid';
-import PopularProductsOccasionsFilter from '@/features/landing-page/components/popular-products-occasions-filter';
+import PopularProductsGrid from '@/features/landing-page/components/popular-products/popular-products-grid';
+import PopularProductsOccasionsFilter from '@/features/landing-page/components/popular-products/popular-products-occasions-filter';
+import { getLandingPageOccasions } from '@/features/landing-page/lib/services/occasions.service';
+import PopularProductsGridSkeleton from '@/features/landing-page/skeletons/popular-products/popular-products-grid.skeleton';
 import { Link } from '@/i18n/navigation';
 import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 import { PRODUCTS_OPTIONS } from '@/shared/lib/apis/products/products.options';
 import { cn } from '@/shared/lib/utils';
 import { isMobileDevice } from '@/shared/lib/utils/device.utils';
-import PopularProductsGridSkeleton from '../skeletons/popular-products-grid.skeleton';
-import { getLandingPageOccasions } from '../lib/services/occasions.service';
 
 export interface IPopularProductsSectionProps {
   searchParams?: ISearchParams;
