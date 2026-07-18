@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import type { IWishlistResponse } from '../../types/wishlist';
 import { buildApiEndpoint } from '../../utils/api-endpoint-builder.utils';
