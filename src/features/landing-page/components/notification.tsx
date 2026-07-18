@@ -12,10 +12,26 @@ import {
 } from '@/shared/ui/dropdown-menu';
 import { useNotifications } from '@/features/user/lib/hooks/use-notification';
 import NotificationItem from './notification-item';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { markAllNotificationsReadAction } from '@/features/user/lib/actions/mark-as-read.action';
 
 export default function Notifications() {
   // Translation
   const tNotifications = useTranslations('header.notifications');
+
+  // Query
+  const queryClient = useQueryClient();
+
+  // Mutation
+  const markAllReadMutation = useMutation({
+    mutationFn: markAllNotificationsReadAction,
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['notifications'],
+      });
+    },
+  });
 
   // Custom hooks
   const { data, fetchNextPage, hasNextPage, refetch, isFetchingNextPage } = useNotifications();
@@ -103,11 +119,16 @@ export default function Notifications() {
                 <span>{tNotifications('clearAll')}</span>
               </div>
 
-              {/* Mark as read */}
-              <div className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 dark:hover:text-zinc-200">
+              {/* Mark all as read */}
+              <button
+                type="button"
+                onClick={() => markAllReadMutation.mutate()}
+                disabled={unreadCount === 0 || markAllReadMutation.isPending}
+                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:opacity-50 dark:hover:text-zinc-200"
+              >
                 <CheckCheck size={15} strokeWidth={1.5} />
                 <span>{tNotifications('markAllRead')}</span>
-              </div>
+              </button>
             </div>
 
             <DropdownMenuSeparator />

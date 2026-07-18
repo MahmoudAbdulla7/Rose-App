@@ -1,63 +1,53 @@
-import { Check, Trash2 } from 'lucide-react';
+'use client';
 
-import {
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-} from '@/shared/ui/dropdown-menu';
+import { Check } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { cn } from '@/shared/lib/utils';
+import { DropdownMenuSeparator, DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 import type { Notification } from '@/features/user/lib/types/notification';
-import { useTranslations } from 'next-intl';
+
+import { markNotificationReadAction } from '@/features/user/lib/actions/mark-as-read.action';
 
 interface NotificationItemProps {
   notification: Notification;
 }
 
 export default function NotificationItem({ notification }: NotificationItemProps) {
-  const tNotifications = useTranslations('header.notifications');
+  const queryClient = useQueryClient();
+
+  const markNotificationReadMutation = useMutation({
+    mutationFn: markNotificationReadAction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['notifications'],
+      });
+    },
+  });
 
   return (
     <div key={notification.id}>
       <DropdownMenuItem
-        className={cn('flex cursor-pointer flex-col p-4', notification.isRead && 'bg-ds-soft')}
+        className={cn(
+          'flex min-h-30.5 cursor-pointer flex-col p-4',
+          notification.isRead && 'bg-ds-soft',
+        )}
       >
         <div className="flex w-full justify-between">
           {/* Title */}
           <p className="text-ds-text-plain font-semibold">{notification.title}</p>
 
-          {/* Sub dropdown */}
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger />
-
-            {/* Mark as read */}
-            <DropdownMenuSubContent className="w-52">
-              <DropdownMenuItem
-                nativeButton
-                render={
-                  <button
-                    className={cn(
-                      'text-ds-text-plain flex w-full cursor-pointer gap-2.5 font-medium',
-                      notification.isRead && 'text-zinc-400',
-                    )}
-                  />
-                }
-              >
-                <Check size={18} strokeWidth={1.5} />
-                <span>{tNotifications('markRead')}</span>
-              </DropdownMenuItem>
-
-              {/* Delete */}
-              <DropdownMenuItem
-                nativeButton
-                render={<button className="flex w-full cursor-pointer gap-2.5" />}
-              >
-                <Trash2 size={18} strokeWidth={1.5} className="text-ds-danger" />
-                <span className="text-ds-text-plain font-medium">{tNotifications('delete')}</span>
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
+          {/* Mark as read */}
+          {!notification.isRead && (
+            <button
+              type="button"
+              onClick={() => markNotificationReadMutation.mutate(notification.id)}
+              disabled={markNotificationReadMutation.isPending}
+              className="text-ds-primary-saturated hover:text-ds-primary cursor-pointer text-xs font-medium whitespace-nowrap transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Check size={16} strokeWidth={2} />
+            </button>
+          )}
         </div>
 
         {/* Message */}
