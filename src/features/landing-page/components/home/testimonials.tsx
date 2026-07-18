@@ -58,9 +58,9 @@ export default async function Testimonials() {
                   />
                 </div>
 
-                <article className="bg-ds-plain rounded-5xl shadow-ds-soft-lg flex h-full w-full flex-col items-center px-5 pt-16 pb-5">
+                <article className="rounded-5xl shadow-ds-soft-lg flex h-full w-full flex-col items-center bg-white px-5 pt-16 pb-5">
                   {/* name */}
-                  <h3 className="text-ds-text-plain mb-9 text-base font-semibold">{name}</h3>
+                  <h3 className="mb-9 text-base font-semibold text-zinc-800">{name}</h3>
 
                   {/* Rating */}
                   <div
@@ -84,15 +84,12 @@ export default async function Testimonials() {
                   </div>
 
                   {/* Message */}
-                  <p className="text-ds-text-plain mb-9 flex-1 text-start text-base leading-[100%] font-medium">
+                  <p className="mb-9 flex-1 text-start text-base leading-[100%] font-medium text-zinc-800">
                     {comment}
                   </p>
 
                   {/* Time */}
-                  <time
-                    dateTime={testimonial.date}
-                    className="text-ds-text-muted text-xs font-medium"
-                  >
+                  <time dateTime={testimonial.date} className="text-xs font-medium text-zinc-400">
                     {format.dateTime(new Date(testimonial.date), { dateStyle: 'long' })}
                   </time>
                 </article>
