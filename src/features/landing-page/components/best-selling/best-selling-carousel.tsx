@@ -4,6 +4,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { useLocale, useTranslations } from 'next-intl';
 import { Children, useMemo, type ReactNode } from 'react';
 
+import { BEST_SELLING_CAROUSEL_AUTOPLAY_CONFIG } from '@/features/landing-page/lib/constants/best-selling-constant';
 import { cn } from '@/shared/lib/utils';
 import { Carousel, CarouselContent, CarouselItem, useCarousel } from '@/shared/ui/carousel';
 import { ChevronLeft } from 'lucide-react';
@@ -53,7 +54,7 @@ export default function BestSellingCarousel({ children, className }: IBestSellin
   const locale = useLocale();
   const isRTL = locale === 'ar';
 
-  const autoplayPlugin = useMemo(() => Autoplay({ delay: 4000, stopOnInteraction: true }), []);
+  const autoplayPlugin = useMemo(() => Autoplay(BEST_SELLING_CAROUSEL_AUTOPLAY_CONFIG), []);
 
   return (
     <Carousel

@@ -1,4 +1,4 @@
-import ProductCardSkeleton from '@/features/landing-page/skeletons/product-card.skeleton';
+import ProductCardSkeleton from '@/features/landing-page/skeletons/product/product-card.skeleton';
 import { PRODUCTS_OPTIONS } from '@/shared/lib/apis/products/products.options';
 
 export interface IPopularProductsGridSkeletonProps {

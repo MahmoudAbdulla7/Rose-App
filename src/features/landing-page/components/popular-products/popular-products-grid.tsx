@@ -1,9 +1,9 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import ProductCard from '@/features/landing-page/components/product-card';
+import ProductCard from '@/features/landing-page/components/product/product-card';
+import { getPopularProducts } from '@/features/landing-page/lib/services/popular-products.service';
 import EmptyState from '@/shared/components/empty-state';
 import { isMobileDevice } from '@/shared/lib/utils/device.utils';
-import { getPopularProducts } from '../lib/services/products.service';
 
 export interface IPopularProductsGridProps {
   searchParams?: ISearchParams;
