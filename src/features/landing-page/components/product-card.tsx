@@ -15,9 +15,14 @@ import HoveredLink from '@/shared/components/hovered-link';
 export interface IProductCardProps {
   product: IProduct;
   className?: string;
+  priority?: boolean;
 }
 
-export default async function ProductCard({ product, className }: IProductCardProps) {
+export default async function ProductCard({
+  product,
+  className,
+  priority = false,
+}: IProductCardProps) {
   // Translations
   const t = await getTranslations('product');
 
@@ -37,10 +42,10 @@ export default async function ProductCard({ product, className }: IProductCardPr
   const nameId = `product-name-${id}`;
   const stockId = `product-stock-${id}`;
   const hasSalePrice = originalPrice != null && originalPrice > price;
+  const productHref = `/products/${id}`;
 
   return (
-    <HoveredLink
-      href={`/products/${id}`}
+    <article
       className={cn('flex w-full min-w-68 flex-col gap-4 rounded-4xl', className)}
       data-product-id={id}
       aria-labelledby={nameId}
@@ -48,18 +53,34 @@ export default async function ProductCard({ product, className }: IProductCardPr
     >
       {/* Image */}
       <div className="relative h-72 w-full overflow-hidden rounded-2xl">
-        {cover ? (
-          <Image src={cover} alt="" fill className="object-cover" priority sizes="20rem" />
-        ) : (
-          <div className="bg-maroon-50 size-full" aria-hidden="true" />
-        )}
+        <HoveredLink
+          href={productHref}
+          className="absolute inset-0 block"
+          aria-labelledby={nameId}
+          tabIndex={-1}
+        >
+          {cover ? (
+            <Image
+              src={cover}
+              alt=""
+              fill
+              className="object-cover"
+              priority={priority}
+              sizes="20rem"
+            />
+          ) : (
+            <div className="bg-maroon-50 size-full" aria-hidden="true" />
+          )}
+        </HoveredLink>
 
         {/* Actions and badges */}
-        <div className="absolute inset-0 z-10 flex items-start justify-between p-2.5">
-          <ProductWishlistButton
-            productMetadata={{ id, name: title }}
-            isAuthenticated={isAuthenticated}
-          />
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-start justify-between p-2.5">
+          <div className="pointer-events-auto">
+            <ProductWishlistButton
+              productMetadata={{ id, name: title }}
+              isAuthenticated={isAuthenticated}
+            />
+          </div>
 
           {outOfStock && (
             <ul className="m-0 flex list-none items-center gap-1.5 p-0" aria-label={t('badges')}>
@@ -81,13 +102,15 @@ export default async function ProductCard({ product, className }: IProductCardPr
       {/* Content */}
       <div className="flex w-full flex-col gap-3">
         {/* Name */}
-        <h3
-          id={nameId}
-          title={title}
-          className="text-maroon-700 dark:text-soft-pink-200 truncate text-lg leading-none font-semibold"
-        >
-          {title}
-        </h3>
+        <HoveredLink href={productHref} className="min-w-0">
+          <h3
+            id={nameId}
+            title={title}
+            className="text-maroon-700 dark:text-soft-pink-200 truncate text-lg leading-none font-semibold"
+          >
+            {title}
+          </h3>
+        </HoveredLink>
 
         {outOfStock && (
           <span id={stockId} className="sr-only">
@@ -126,6 +149,6 @@ export default async function ProductCard({ product, className }: IProductCardPr
           />
         </div>
       </div>
-    </HoveredLink>
+    </article>
   );
 }

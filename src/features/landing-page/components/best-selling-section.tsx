@@ -3,25 +3,30 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import BestSellingProducts from '@/features/landing-page/components/best-selling-products';
 import { Link } from '@/i18n/navigation';
+import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 import { cn } from '@/shared/lib/utils';
 import { isMobileDevice } from '@/shared/lib/utils/device.utils';
 import { buttonVariants } from '@/shared/ui/button';
 import { getBestSellingProducts } from '../lib/services/products.service';
 
-export default async function BestSellingSection() {
+export default function BestSellingSection() {
+  return (
+    <LoadErrorBoundary entity="products">
+      <BestSellingSectionContent />
+    </LoadErrorBoundary>
+  );
+}
+
+async function BestSellingSectionContent() {
   const locale = await getLocale();
   const isMobile = await isMobileDevice();
-
-  // Translations
   const t = await getTranslations('product.bestSelling');
 
-  // Products
   const products = await getBestSellingProducts({
     searchParams: {},
     options: { locale, isMobile },
   });
 
-  // Check if response is successful
   if (!products?.length) {
     return null;
   }

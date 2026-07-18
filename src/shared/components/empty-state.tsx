@@ -6,11 +6,11 @@ import { cn } from '@/shared/lib/utils';
 export interface IEmptyStateProps {
   title: string;
   subtitle?: string;
-  action?: ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
-export default function EmptyState({ title, subtitle, action, className }: IEmptyStateProps) {
+export default function EmptyState({ title, subtitle, className, children }: IEmptyStateProps) {
   return (
     <div
       role="status"
@@ -70,9 +70,9 @@ export default function EmptyState({ title, subtitle, action, className }: IEmpt
         ) : null}
       </div>
 
-      {action ? (
+      {children ? (
         <div className="animate-in fade-in slide-in-from-bottom-2 relative mt-6 delay-150 duration-500">
-          {action}
+          {children}
         </div>
       ) : null}
     </div>

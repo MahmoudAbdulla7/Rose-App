@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import type { IOccasionResponse } from '@/shared/lib/types/occasions';
 import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
