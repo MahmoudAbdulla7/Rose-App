@@ -2,10 +2,8 @@ import type { ITestimonial } from '@/features/landing-page/lib/types/home/testim
 
 const TESTIMONIAL_IMAGE_BASE_PATH = '/assets/images/home/testimonials';
 
-/** Highest score a testimonial can earn; drives how many stars the rating renders. */
 export const TESTIMONIAL_MAX_RATING = 5;
 
-/** Customer reviews shown as overlapping avatar cards in the Testimonials band. */
 export const TESTIMONIALS: ITestimonial[] = [
   {
     id: '1',

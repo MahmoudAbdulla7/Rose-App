@@ -2,13 +2,13 @@ import { ArrowRight, Check } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 
+import { Link } from '@/i18n/navigation';
 import {
   ABOUT_FEATURES,
   ABOUT_IMAGES,
 } from '@/features/landing-page/lib/constants/home/about.constant';
 import { cn } from '@/shared/lib/utils';
 import { buttonVariants } from '@/shared/ui/button';
-import Link from 'next/link';
 
 export default async function About() {
   // Translations
@@ -16,23 +16,17 @@ export default async function About() {
   const isRTL = locale === 'ar';
   const t = await getTranslations('home.about');
 
-  // handlers
+  // Helpers
   const alt = (image: { altEn: string; altAr: string }) => (isRTL ? image.altAr : image.altEn);
 
   return (
-    <section className="mx-auto px-5 pt-34.75 pb-33.25 sm:px-8 md:px-12 xl:px-20">
+    <section className="container pt-34.75 pb-33.25">
       <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-[.9fr_1.1fr] xl:gap-20">
         {/* Image Gallery */}
         <div className="grid grid-cols-[1.2fr_.8fr] items-stretch gap-2 max-lg:order-last">
           {/* Hero Image */}
           <div className="relative flex h-full items-start justify-end">
-            <div className="relative w-[97%]">
-              {/* Decorative Frame */}
-              <span
-                aria-hidden="true"
-                className="border-ds-primary rounded-bl-8xl rounded-br-8xl rounded-tl-6xl rounded-tr-8xl pointer-events-none absolute inset-s-[-6%] top-[-5%] h-[106%] w-[89%] rotate-3 border-3 rtl:-rotate-3"
-              />
-
+            <div className="before:border-ds-primary before:rounded-bl-8xl before:rounded-br-8xl before:rounded-tl-6xl before:rounded-tr-8xl relative w-[97%] before:pointer-events-none before:absolute before:inset-s-[-6%] before:top-[-5%] before:h-[106%] before:w-[89%] before:rotate-3 before:border-3 before:content-[''] rtl:before:-rotate-3">
               <div className="bg-ds-primary-fade rounded-bl-8xl rounded-br-8xl rounded-tl-6xl rounded-tr-8xl relative aspect-302/344 w-full overflow-hidden">
                 <Image
                   src={ABOUT_IMAGES.hero.imageUrl}
@@ -94,7 +88,7 @@ export default async function About() {
 
           {/* Call to Action */}
           <Link
-            href="/"
+            href="/products"
             className={cn(
               buttonVariants({ variant: 'primary' }),
               'max-h-9 w-fit min-w-30.25 gap-2.5 rounded-xl px-4 py-2.5 text-base font-normal',
