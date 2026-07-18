@@ -18,9 +18,11 @@ export async function getBestSellingProducts({ searchParams, options }: GetProdu
     { limit: PRODUCTS_OPTIONS.BEST_SELLING_LIMIT.toString(), ...searchParams },
     { locale: options.locale },
   );
+
   if (!response?.status) {
-    return [];
+    throw new Error(response?.message ?? 'Failed to load products');
   }
+
   return pickData<IProduct>(response as IProductResponse);
 }
 
@@ -35,8 +37,10 @@ export async function getPopularProducts({ searchParams, options }: GetProductsP
     { limit: limit.toString(), ...searchParams },
     { locale: options.locale },
   );
+
   if (!response?.status) {
-    return [];
+    throw new Error(response?.message ?? 'Failed to load products');
   }
+
   return pickData<IProduct>(response as IProductResponse);
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 
 import LoginDialog from '@/features/auth/components/login-dialog';
 
@@ -17,8 +17,13 @@ export function LoginDialogProvider({ children }: { children: ReactNode }) {
   const openLoginDialog = useCallback(() => setOpen(true), []);
   const closeLoginDialog = useCallback(() => setOpen(false), []);
 
+  const value = useMemo(
+    () => ({ openLoginDialog, closeLoginDialog }),
+    [openLoginDialog, closeLoginDialog],
+  );
+
   return (
-    <LoginDialogContext.Provider value={{ openLoginDialog, closeLoginDialog }}>
+    <LoginDialogContext.Provider value={value}>
       {children}
       <LoginDialog open={open} onOpenChange={setOpen} />
     </LoginDialogContext.Provider>

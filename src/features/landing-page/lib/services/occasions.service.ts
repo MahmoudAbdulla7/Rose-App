@@ -18,7 +18,7 @@ export async function getLandingPageOccasions(
   );
 
   if (!response?.status) {
-    return [];
+    throw new Error(response?.message ?? 'Failed to load occasions');
   }
 
   return pickData<IOccasion>(response as IOccasionResponse);

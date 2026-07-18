@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 
 import type { IProductResponse } from '../../types/product';
 import { buildApiEndpoint } from '../../utils/api-endpoint-builder.utils';

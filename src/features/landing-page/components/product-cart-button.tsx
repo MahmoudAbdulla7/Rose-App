@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 
 import { useLoginDialog } from '@/features/auth/providers/login-dialog.provider';
-import { stopEvent } from '@/shared/lib/utils/event.utils';
 
 type ProductCartButtonProps = {
   productMetadata: {
@@ -25,17 +24,12 @@ export default function ProductCartButton({
 
   const { name, outOfStock } = productMetadata;
 
-  const onAdd = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      stopEvent(e);
-
-      if (!isAuthenticated) {
-        openLoginDialog();
-        return;
-      }
-    },
-    [isAuthenticated, openLoginDialog],
-  );
+  const onAdd = useCallback(() => {
+    if (!isAuthenticated) {
+      openLoginDialog();
+      return;
+    }
+  }, [isAuthenticated, openLoginDialog]);
 
   return (
     <button
