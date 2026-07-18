@@ -1,31 +1,18 @@
-'use client';
-
-import HeaderNav from '@/features/landing-page/components/header-nav';
+import HeaderAuth from './header-auth';
+import HeaderCartLink from './header-cart-link';
+import HeaderNav from './header-nav';
 import { Link } from '@/i18n/navigation';
 import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 import ThemeToggle from '@/shared/components/theme-toggle';
-import { useAuth } from '@/shared/lib/hooks/use-auth.hook';
 import { SearchInput } from '@/shared/ui/search-input';
 import { Separator } from '@/shared/ui/separator';
-import { Bell, Heart, ShoppingCart, User } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { Bell, Heart } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 
-const HEADER_ACTIONS = [
-  { href: '/wishlist', labelKey: 'wishlist', icon: Heart },
-  { href: '/cart', labelKey: 'cart', icon: ShoppingCart },
-  { href: '/notifications', labelKey: 'notifications', icon: Bell },
-] as const;
-
-export default function Header() {
+export default async function Header() {
   // Translation
-  const t = useTranslations('header');
-
-  // Custom hooks
-  const { user, isAuthenticated, isLoading } = useAuth();
-
-  // Variables
-  const userName = user?.username ?? '';
+  const t = await getTranslations('header');
 
   return (
     <header className="font-primary sticky top-0 z-50">
@@ -50,38 +37,23 @@ export default function Header() {
           </div>
 
           <div className="flex shrink-0 items-center">
-            {isLoading && <div className="bg-ds-muted h-8 w-24 animate-pulse rounded-lg" />}
-
-            {!isLoading && isAuthenticated && user && (
-              <div className="flex items-center gap-2 px-2">
-                <span className="text-ds-text-default hidden max-w-28 truncate text-sm sm:inline">
-                  {userName}
-                </span>
-              </div>
-            )}
-
-            {!isLoading && !isAuthenticated && (
-              <Link
-                href="/login"
-                className="text-ds-text-default flex items-center gap-1.5 px-2 py-1.5 text-sm"
-              >
-                <User className="size-4" />
-                <span className="hidden sm:inline">{t('login')}</span>
-              </Link>
-            )}
+            <HeaderAuth />
 
             <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
 
-            {HEADER_ACTIONS.map(({ href, labelKey, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className="text-ds-text-default p-2"
-                aria-label={t(labelKey)}
-              >
-                <Icon className="size-5" />
-              </Link>
-            ))}
+            <Link href="/wishlist" className="text-ds-text-default p-2" aria-label={t('wishlist')}>
+              <Heart className="size-5" />
+            </Link>
+
+            <HeaderCartLink />
+
+            <Link
+              href="/notifications"
+              className="text-ds-text-default p-2"
+              aria-label={t('notifications')}
+            >
+              <Bell className="size-5" />
+            </Link>
 
             <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
             <LanguageSwitcherComponent className="text-sm" />

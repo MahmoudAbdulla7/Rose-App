@@ -5,6 +5,7 @@
   "login": "Login",
   "wishlist": "Wishlist",
   "cart": "Cart",
+  "cartWithCount": "Cart, {count} items",
   "notifications": "Notifications",
   "profile": "Profile",
   "orders": "Orders",

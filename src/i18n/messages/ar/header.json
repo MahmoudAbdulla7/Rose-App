@@ -5,6 +5,7 @@
   "login": "تسجيل الدخول",
   "wishlist": "المفضلة",
   "cart": "السلة",
+  "cartWithCount": "السلة، {count} عناصر",
   "notifications": "الإشعارات",
   "profile": "الملف الشخصي",
   "orders": "طلباتي",
