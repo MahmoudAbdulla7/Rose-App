@@ -1,4 +1,4 @@
-import Header from '@/features/landing-page/components/header';
+import Header from '@/features/layout/components/header';
 import type { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
