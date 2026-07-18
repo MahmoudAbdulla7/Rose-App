@@ -9,7 +9,7 @@ type Props = {
 
 export default function AuthFooter({ text, linkText, href }: Props) {
   return (
-    <div className="mt-9 flex w-full flex-col content-center items-center justify-center">
+    <div className="mt-4 flex w-full flex-col content-center items-center justify-center 2xl:mt-9">
       <Separator />
 
       <div className="mt-5 flex gap-1 text-sm font-medium">

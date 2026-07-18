@@ -1,0 +1,154 @@
+import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
+
+import ProductCartButton from '@/features/landing-page/components/product/product-cart-button';
+import ProductRating from '@/features/landing-page/components/product/product-rating';
+import ProductWishlistButton from '@/features/landing-page/components/product/product-wishlist-button';
+import { PRODUCT_BADGE_VARIANT_CLASSES } from '@/shared/lib/constants/product-badge.constant';
+import type { IProduct } from '@/shared/lib/types/product';
+import { cn } from '@/shared/lib/utils';
+import { getProductDisplayPrice } from '@/shared/lib/utils/product-price.utils';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
+import HoveredLink from '@/shared/components/hovered-link';
+
+export interface IProductCardProps {
+  product: IProduct;
+  className?: string;
+  priority?: boolean;
+}
+
+export default async function ProductCard({
+  product,
+  className,
+  priority = false,
+}: IProductCardProps) {
+  // Translations
+  const t = await getTranslations('product');
+
+  // user status
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+  const isAuthenticated = !!user;
+
+  // Product data
+  const { id, title, cover, rating, stock, discountType, discountValue } = product;
+  const { price, originalPrice } = getProductDisplayPrice({
+    price: product.price,
+    discountType,
+    discountValue,
+  });
+  const outOfStock = stock <= 0;
+  const nameId = `product-name-${id}`;
+  const stockId = `product-stock-${id}`;
+  const hasSalePrice = originalPrice != null && originalPrice > price;
+  const productHref = `/products/${id}`;
+
+  return (
+    <article
+      className={cn('flex w-full min-w-68 flex-col gap-4 rounded-4xl', className)}
+      data-product-id={id}
+      aria-labelledby={nameId}
+      aria-describedby={outOfStock ? stockId : undefined}
+    >
+      {/* Image */}
+      <div className="relative h-72 w-full overflow-hidden rounded-2xl">
+        <HoveredLink
+          href={productHref}
+          className="absolute inset-0 block"
+          aria-labelledby={nameId}
+          tabIndex={-1}
+        >
+          {cover ? (
+            <Image
+              src={cover}
+              alt=""
+              fill
+              className="object-cover"
+              priority={priority}
+              sizes="20rem"
+            />
+          ) : (
+            <div className="bg-maroon-50 size-full" aria-hidden="true" />
+          )}
+        </HoveredLink>
+
+        {/* Actions and badges */}
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-start justify-between p-2.5">
+          <div className="pointer-events-auto">
+            <ProductWishlistButton
+              productMetadata={{ id, name: title }}
+              isAuthenticated={isAuthenticated}
+            />
+          </div>
+
+          {outOfStock && (
+            <ul className="m-0 flex list-none items-center gap-1.5 p-0" aria-label={t('badges')}>
+              <li>
+                <span
+                  className={cn(
+                    'inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs leading-none font-medium whitespace-nowrap',
+                    PRODUCT_BADGE_VARIANT_CLASSES.outOfStock,
+                  )}
+                >
+                  {t('outOfStock')}
+                </span>
+              </li>
+            </ul>
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex w-full flex-col gap-3">
+        {/* Name */}
+        <HoveredLink href={productHref} className="min-w-0">
+          <h3
+            id={nameId}
+            title={title}
+            className="text-maroon-700 dark:text-soft-pink-200 truncate text-lg leading-none font-semibold"
+          >
+            {title}
+          </h3>
+        </HoveredLink>
+
+        {outOfStock && (
+          <span id={stockId} className="sr-only">
+            {t('outOfStock')}
+          </span>
+        )}
+
+        {/* Price and cart button */}
+        <div className="flex items-center gap-2.5">
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            {/* Rating */}
+            <ProductRating rating={rating} />
+
+            {/* Price */}
+            <p className="text-maroon-700 dark:text-soft-pink-200 text-base leading-none font-medium">
+              <span className="sr-only">{t('currentPrice')}: </span>
+              <span>{t('price', { price })}</span>
+              {hasSalePrice && (
+                <>
+                  {' '}
+                  <span className="sr-only">
+                    {t('originalPrice')}: {t('price', { price: originalPrice })}
+                  </span>
+                  <span className="text-zinc-400 line-through" aria-hidden="true">
+                    {t('price', { price: originalPrice })}
+                  </span>
+                </>
+              )}
+            </p>
+          </div>
+
+          {/* Cart button */}
+          <ProductCartButton
+            productMetadata={{ id, name: title, outOfStock }}
+            isAuthenticated={isAuthenticated}
+          />
+        </div>
+      </div>
+    </article>
+  );
+}

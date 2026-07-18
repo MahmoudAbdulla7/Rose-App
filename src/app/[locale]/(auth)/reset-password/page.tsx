@@ -1,12 +1,17 @@
+import ResetPassword from '@/features/auth/components/reset-password';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import ResetPassword from '@/features/auth/components/reset-password';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('auth.forgotPassword');
+type Props = LayoutProps<'/[locale]'>;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+
+  const authT = await getTranslations({ locale: locale as 'en' | 'ar', namespace: 'auth' });
+  const commonT = await getTranslations({ locale: locale as 'en' | 'ar', namespace: 'common' });
 
   return {
-    title: t('reset.title'),
+    title: `${authT('forgotPassword.reset.title')} | ${commonT('app.title')}`,
   };
 }
 

@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
 import { RESEND_COOKIE, RESEND_TIMEOUT } from '../constants/otp.constant';
 import type { IRegisterFields } from '../types/register';
 
