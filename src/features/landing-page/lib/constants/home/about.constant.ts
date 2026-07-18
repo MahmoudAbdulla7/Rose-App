@@ -2,10 +2,6 @@ import type { IAboutFeature, IAboutImage } from '@/features/landing-page/lib/typ
 
 const ABOUT_IMAGE_BASE_PATH = '/assets/images/home/about';
 
-/**
- * The three photos composing the About collage, in render order:
- * the tall hero shot, the circular top-right shot, and the shorter bottom-right shot.
- */
 export const ABOUT_IMAGES = {
   hero: {
     id: 'gift-unboxing',
@@ -27,7 +23,6 @@ export const ABOUT_IMAGES = {
   },
 } satisfies Record<string, IAboutImage>;
 
-/** Selling points shown with a checkmark; labels live under `home.about.features`. */
 export const ABOUT_FEATURES: IAboutFeature[] = [
   { id: 'competitive-prices', key: 'competitivePrices' },
   { id: 'premium-quality', key: 'premiumQuality' },

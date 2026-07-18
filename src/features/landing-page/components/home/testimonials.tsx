@@ -25,7 +25,7 @@ export default async function Testimonials() {
       {/* Heading */}
       <SectionHeading
         id="testimonials-heading"
-        className="mx-auto px-5 sm:px-8 md:px-12 xl:px-20"
+        className="container"
         tagline={t('tagline')}
         title={t.rich('title', { highlight: headingHighlight })}
       />
@@ -33,7 +33,7 @@ export default async function Testimonials() {
       {/* Review cards */}
       <div className="bg-ds-primary-fade mx-auto mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20">
         <TestimonialsCarousel isRTL={isRTL}>
-          {TESTIMONIALS.map((testimonial, index) => {
+          {TESTIMONIALS.map((testimonial) => {
             // Variables
             const name = isRTL ? testimonial.nameAr : testimonial.nameEn;
             const comment = isRTL ? testimonial.commentAr : testimonial.commentEn;
@@ -44,8 +44,8 @@ export default async function Testimonials() {
 
             return (
               <CarouselItem
-                key={`${testimonial.id}-${index}`}
-                className="relative flex basis-full flex-col px-3! ps-0 sm:basis-3/4 md:basis-1/2 md:px-6! lg:basis-1/3"
+                key={testimonial.id}
+                className="relative flex basis-full flex-col px-3! ps-0 sm:basis-3/4 md:basis-1/2 md:px-6! xl:basis-1/3"
               >
                 {/* Avatar Image */}
                 <div className="border-ds-primary-fade bg-ds-plain absolute -top-15 left-1/2 z-10 size-30 -translate-x-1/2 overflow-hidden rounded-full border-4">

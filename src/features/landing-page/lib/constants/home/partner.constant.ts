@@ -2,7 +2,6 @@ import type { IPartnerLogo } from '@/features/landing-page/lib/types/home/partne
 
 const PARTNER_IMAGE_BASE_PATH = '/assets/images/home/partner';
 
-/** Partner logos shown in the "trusted by" strip, in left-to-right render order. */
 export const PARTNER_LOGOS: IPartnerLogo[] = [
   {
     id: 'coconut',
