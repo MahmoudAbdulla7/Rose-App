@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers';
 
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import { RESEND_COOKIE, RESEND_TIMEOUT } from '../constants/otp.constant';
 import type { IRegisterFields } from '../types/register';
 
@@ -41,7 +42,7 @@ export async function sendEmailVerificationAction(email: IRegisterFields['email'
   }
 
   // Send request to the backend to send the email verification
-  const response = await fetch(`${process.env.NEXT_BASE_URL}auth/send-email-verification`, {
+  const response = await fetch(buildApiEndpoint('auth/send-email-verification'), {
     method: 'POST',
     headers: API_HEADERS.JSON,
     body: JSON.stringify({ email }),

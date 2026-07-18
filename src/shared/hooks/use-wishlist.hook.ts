@@ -2,7 +2,7 @@
 
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 
-import { getWishlistItems } from '@/shared/lib/apis/wishlist/wishlist.api';
+import { fetchWishlistItems } from '@/shared/lib/apis/wishlist/user-wishlist-items.api';
 import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
 import type { IWishlistResponse } from '@/shared/lib/types/wishlist';
 
@@ -14,7 +14,7 @@ type useWishlistOptions = Omit<
 export function useWishlist(options?: useWishlistOptions) {
   return useQuery({
     queryKey: WISHLIST_OPTIONS.QUERY_KEY,
-    queryFn: () => getWishlistItems(),
+    queryFn: fetchWishlistItems,
     ...options,
   });
 }
