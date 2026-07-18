@@ -13,7 +13,7 @@ export default async function Gallery() {
   const t = await getTranslations('home.gallery');
 
   return (
-    <section className="container pb-34.75">
+    <section className="container">
       {/* Heading */}
       <SectionHeading
         tagline={t('tagline')}

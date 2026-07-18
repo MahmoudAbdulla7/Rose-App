@@ -21,7 +21,7 @@ export default async function Testimonials() {
   const format = await getFormatter();
 
   return (
-    <section className="pb-34.75">
+    <section className="">
       {/* Heading */}
       <SectionHeading
         id="testimonials-heading"
