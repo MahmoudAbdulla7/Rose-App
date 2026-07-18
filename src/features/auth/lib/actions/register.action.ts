@@ -1,6 +1,6 @@
 'use server';
 
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
 import type { IRegisterFields } from '../types/register';
 import type { IUser } from '../types/auth';
 

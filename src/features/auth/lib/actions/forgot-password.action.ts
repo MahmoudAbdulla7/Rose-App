@@ -1,6 +1,6 @@
 'use server';
 
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
 
 type ForgotPasswordBody = {
   email: string;

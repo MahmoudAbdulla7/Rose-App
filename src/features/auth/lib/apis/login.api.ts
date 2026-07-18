@@ -1,4 +1,4 @@
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
 import type { ILoginPayload } from '../types/login';
 import type { ILoginResponse } from '../types/auth';
 
