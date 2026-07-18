@@ -58,6 +58,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
               <button
                 type="button"
                 onClick={() => markNotificationReadMutation.mutate(notification.id)}
+                disabled={markNotificationReadMutation.isPending}
                 className="text-ds-primary-saturated hover:bg-ds-soft cursor-pointer rounded-md p-1.5 transition-colors"
                 aria-label={tNotifications('markRead')}
                 title={tNotifications('markRead')}
@@ -70,6 +71,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
             <button
               type="button"
               onClick={() => deleteNotificationMutation.mutate(notification.id)}
+              disabled={deleteNotificationMutation.isPending}
               className="text-ds-danger hover:bg-ds-soft cursor-pointer rounded-md p-1.5 transition-colors"
               aria-label={tNotifications('delete')}
               title={tNotifications('delete')}
