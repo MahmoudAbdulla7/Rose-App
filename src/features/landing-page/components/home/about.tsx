@@ -20,7 +20,7 @@ export default async function About() {
   const alt = (image: { altEn: string; altAr: string }) => (isRTL ? image.altAr : image.altEn);
 
   return (
-    <section className="container pt-34.75 pb-33.25">
+    <section className="container">
       <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-[.9fr_1.1fr] xl:gap-20">
         {/* Image Gallery */}
         <div className="grid grid-cols-[1.2fr_.8fr] items-stretch gap-2 max-lg:order-last">
