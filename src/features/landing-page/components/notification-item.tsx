@@ -1,23 +1,38 @@
 'use client';
 
-import { Check } from 'lucide-react';
+import { Check, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { cn } from '@/shared/lib/utils';
 import { DropdownMenuSeparator, DropdownMenuItem } from '@/shared/ui/dropdown-menu';
-import type { Notification } from '@/features/user/lib/types/notification';
-
+import { deleteNotificationAction } from '@/features/user/lib/actions/delete-notification.action';
 import { markNotificationReadAction } from '@/features/user/lib/actions/mark-as-read.action';
+import type { Notification } from '@/features/user/lib/types/notification';
 
 interface NotificationItemProps {
   notification: Notification;
 }
 
 export default function NotificationItem({ notification }: NotificationItemProps) {
+  // Translation
+  const tNotifications = useTranslations('header.notifications');
+
+  // Query
   const queryClient = useQueryClient();
 
+  // Mutation
   const markNotificationReadMutation = useMutation({
     mutationFn: markNotificationReadAction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['notifications'],
+      });
+    },
+  });
+
+  const deleteNotificationMutation = useMutation({
+    mutationFn: deleteNotificationAction,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['notifications'],
@@ -37,17 +52,31 @@ export default function NotificationItem({ notification }: NotificationItemProps
           {/* Title */}
           <p className="text-ds-text-plain font-semibold">{notification.title}</p>
 
-          {/* Mark as read */}
-          {!notification.isRead && (
+          <div className="flex items-center gap-1">
+            {/* Mark as read */}
+            {!notification.isRead && (
+              <button
+                type="button"
+                onClick={() => markNotificationReadMutation.mutate(notification.id)}
+                className="text-ds-primary-saturated hover:bg-ds-soft cursor-pointer rounded-md p-1.5 transition-colors"
+                aria-label={tNotifications('markRead')}
+                title={tNotifications('markRead')}
+              >
+                <Check size={16} strokeWidth={2} />
+              </button>
+            )}
+
+            {/* Delete */}
             <button
               type="button"
-              onClick={() => markNotificationReadMutation.mutate(notification.id)}
-              disabled={markNotificationReadMutation.isPending}
-              className="text-ds-primary-saturated hover:text-ds-primary cursor-pointer text-xs font-medium whitespace-nowrap transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={() => deleteNotificationMutation.mutate(notification.id)}
+              className="text-ds-danger hover:bg-ds-soft cursor-pointer rounded-md p-1.5 transition-colors"
+              aria-label={tNotifications('delete')}
+              title={tNotifications('delete')}
             >
-              <Check size={16} strokeWidth={2} />
+              <Trash2 size={16} strokeWidth={1.75} />
             </button>
-          )}
+          </div>
         </div>
 
         {/* Message */}

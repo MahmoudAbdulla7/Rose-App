@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { Bell, BellOff, BrushCleaning, CheckCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
   DropdownMenu,
@@ -11,9 +12,9 @@ import {
   DropdownMenuSeparator,
 } from '@/shared/ui/dropdown-menu';
 import { useNotifications } from '@/features/user/lib/hooks/use-notification';
-import NotificationItem from './notification-item';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { markAllNotificationsReadAction } from '@/features/user/lib/actions/mark-as-read.action';
+import { deleteAllNotificationsAction } from '@/features/user/lib/actions/delete-notification.action';
+import NotificationItem from './notification-item';
 
 export default function Notifications() {
   // Translation
@@ -25,6 +26,16 @@ export default function Notifications() {
   // Mutation
   const markAllReadMutation = useMutation({
     mutationFn: markAllNotificationsReadAction,
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['notifications'],
+      });
+    },
+  });
+
+  const deleteAllNotificationsMutation = useMutation({
+    mutationFn: deleteAllNotificationsAction,
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -78,6 +89,7 @@ export default function Notifications() {
         )}
       </DropdownMenuTrigger>
 
+      {/* Dropdown */}
       <DropdownMenuContent className="w-96">
         {/* Header */}
         <div className="bg-ds-primary-saturated text-ds-text-inverse p-4 text-xl font-bold">
@@ -86,7 +98,7 @@ export default function Notifications() {
 
         {notifications.length === 0 ? (
           <>
-            {/* Empty */}
+            {/* Empty, header */}
             <div className="flex cursor-default justify-between p-2.5 text-xs text-zinc-400">
               {/* Clear all */}
               <div className="flex items-center gap-1.5">
@@ -111,13 +123,18 @@ export default function Notifications() {
           </>
         ) : (
           <>
-            {/* Not empty */}
+            {/* Not empty, header */}
             <div className="text-ds-text-plain flex cursor-default justify-between p-2.5 text-xs">
               {/* Clear all */}
-              <div className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 dark:hover:text-zinc-200">
+              <button
+                type="button"
+                onClick={() => deleteAllNotificationsMutation.mutate()}
+                disabled={deleteAllNotificationsMutation.isPending}
+                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 dark:hover:text-zinc-200"
+              >
                 <BrushCleaning size={18} strokeWidth={1.5} />
                 <span>{tNotifications('clearAll')}</span>
-              </div>
+              </button>
 
               {/* Mark all as read */}
               <button
@@ -133,7 +150,7 @@ export default function Notifications() {
 
             <DropdownMenuSeparator />
 
-            {/* Notifications dropdown */}
+            {/* Body */}
             <div onScroll={handleScroll} className="max-h-120 overflow-x-hidden overflow-y-auto">
               {notifications.map((notification) => (
                 <NotificationItem key={notification.id} notification={notification} />
