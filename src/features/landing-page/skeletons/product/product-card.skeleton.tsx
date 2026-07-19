@@ -1,9 +1,13 @@
 import { cn } from '@/shared/lib/utils';
 import Skeleton from '@/shared/ui/skeleton';
 
-export default async function ProductCardSkeleton() {
+export interface IProductCardSkeletonProps {
+  className?: string;
+}
+
+export default function ProductCardSkeleton({ className }: IProductCardSkeletonProps) {
   return (
-    <article className={cn('flex w-full max-w-xs flex-col gap-4 rounded-4xl')}>
+    <article className={cn('flex w-full flex-col gap-4 rounded-4xl', className)}>
       {/* Image */}
       <div className="relative h-72 w-full overflow-hidden rounded-2xl">
         <Skeleton className="h-full w-full object-cover" />

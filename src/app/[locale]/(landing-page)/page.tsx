@@ -1,25 +1,33 @@
 import AboutSection from '@/features/landing-page/components/home/about';
-import CompaniesSection from '@/features/landing-page/components/home/partner';
 import Gallery from '@/features/landing-page/components/home/gallery';
-import ProductCard from '@/features/landing-page/components/product-card';
+import CompaniesSection from '@/features/landing-page/components/home/partner';
 import Testimonials from '@/features/landing-page/components/home/testimonials';
-import { PRODUCT_CARD_DUMMY_DATA } from '@/features/landing-page/lib/constants/product.constant';
-import ProductCardSkeleton from '@/features/landing-page/skeletons/product-card.skeleton';
+import BestSellingSection from '@/features/landing-page/components/best-selling/best-selling-section';
+import Features from '@/features/landing-page/components/features';
+import Hero from '@/features/landing-page/components/hero/hero';
+import PopularProductsSection from '@/features/landing-page/components/popular-products/popular-products-section';
 
-export default async function LandingPage() {
+type LandingPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function LandingPage({
+  searchParams,
+}: LandingPageProps) {
+  const resolvedSearchParams = await searchParams;
+
   return (
-    <div className="space-y-4 p-2">
-      <ProductCard product={PRODUCT_CARD_DUMMY_DATA} />
+    <main className="container flex flex-col gap-32 overflow-hidden py-8">
+      <Hero />
+      <Features />
 
-      <ProductCardSkeleton />
+      <BestSellingSection />
+      <PopularProductsSection searchParams={resolvedSearchParams} />
 
       <AboutSection />
-
       <Gallery />
-
       <Testimonials />
-
       <CompaniesSection />
-    </div>
+    </main>
   );
 }
