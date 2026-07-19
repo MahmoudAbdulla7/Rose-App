@@ -32,7 +32,7 @@ async function BestSellingSectionContent() {
   }
 
   return (
-    <section className="flex w-full flex-col items-stretch gap-9 xl:flex-row">
+    <section className="my-20 flex w-full flex-col items-stretch gap-9 xl:flex-row">
       {/* Text column */}
       <div className="flex w-full flex-col gap-2.5 lg:min-w-0 lg:flex-1 lg:self-stretch">
         <p className="text-soft-pink-500 dark:text-maroon-400 tracking-label text-base leading-none font-bold uppercase">

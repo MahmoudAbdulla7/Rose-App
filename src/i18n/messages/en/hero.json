@@ -10,24 +10,5 @@
       "description": "Elegant gifts for every special moment.",
       "cta": "I'm buying!"
     }
-  },
-  "occasions": {
-    "occasion": [
-      {
-        "title": "Celebrate Her Forever with a Gift She'll Always Remember",
-        "badge": "Wedding",
-        "slug": "wedding"
-      },
-      {
-        "title": "Honor the Beginning of a Beautiful Journey Together",
-        "badge": "Engagement",
-        "slug": "engagement"
-      },
-      {
-        "title": "Mark Every Year of Love with a Meaningful Surprise",
-        "badge": "Anniversary",
-        "slug": "anniversary"
-      }
-    ]
   }
 }
