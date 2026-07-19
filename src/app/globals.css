@@ -146,6 +146,10 @@
   --height-input: 3.0625rem; /* 49px */
   --size-icon-md: var(--icon-md); /* 18px */
   --spacing-icon-end: 0.90625rem; /* 14.5px */
+
+  /* ---- Typography extras (Figma section labels / body) ---- */
+  --tracking-label: 0.25em;
+  --leading-body: 1.2;
 }
 
 /* =============================================================================
@@ -217,6 +221,7 @@
   --shadow-ds-soft: var(--ds-shadow-soft);
   --shadow-ds-soft-lg: var(--ds-shadow-soft-lg);
   --shadow-ds-soft-sm: var(--ds-shadow-soft-sm);
+  --shadow-ds-spread: var(--ds-shadow-spread);
 
   /* ---- Ring color — ring-ds-ring* (use with the 3px-wide `ring` utility) ---- */
   --color-ds-ring: var(--ds-ring);
@@ -330,6 +335,7 @@
   --ds-shadow-soft: 0 4px 10px 0 rgb(0 0 0 / 0.1);
   --ds-shadow-soft-lg: 0 4px 18px 0 rgb(0 0 0 / 0.1);
   --ds-shadow-soft-sm: 0 2px 5px 0 rgb(0 0 0 / 0.1);
+  --ds-shadow-spread: 0px 0px 40px 5px rgb(0 0 0 / 0.05);
 
   /* ---- Ring color (width handled by --default-ring-width) ---- */
   --ds-ring: var(--color-maroon-50);
@@ -438,6 +444,29 @@
   /* ---- Ring color (width handled by --default-ring-width) ---- */
   --ds-ring: #473036;
   --ds-ring-danger: #452b2c;
+}
+
+/* =============================================================================
+   Utilities — custom Tailwind utils
+   ========================================================================== */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @variant sm {
+    max-width: var(--breakpoint-sm);
+    padding-inline: 2rem;
+  }
+  @variant md {
+    max-width: var(--breakpoint-md);
+  }
+  @variant lg {
+    max-width: var(--breakpoint-lg);
+  }
+  @variant xl {
+    max-width: var(--container-7xl); /* 80rem — caps at 7xl */
+  }
 }
 
 /* =============================================================================
