@@ -1,0 +1,18 @@
+{
+  "freeDelivery": {
+    "title": "توصيل مجاني",
+    "description": "للطلبات فوق 120 جنيه مصري"
+  },
+  "getRefund": {
+    "title": "استرداد الأموال",
+    "description": "استرداد خلال 30 يومًا"
+  },
+  "safePayment": {
+    "title": "دفع آمن",
+    "description": "دفع آمن بنسبة 100٪"
+  },
+  "support247": {
+    "title": "دعم على مدار الساعة",
+    "description": "اتصل بنا في أي وقت"
+  }
+}

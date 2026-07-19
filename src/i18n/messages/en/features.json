@@ -1,0 +1,18 @@
+{
+  "freeDelivery": {
+    "title": "Free Delivery",
+    "description": "For orders above 120 EGP"
+  },
+  "getRefund": {
+    "title": "Get Refund",
+    "description": "Refunds within 30 days"
+  },
+  "safePayment": {
+    "title": "Safe Payment",
+    "description": "100% Secure Payment"
+  },
+  "support247": {
+    "title": "24/7 Support",
+    "description": "Contact us at any time"
+  }
+}
