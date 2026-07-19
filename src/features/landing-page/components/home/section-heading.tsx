@@ -1,38 +1,26 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes } from 'react';
 
 import { cn } from '@/shared/lib/utils';
 
 export interface ISectionHeadingProps {
-  tagline?: string;
-  title: ReactNode;
-  id?: string;
   className?: string;
 }
 
-// Shared `t.rich` renderer for the underlined part of a heading.
-export const headingHighlight = (chunks: ReactNode) => (
-  <span className="md:decoration-ds-secondary md:underline md:decoration-2 md:underline-offset-[0.1em]">
-    {chunks}
-  </span>
-);
-
-export default function SectionHeading({ tagline, title, id, className }: ISectionHeadingProps) {
+export default function SectionHeading({
+  className,
+  ...props
+}: HTMLAttributes<HTMLHeadingElement> & ISectionHeadingProps) {
   return (
-    <div className={cn('flex flex-col items-center gap-2 text-center', className)}>
-      {/* Tagline */}
-      {tagline && (
-        <span className="text-ds-secondary text-sm font-bold tracking-[0.25em] uppercase sm:text-base">
-          {tagline}
-        </span>
+    <h2
+      {...(props as HTMLAttributes<HTMLHeadingElement>)}
+      className={cn(
+        'text-maroon-700 dark:text-soft-pink-200 relative isolate shrink-0 text-4xl leading-none font-bold',
+        "before:bg-soft-pink-100 before:absolute before:start-0 before:top-6 before:-z-10 before:h-4 before:w-38.5 before:rounded-e-full before:content-[''] dark:before:bg-zinc-700",
+        "after:bg-soft-pink-600 dark:after:bg-soft-pink-500 after:absolute after:start-0 after:top-10 after:-z-10 after:h-0.5 after:w-15 after:content-['']",
+        className,
       )}
-
-      {/* Heading Title */}
-      <h2
-        id={id}
-        className="text-ds-primary-saturated before:bg-ds-secondary-faint relative inline-block text-3xl leading-none font-bold before:absolute before:bottom-0 before:-z-10 before:h-[45%] before:w-[77%] before:rounded-e-[20px] before:content-[''] max-md:before:hidden sm:text-4xl"
-      >
-        {title}
-      </h2>
-    </div>
+    >
+      {props?.children}
+    </h2>
   );
 }

@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import SectionHeading, {
-  headingHighlight,
-} from '@/features/landing-page/components/home/section-heading';
+import SectionHeading from '@/features/landing-page/components/home/section-heading';
 import { GALLERY_COLUMNS } from '@/features/landing-page/lib/constants/home/gallery.constant';
 
 export default async function Gallery() {
@@ -13,12 +11,9 @@ export default async function Gallery() {
   const t = await getTranslations('home.gallery');
 
   return (
-    <section className="container">
+    <section className="w-full">
       {/* Heading */}
-      <SectionHeading
-        tagline={t('tagline')}
-        title={t.rich('title', { highlight: headingHighlight })}
-      />
+      <SectionHeading id="gallery-heading">{t('title')}</SectionHeading>
 
       {/* Images */}
       <div className="mt-10 w-full columns-1 gap-3.5 sm:columns-2 lg:columns-3">

@@ -4,12 +4,12 @@
   },
   "gallery": {
     "tagline": "Gallery",
-    "title": "<highlight>Check Out</highlight> our Wonderful Gallery",
+    "title": "Check Out our Wonderful Gallery",
     "region": "Gallery"
   },
   "testimonials": {
     "tagline": "Testimonials",
-    "title": "<highlight>Real Words</highlight> from Happy Customers",
+    "title": "Real Words from Happy Customers",
     "ratingLabel": "Rated {rating} out of {max} stars"
   },
   "about": {

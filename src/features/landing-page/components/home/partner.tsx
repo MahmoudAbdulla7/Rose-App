@@ -10,7 +10,7 @@ export default async function Partner() {
   const t = await getTranslations('home.partner');
 
   return (
-    <section className="container">
+    <section className="w-full">
       <div className="bg-ds-primary-fade space-y-10 rounded-[20px] px-6 py-10">
         <h2 className="text-ds-primary-saturated text-center text-3xl font-bold md:text-4xl">
           {t.rich('title', {

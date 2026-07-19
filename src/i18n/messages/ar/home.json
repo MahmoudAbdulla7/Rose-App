@@ -4,12 +4,12 @@
   },
   "gallery": {
     "tagline": "المعرض",
-    "title": "<highlight>اطّلع على</highlight> معرضنا الرائع",
+    "title": "اطّلع على معرضنا الرائع",
     "region": "المعرض"
   },
   "testimonials": {
     "tagline": "آراء العملاء",
-    "title": "<highlight>كلمات حقيقية</highlight> من عملاء سعداء",
+    "title": "كلمات حقيقية من عملاء سعداء",
     "ratingLabel": "التقييم {rating} من {max} نجوم"
   },
   "about": {

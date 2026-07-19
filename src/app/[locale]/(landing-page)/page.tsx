@@ -8,16 +8,14 @@ import Hero from '@/features/landing-page/components/hero/hero';
 import PopularProductsSection from '@/features/landing-page/components/popular-products/popular-products-section';
 
 type LandingPageProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Promise<ISearchParams>;
 };
 
-export default async function LandingPage({
-  searchParams,
-}: LandingPageProps) {
+export default async function LandingPage({ searchParams }: LandingPageProps) {
   const resolvedSearchParams = await searchParams;
 
   return (
-    <main className="container flex flex-col gap-32 overflow-hidden py-8">
+    <main className="container flex flex-col gap-16 overflow-hidden py-6 sm:gap-20 sm:py-8 md:gap-24 lg:gap-28 xl:gap-32">
       <Hero />
       <Features />
 

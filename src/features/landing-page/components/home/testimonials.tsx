@@ -6,9 +6,7 @@ import {
   TESTIMONIALS,
   TESTIMONIAL_MAX_RATING,
 } from '@/features/landing-page/lib/constants/home/testimonials.constant';
-import SectionHeading, {
-  headingHighlight,
-} from '@/features/landing-page/components/home/section-heading';
+import SectionHeading from '@/features/landing-page/components/home/section-heading';
 import { TestimonialsCarousel } from '@/features/landing-page/components/home/testimonials-carousel';
 import { cn } from '@/shared/lib/utils';
 import { CarouselItem } from '@/shared/ui/carousel';
@@ -23,12 +21,7 @@ export default async function Testimonials() {
   return (
     <section className="">
       {/* Heading */}
-      <SectionHeading
-        id="testimonials-heading"
-        className="container"
-        tagline={t('tagline')}
-        title={t.rich('title', { highlight: headingHighlight })}
-      />
+      <SectionHeading id="testimonials-heading">{t('title')}</SectionHeading>
 
       {/* Review cards */}
       <div className="bg-ds-primary-fade mx-auto mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20">
