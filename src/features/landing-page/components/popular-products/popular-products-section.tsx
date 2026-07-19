@@ -31,7 +31,6 @@ async function PopularProductsSectionContent({ searchParams = {} }: IPopularProd
   const locale = await getLocale();
   const isMobile = await isMobileDevice();
 
-  // Occasions — failures throw and are caught by the section error boundary
   const occasions = await getLandingPageOccasions({ locale });
 
   const rawOccasion = searchParams.occasion;
