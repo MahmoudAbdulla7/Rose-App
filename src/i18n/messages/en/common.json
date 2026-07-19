@@ -29,5 +29,18 @@
   },
   "error": {
     "networkError": "Something went wrong. Please try again."
+  },
+  "entities": {
+    "products": "products",
+    "occasions": "occasions"
+  },
+  "loadError": {
+    "title": "Failed to load {entity}. Try again.",
+    "subtitle": "We couldn't fetch {entity} right now. Please try again in a moment.",
+    "retry": "Try again"
+  },
+  "emptyState": {
+    "title": "Nothing here yet",
+    "description": "We couldn't find any {entity} to show. Try adjusting your filters or check back soon."
   }
 }
