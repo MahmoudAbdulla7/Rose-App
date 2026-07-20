@@ -32,6 +32,10 @@
   "profile": "Profile",
   "orders": "Orders",
   "logout": "Logout",
+  "menu": {
+    "open": "Open menu",
+    "title": "Menu"
+  },
   "nav": {
     "label": "Main navigation",
     "home": "Home",

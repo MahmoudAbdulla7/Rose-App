@@ -39,7 +39,7 @@ function SearchInput({
           </button>
         ) : undefined
       }
-      wrapperClassName={cn('w-input', wrapperClassName)}
+      wrapperClassName={cn('w-full', wrapperClassName)}
       {...props}
     />
   );

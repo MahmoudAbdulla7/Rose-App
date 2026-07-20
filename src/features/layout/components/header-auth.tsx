@@ -2,10 +2,17 @@
 
 import { Link } from '@/i18n/navigation';
 import { useAuth } from '@/shared/hooks';
+import { cn } from '@/shared/lib/utils';
 import { User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-export default function HeaderAuth() {
+type HeaderAuthProps = {
+  className?: string;
+  /** Show username / login label even on the smallest screens */
+  alwaysShowLabel?: boolean;
+};
+
+export default function HeaderAuth({ className, alwaysShowLabel = false }: HeaderAuthProps) {
   const t = useTranslations('header');
   const { user, isAuthenticated, isLoading } = useAuth();
 
@@ -15,8 +22,14 @@ export default function HeaderAuth() {
 
   if (isAuthenticated && user) {
     return (
-      <div className="flex items-center gap-2 px-2">
-        <span className="text-ds-text-default hidden max-w-28 truncate text-sm sm:inline">
+      <div className={cn('flex items-center gap-2 px-2', className)}>
+        <User className="text-ds-text-default size-4 shrink-0" />
+        <span
+          className={cn(
+            'text-ds-text-default max-w-36 truncate text-sm',
+            !alwaysShowLabel && 'hidden sm:inline',
+          )}
+        >
           {user.username ?? ''}
         </span>
       </div>
@@ -26,10 +39,13 @@ export default function HeaderAuth() {
   return (
     <Link
       href="/login"
-      className="text-ds-text-default flex items-center gap-1.5 px-2 py-1.5 text-sm"
+      className={cn(
+        'text-ds-text-default flex items-center gap-1.5 px-2 py-1.5 text-sm',
+        className,
+      )}
     >
       <User className="size-4" />
-      <span className="hidden sm:inline">{t('login')}</span>
+      <span className={cn(!alwaysShowLabel && 'hidden sm:inline')}>{t('login')}</span>
     </Link>
   );
 }
