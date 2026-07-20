@@ -50,8 +50,9 @@ The codebase uses a **feature-based** layout: `app/` handles routing only, each 
 src/
   app/[locale]/              # App Router — thin route files only
   features/
+    layout/                  # Site shell (header, nav)
     landing-page/            # Landing feature
-      components/            # Feature-specific UI (e.g. header)
+      components/            # Feature-specific UI
   i18n/                      # next-intl routing, messages, navigation
   shared/
     components/                # Reusable components used across features

@@ -1,0 +1,22 @@
+{
+  "logoAlt": "روز",
+  "homeAria": "الصفحة الرئيسية لروز",
+  "searchPlaceholder": "ما الهدية الرائعة التي تبحث عنها؟",
+  "login": "تسجيل الدخول",
+  "wishlist": "المفضلة",
+  "cart": "السلة",
+  "cartWithCount": "السلة، {count} عناصر",
+  "notifications": "الإشعارات",
+  "profile": "الملف الشخصي",
+  "orders": "طلباتي",
+  "logout": "تسجيل الخروج",
+  "nav": {
+    "label": "القائمة الرئيسية",
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "categories": "الفئات",
+    "occasions": "المناسبات",
+    "contact": "تواصل معنا",
+    "about": "من نحن"
+  }
+}
