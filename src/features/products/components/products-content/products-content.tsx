@@ -1,7 +1,11 @@
 import ProductsContentPagination from './pagination';
 import ProductsGrid from './products-grid';
 
-export default function ProductsContent() {
+type ProductsContentProps = {
+  searchParams?: ISearchParams;
+};
+
+export default function ProductsContent(_props: ProductsContentProps) {
   return (
     <>
       <ProductsGrid />

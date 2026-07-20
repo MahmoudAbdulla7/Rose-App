@@ -6,6 +6,7 @@ import BestSellingSection from '@/features/landing-page/components/best-selling/
 import Features from '@/features/landing-page/components/features';
 import Hero from '@/features/landing-page/components/hero/hero';
 import PopularProductsSection from '@/features/landing-page/components/popular-products/popular-products-section';
+import { PRODUCT_SORT_BY } from '@/shared/lib/apis/products/products.options';
 
 type LandingPageProps = {
   searchParams: Promise<ISearchParams>;
@@ -20,7 +21,9 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
       <Features />
 
       <BestSellingSection />
-      <PopularProductsSection searchParams={resolvedSearchParams} />
+      <PopularProductsSection
+        searchParams={{ ...resolvedSearchParams, sortBy: PRODUCT_SORT_BY.MOST_POPULAR }}
+      />
 
       <AboutSection />
       <Gallery />
