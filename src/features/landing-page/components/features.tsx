@@ -13,7 +13,7 @@ export default function Features() {
 
   return (
     <section>
-      <div className="bg-ds-subtle grid grid-cols-1 gap-8 rounded-4xl p-4 md:grid-cols-2 md:p-8 lg:grid-cols-4 lg:p-10">
+      <div className="bg-ds-subtle grid grid-cols-2 gap-8 rounded-4xl p-4 md:p-8 lg:grid-cols-4 lg:p-10">
         {features.map((feature, index) => (
           <div key={index} className="flex items-center justify-center gap-2">
             <div className="bg-ds-primary-saturated text-ds-text-inverse rounded-full p-3">
