@@ -1,4 +1,26 @@
 {
+  "greeting": {
+    "hello": "مرحبًا"
+  },
+  "delivery": {
+    "deliverTo": "التوصيل إلى"
+  },
+  "userMenu": {
+    "account": "حسابي",
+    "addresses": "عناويني",
+    "orders": "طلباتي",
+    "dashboard": "لوحة التحكم",
+    "logout": "تسجيل الخروج"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "markAllRead": "تعيين الكل كمقروء",
+    "clearAll": "حذف جميع الإشعارات",
+    "markRead": "تعيين كمقروء",
+    "delete": "حذف",
+    "empty": "لا توجد إشعارات حتى الآن",
+    "error": "تعذر تحميل الإشعارات"
+  },
   "logoAlt": "روز",
   "homeAria": "الصفحة الرئيسية لروز",
   "searchPlaceholder": "ما الهدية الرائعة التي تبحث عنها؟",
@@ -6,7 +28,6 @@
   "wishlist": "المفضلة",
   "cart": "السلة",
   "cartWithCount": "السلة، {count} عناصر",
-  "notifications": "الإشعارات",
   "profile": "الملف الشخصي",
   "orders": "طلباتي",
   "logout": "تسجيل الخروج",
