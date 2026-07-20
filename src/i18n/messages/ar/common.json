@@ -3,6 +3,44 @@
     "title": "تطبيق روز",
     "description": "اكتشف واطلب زهور وهدايا بسهولة مع تطبيق روز."
   },
+  "pages": {
+    "wishlist": {
+      "title": "المفضلة",
+      "comingSoon": "قريباً"
+    },
+    "cart": {
+      "title": "السلة",
+      "comingSoon": "قريباً"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "comingSoon": "قريباً"
+    },
+    "products": {
+      "title": "المنتجات",
+      "comingSoon": "قريباً"
+    },
+    "categories": {
+      "title": "الفئات",
+      "comingSoon": "قريباً"
+    },
+    "occasions": {
+      "title": "المناسبات",
+      "comingSoon": "قريباً"
+    },
+    "contact": {
+      "title": "تواصل معنا",
+      "comingSoon": "قريباً"
+    },
+    "about": {
+      "title": "من نحن",
+      "comingSoon": "قريباً"
+    },
+    "orders": {
+      "title": "طلباتي",
+      "comingSoon": "قريباً"
+    }
+  },
   "toast": {
     "error": "خطأ"
   },
@@ -29,5 +67,18 @@
   },
   "error": {
     "networkError": "حدث خطأ ما. يرجى المحاولة مجدداً."
+  },
+  "entities": {
+    "products": "المنتجات",
+    "occasions": "المناسبات"
+  },
+  "loadError": {
+    "title": "فشل تحميل {entity}. حاول مرة أخرى.",
+    "subtitle": "تعذر جلب {entity} الآن. يرجى المحاولة مرة أخرى بعد لحظات.",
+    "retry": "حاول مرة أخرى"
+  },
+  "emptyState": {
+    "title": "لا يوجد شيء هنا بعد",
+    "description": "لم نعثر على أي {entity} لعرضها. جرّب تعديل الفلاتر أو عد لاحقاً."
   }
 }

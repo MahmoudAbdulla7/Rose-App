@@ -1,0 +1,48 @@
+{
+  "greeting": {
+    "hello": "Hello"
+  },
+  "delivery": {
+    "deliverTo": "Deliver to"
+  },
+  "userMenu": {
+    "account": "Account",
+    "addresses": "Addresses",
+    "orders": "Orders",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "notifications": {
+    "label": "Notifications",
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "clearAll": "Clear all notifications",
+    "markRead": "Mark as read",
+    "delete": "Delete",
+    "empty": "No notifications yet",
+    "error": "Could not load notifications"
+  },
+  "logoAlt": "Rose",
+  "homeAria": "Rose home",
+  "searchPlaceholder": "What awesome gift are you looking for?",
+  "login": "Login",
+  "wishlist": "Wishlist",
+  "cart": "Cart",
+  "cartWithCount": "Cart, {count} items",
+  "profile": "Profile",
+  "orders": "Orders",
+  "logout": "Logout",
+  "menu": {
+    "open": "Open menu",
+    "title": "Menu"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "occasions": "Occasions",
+    "contact": "Contact",
+    "about": "About"
+  }
+}
