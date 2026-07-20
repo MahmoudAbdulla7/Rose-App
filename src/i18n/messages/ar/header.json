@@ -1,0 +1,48 @@
+{
+  "greeting": {
+    "hello": "مرحبًا"
+  },
+  "delivery": {
+    "deliverTo": "التوصيل إلى"
+  },
+  "userMenu": {
+    "account": "حسابي",
+    "addresses": "عناويني",
+    "orders": "طلباتي",
+    "dashboard": "لوحة التحكم",
+    "logout": "تسجيل الخروج"
+  },
+  "notifications": {
+    "label": "الإشعارات",
+    "title": "الإشعارات",
+    "markAllRead": "تعيين الكل كمقروء",
+    "clearAll": "حذف جميع الإشعارات",
+    "markRead": "تعيين كمقروء",
+    "delete": "حذف",
+    "empty": "لا توجد إشعارات حتى الآن",
+    "error": "تعذر تحميل الإشعارات"
+  },
+  "logoAlt": "روز",
+  "homeAria": "الصفحة الرئيسية لروز",
+  "searchPlaceholder": "ما الهدية الرائعة التي تبحث عنها؟",
+  "login": "تسجيل الدخول",
+  "wishlist": "المفضلة",
+  "cart": "السلة",
+  "cartWithCount": "السلة، {count} عناصر",
+  "profile": "الملف الشخصي",
+  "orders": "طلباتي",
+  "logout": "تسجيل الخروج",
+  "menu": {
+    "open": "فتح القائمة",
+    "title": "القائمة"
+  },
+  "nav": {
+    "label": "القائمة الرئيسية",
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "categories": "الفئات",
+    "occasions": "المناسبات",
+    "contact": "تواصل معنا",
+    "about": "من نحن"
+  }
+}

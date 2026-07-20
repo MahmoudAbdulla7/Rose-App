@@ -1,3 +1,5 @@
+'use client';
+
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
@@ -59,13 +61,21 @@ export default function ForgotPasswordForm({ goToStep, setEmail }: ForgotPasswor
   // Functions
   const submitEmail = handleSubmit((values) => {
     setServerError(null);
-    forgotPasswordMutation.mutate(values);
+
+    forgotPasswordMutation.mutate({
+      email: values.email,
+      redirectUrl: `${process.env.NEXT_PUBLIC_APP_URL}reset-password`,
+    });
   });
 
   return (
     <>
       {/* Header */}
-      <AuthHeader title={t('email.title')} description={t('email.description')} />
+      <AuthHeader
+        variant="secondary"
+        title={t('email.title')}
+        description={t('email.description')}
+      />
 
       {/* Form */}
       <form onSubmit={submitEmail} className="flex flex-col gap-5">
