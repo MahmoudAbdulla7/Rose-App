@@ -1,4 +1,4 @@
-import Header from '@/features/landing-page/components/header';
+import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 import Image from 'next/image';
 import Separator from './_components/separator';
 
@@ -10,7 +10,9 @@ export default async function AuthLayout({ children }: Props) {
       <div className="grid h-screen grid-cols-1 items-center justify-center md:grid-cols-2">
         <div className="max-h-screen w-full max-w-3/5 place-self-center">
           {/* Switch Language */}
-          <Header />
+          <div className="flex justify-end">
+            <LanguageSwitcherComponent />
+          </div>
 
           {/* Top Separator */}
           <Separator />

@@ -1,6 +1,7 @@
 'use client';
 
 import { Input, type InputProps } from '@/shared/ui/input';
+import { cn } from '@/shared/lib/utils';
 import { Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
@@ -9,6 +10,7 @@ function SearchInput({
   onChange,
   value,
   defaultValue,
+  wrapperClassName,
   ...props
 }: Omit<InputProps, 'type' | 'leftIcon' | 'rightIcon'>) {
   const t = useTranslations('common.input');
@@ -37,6 +39,7 @@ function SearchInput({
           </button>
         ) : undefined
       }
+      wrapperClassName={cn('w-input', wrapperClassName)}
       {...props}
     />
   );

@@ -1,6 +1,7 @@
 'use server';
 
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 
 type ForgotPasswordBody = {
   email: string;
@@ -13,8 +14,8 @@ type ResetPasswordBody = {
   confirmPassword: string;
 };
 
-export async function forgotPasswordAction(input: ForgotPasswordBody): Promise<IAPIResponse<null>> {
-  const response = await fetch(`${process.env.NEXT_BASE_URL}auth/forgot-password`, {
+export async function forgotPasswordAction(body: ForgotPasswordBody): Promise<IAPIResponse<null>> {
+  const response = await fetch(buildApiEndpoint('auth/forgot-password'), {
     method: 'POST',
     headers: {
       ...API_HEADERS.JSON,
@@ -31,8 +32,8 @@ export async function forgotPasswordAction(input: ForgotPasswordBody): Promise<I
   return data;
 }
 
-export async function resetPasswordAction(input: ResetPasswordBody): Promise<IAPIResponse<null>> {
-  const response = await fetch(`${process.env.NEXT_BASE_URL}auth/reset-password`, {
+export async function resetPasswordAction(body: ResetPasswordBody): Promise<IAPIResponse<null>> {
+  const response = await fetch(buildApiEndpoint('auth/reset-password'), {
     method: 'POST',
     headers: {
       ...API_HEADERS.JSON,

@@ -18,7 +18,14 @@ import { Input } from '@/shared/ui/input';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { Separator } from '@/shared/ui/separator';
 
-export default function LoginForm() {
+type LoginFormProps = {
+  /** Overrides `?callbackUrl` from the URL when provided (e.g. dialog on product page). */
+  callbackUrl?: string | null;
+  /** Called after a successful sign-in, before navigating to `callbackUrl`. */
+  onSuccess?: () => void;
+};
+
+export default function LoginForm({ callbackUrl, onSuccess }: LoginFormProps) {
   // Translations
   const t = useTranslations('auth.login');
   const tShared = useTranslations('auth.shared');
@@ -77,7 +84,11 @@ export default function LoginForm() {
 
     if (res?.ok) {
       saveRememberedUser(data.rememberMe, data.username);
-      router.push(safeCallbackUrl(searchParams.get('callbackUrl'), window.location.origin));
+      onSuccess?.();
+      router.push(
+        safeCallbackUrl(callbackUrl ?? searchParams.get('callbackUrl'), window.location.origin),
+      );
+      router.refresh();
       return;
     }
 
