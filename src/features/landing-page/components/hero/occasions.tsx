@@ -1,3 +1,4 @@
+import { PRODUCT_FILTER_KEYS } from '@/features/products/lib/utils/filter.utils';
 import { Link } from '@/i18n/navigation';
 import type { IOccasion } from '@/shared/lib/types/occasions';
 import { Badge } from '@/shared/ui/badge';
@@ -17,7 +18,7 @@ export default function Occasions({ occasions }: OccasionsProps) {
       {occasions.map((occasion) => (
         <Link
           key={occasion.id}
-          href={`/products?occasion=${occasion.id}`}
+          href={`/products?${PRODUCT_FILTER_KEYS.OCCASION}=${occasion.id}`}
           aria-label={occasion.title}
         >
           <div className="relative aspect-4/3 size-full overflow-hidden rounded-4xl sm:aspect-1.5/1">
