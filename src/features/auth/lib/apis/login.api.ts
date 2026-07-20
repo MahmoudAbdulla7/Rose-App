@@ -1,4 +1,5 @@
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import type { ILoginPayload } from '../types/login';
 import type { ILoginResponse } from '../types/auth';
 
@@ -9,9 +10,7 @@ const NETWORK_ERROR_RESPONSE: IErrorResponse = {
 };
 
 export const login = async (payload: ILoginPayload): Promise<IAPIResponse<ILoginResponse>> => {
-  const baseUrl = process.env.NEXT_BASE_URL;
-
-  if (!baseUrl) {
+  if (!process.env.NEXT_BASE_URL) {
     return {
       status: false,
       code: 500,
@@ -27,10 +26,7 @@ export const login = async (payload: ILoginPayload): Promise<IAPIResponse<ILogin
     };
   }
 
-  const loginUrl = new URL(
-    'auth/login',
-    baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`,
-  ).toString();
+  const loginUrl = buildApiEndpoint('auth/login').toString();
 
   try {
     const response = await fetch(loginUrl, {

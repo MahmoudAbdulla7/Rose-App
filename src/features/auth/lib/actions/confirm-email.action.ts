@@ -1,6 +1,7 @@
 'use server';
 
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import type { IRegisterFields } from '../types/register';
 
 export async function confirmEmailAction(email: IRegisterFields['email'], code: string) {
@@ -12,7 +13,7 @@ export async function confirmEmailAction(email: IRegisterFields['email'], code: 
     throw new Error('Code is required');
   }
 
-  const response = await fetch(`${process.env.NEXT_BASE_URL}auth/confirm-email-verification`, {
+  const response = await fetch(buildApiEndpoint('auth/confirm-email-verification'), {
     method: 'POST',
     headers: {
       ...API_HEADERS.JSON,
