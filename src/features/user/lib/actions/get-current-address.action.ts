@@ -1,6 +1,6 @@
 'use server';
 
-import { API_HEADERS } from '@/shared/lib/apis/headers.api';
+import { API_HEADERS } from '@/shared/lib/apis/headers.options';
 import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
 
 import type { AddressesPayload } from '../types/address';

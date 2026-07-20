@@ -20,7 +20,7 @@ export async function forgotPasswordAction(body: ForgotPasswordBody): Promise<IA
     headers: {
       ...API_HEADERS.JSON,
     },
-    body: JSON.stringify(input),
+    body: JSON.stringify(body),
   });
 
   const data = (await response.json()) as IAPIResponse<null>;
@@ -38,7 +38,7 @@ export async function resetPasswordAction(body: ResetPasswordBody): Promise<IAPI
     headers: {
       ...API_HEADERS.JSON,
     },
-    body: JSON.stringify(input),
+    body: JSON.stringify(body),
   });
 
   const data = (await response.json()) as IAPIResponse<null>;
