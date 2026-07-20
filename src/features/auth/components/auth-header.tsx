@@ -1,17 +1,36 @@
 import { Separator } from '@/shared/ui/separator';
+import { cn } from '@/shared/lib/utils';
 
 type AuthHeaderProps = {
   title: string;
-  subtitle?: string;
+  subtitle?: React.ReactNode;
   description: string;
+  variant?: 'primary' | 'secondary';
 };
 
-export default function AuthHeader({ title, subtitle, description }: AuthHeaderProps) {
+export default function AuthHeader({
+  title,
+  subtitle,
+  description,
+  variant = 'primary',
+}: AuthHeaderProps) {
   return (
     <>
-      <h1 className="text-ds-text-plain text-2xl font-bold">{title}</h1>
-      {subtitle && <h2 className="text-ds-primary text-xl font-semibold">{subtitle}</h2>}
-      <p className="text-ds-text-default mt-1 text-sm">{description}</p>
+      <div>
+        <h1
+          className={cn(
+            'text-ds-text-plain',
+            variant === 'primary' ? 'text-3xl font-bold' : 'text-2xl font-semibold',
+          )}
+        >
+          {title}
+        </h1>
+
+        <p className="text-ds-text-plain mt-1">{description}</p>
+
+        {subtitle && <div className="text-ds-primary mt-4 text-xl font-semibold">{subtitle}</div>}
+      </div>
+
       <Separator className="mt-4 mb-6" />
     </>
   );

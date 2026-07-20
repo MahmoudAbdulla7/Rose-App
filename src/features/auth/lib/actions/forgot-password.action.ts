@@ -5,6 +5,7 @@ import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils'
 
 type ForgotPasswordBody = {
   email: string;
+  redirectUrl: string;
 };
 
 type ResetPasswordBody = {
@@ -19,7 +20,7 @@ export async function forgotPasswordAction(body: ForgotPasswordBody): Promise<IA
     headers: {
       ...API_HEADERS.JSON,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(input),
   });
 
   const data = (await response.json()) as IAPIResponse<null>;
@@ -37,7 +38,7 @@ export async function resetPasswordAction(body: ResetPasswordBody): Promise<IAPI
     headers: {
       ...API_HEADERS.JSON,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(input),
   });
 
   const data = (await response.json()) as IAPIResponse<null>;
