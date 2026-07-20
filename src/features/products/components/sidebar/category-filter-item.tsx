@@ -42,7 +42,7 @@ export default function CategoryFilterItem({
           src={category.image}
           alt=""
           width={21}
-          height={20}
+          height={21}
           className="size-5.25 object-cover"
         />
       </span>

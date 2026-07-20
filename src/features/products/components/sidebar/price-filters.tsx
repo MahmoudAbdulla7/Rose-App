@@ -46,21 +46,26 @@ export default function PriceFilters() {
     PRODUCT_FILTER_KEYS.MAX_PRICE,
   ]);
 
-  /* Commit both ends together; skip while max < min so typing stays free */
+  /* Sync Price Range */
   const syncPriceRange = useCallback(() => {
     if (!isValidPriceRange(minPrice, maxPrice)) return;
 
     const trimmedMin = minPrice.trim();
     const trimmedMax = maxPrice.trim();
+    const latestParams = searchParamsToObject(liveSearchParams);
+    const latestMin = liveSearchParams.get(PRODUCT_FILTER_KEYS.MIN_PRICE) ?? '';
+    const latestMax = liveSearchParams.get(PRODUCT_FILTER_KEYS.MAX_PRICE) ?? '';
+
+    if (trimmedMin === latestMin && trimmedMax === latestMax) return;
 
     router.push(
-      setFiltersHref(currentParams, {
+      setFiltersHref(latestParams, {
         [PRODUCT_FILTER_KEYS.MIN_PRICE]: trimmedMin,
         [PRODUCT_FILTER_KEYS.MAX_PRICE]: trimmedMax,
       }),
       { scroll: false },
     );
-  }, [currentParams, maxPrice, minPrice, router]);
+  }, [liveSearchParams, maxPrice, minPrice, router]);
 
   useDebounce({
     callback: syncPriceRange,

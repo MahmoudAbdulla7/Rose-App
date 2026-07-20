@@ -57,7 +57,8 @@
     "price": "Price",
     "from": "from",
     "to": "to",
-    "sidebarLabel": "Product filters"
+    "sidebarLabel": "Product filters",
+    "open": "Filters"
   },
   "error": {
     "networkError": "Something went wrong. Please try again."
