@@ -12,13 +12,17 @@ export async function getNotificationAction({
   const jwt = await getNextAuthToken();
   const token = jwt?.accessToken;
 
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
   const response = await fetch(
     `${process.env.NEXT_BASE_URL}notifications?page=${page}&limit=${limit}`,
     {
       method: 'GET',
       headers: {
         ...API_HEADERS.JSON,
-        ...API_HEADERS.AUTHORIZATION(token!),
+        ...API_HEADERS.AUTHORIZATION(token),
       },
     },
   );
