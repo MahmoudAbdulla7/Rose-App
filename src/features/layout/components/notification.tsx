@@ -1,20 +1,21 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Bell, BellOff, BrushCleaning, CheckCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
+import { useNotifications } from '@/features/layout/hooks/use-notification';
+import { deleteAllNotificationsAction } from '@/features/layout/lib/actions/delete-notification.action';
+import { markAllNotificationsReadAction } from '@/features/layout/lib/actions/mark-as-read.action';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuSeparator,
 } from '@/shared/ui/dropdown-menu';
-import { useNotifications } from '@/features/layout/hooks/use-notification';
-import { markAllNotificationsReadAction } from '@/features/layout/lib/actions/mark-as-read.action';
-import { deleteAllNotificationsAction } from '@/features/layout/lib/actions/delete-notification.action';
 import NotificationItem from './notification-item';
+import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
 
 export default function Notifications() {
   // Translation
@@ -45,7 +46,7 @@ export default function Notifications() {
   });
 
   // Custom hooks
-  const { data, fetchNextPage, hasNextPage, refetch, isFetchingNextPage, error } =
+  const { data, fetchNextPage, hasNextPage, refetch, isFetchingNextPage, error, isLoading } =
     useNotifications();
 
   // Variables
@@ -54,6 +55,7 @@ export default function Notifications() {
     () => notifications.filter((notification) => !notification.isRead).length,
     [notifications],
   );
+  const hasNotifications = notifications.length > 0;
 
   // Functions
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -61,7 +63,7 @@ export default function Notifications() {
 
     const reachedBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;
 
-    if (reachedBottom && hasNextPage && !isFetchingNextPage) {
+    if (reachedBottom && hasNextPage && !isFetchingNextPage && !isLoading) {
       fetchNextPage();
     }
   };
@@ -103,7 +105,7 @@ export default function Notifications() {
           <div className="flex justify-center p-8">
             <p className="text-center text-sm">{tNotifications('error')}</p>
           </div>
-        ) : notifications.length === 0 ? (
+        ) : notifications.length === 0 && !isLoading ? (
           <>
             {/* Empty, header */}
             <div className="flex cursor-default justify-between p-2.5 text-xs text-zinc-400">
@@ -136,8 +138,10 @@ export default function Notifications() {
               <button
                 type="button"
                 onClick={() => deleteAllNotificationsMutation.mutate()}
-                disabled={deleteAllNotificationsMutation.isPending}
-                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 dark:hover:text-zinc-200"
+                disabled={
+                  !hasNotifications || isLoading || deleteAllNotificationsMutation.isPending
+                }
+                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:text-zinc-400 dark:hover:text-zinc-200"
               >
                 <BrushCleaning size={18} strokeWidth={1.5} />
                 <span>{tNotifications('clearAll')}</span>
@@ -147,8 +151,8 @@ export default function Notifications() {
               <button
                 type="button"
                 onClick={() => markAllReadMutation.mutate()}
-                disabled={unreadCount === 0 || markAllReadMutation.isPending}
-                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:opacity-50 dark:hover:text-zinc-200"
+                disabled={isLoading || unreadCount === 0 || markAllReadMutation.isPending}
+                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:text-zinc-400 dark:hover:text-zinc-200"
               >
                 <CheckCheck size={15} strokeWidth={1.5} />
                 <span>{tNotifications('markAllRead')}</span>
@@ -159,9 +163,13 @@ export default function Notifications() {
 
             {/* Body */}
             <div onScroll={handleScroll} className="max-h-120 overflow-x-hidden overflow-y-auto">
-              {notifications.map((notification) => (
-                <NotificationItem key={notification.id} notification={notification} />
-              ))}
+              {isLoading
+                ? Array.from({ length: 4 }).map((_, index) => (
+                    <NotificationItemSkeleton key={index} />
+                  ))
+                : notifications.map((notification) => (
+                    <NotificationItem key={notification.id} notification={notification} />
+                  ))}
             </div>
           </>
         )}
