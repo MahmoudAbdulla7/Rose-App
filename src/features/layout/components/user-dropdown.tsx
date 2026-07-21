@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { signOut } from 'next-auth/react';
 
 import { getUserDataAction } from '@/features/layout/lib/actions/get-user-data.action';
 import { Link } from '@/i18n/navigation';
@@ -13,20 +14,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
-import { signOut } from 'next-auth/react';
 
 export default function HeaderDropdown() {
+  // Translation
   const tGreeting = useTranslations('header.greeting');
   const tUserMenu = useTranslations('header.userMenu');
 
-  const menuItemClasses =
-    'text-ds-text-plain flex w-full items-center gap-2 font-medium cursor-pointer';
-
+  // Query
   const { data: user } = useQuery({
     queryKey: ['user-data'],
     queryFn: getUserDataAction,
   });
 
+  // Variables
+  const menuItemClasses =
+    'text-ds-text-plain flex w-full items-center gap-2 font-medium cursor-pointer';
+
+  // Functions
   const handleLogout = () => {
     signOut({
       callbackUrl: '/',
@@ -64,19 +68,19 @@ export default function HeaderDropdown() {
           <DropdownMenuSeparator />
 
           {/* Account */}
-          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+          <DropdownMenuItem render={<Link href="/profile" className={menuItemClasses} />}>
             <User size={16} strokeWidth={1.5} />
             <span>{tUserMenu('account')}</span>
           </DropdownMenuItem>
 
           {/* Addresses */}
-          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+          <DropdownMenuItem disabled render={<Link href="#" className={menuItemClasses} />}>
             <MapPinHouse size={16} strokeWidth={1.5} />
             <span>{tUserMenu('addresses')}</span>
           </DropdownMenuItem>
 
           {/* Orders */}
-          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+          <DropdownMenuItem render={<Link href="/orders" className={menuItemClasses} />}>
             <ScrollText size={16} strokeWidth={1.5} />
             <span>{tUserMenu('orders')}</span>
           </DropdownMenuItem>
@@ -86,7 +90,7 @@ export default function HeaderDropdown() {
           {/* Dashboard */}
           {user?.role === 'ADMIN' && (
             <>
-              <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+              <DropdownMenuItem disabled render={<Link href="#" className={menuItemClasses} />}>
                 <Settings size={16} strokeWidth={1.5} />
                 <span>{tUserMenu('dashboard')}</span>
               </DropdownMenuItem>
