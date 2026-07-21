@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { getUserDataAction } from '@/features/user/lib/actions/get-user-data.action';
+import { getUserDataAction } from '@/features/layout/lib/actions/get-user-data.action';
 import { Link } from '@/i18n/navigation';
 import {
   DropdownMenu,

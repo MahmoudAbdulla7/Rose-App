@@ -11,9 +11,9 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
 } from '@/shared/ui/dropdown-menu';
-import { useNotifications } from '@/features/user/lib/hooks/use-notification';
-import { markAllNotificationsReadAction } from '@/features/user/lib/actions/mark-as-read.action';
-import { deleteAllNotificationsAction } from '@/features/user/lib/actions/delete-notification.action';
+import { useNotifications } from '@/features/layout/hooks/use-notification';
+import { markAllNotificationsReadAction } from '@/features/layout/lib/actions/mark-as-read.action';
+import { deleteAllNotificationsAction } from '@/features/layout/lib/actions/delete-notification.action';
 import NotificationItem from './notification-item';
 
 export default function Notifications() {

@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getNotificationAction } from '../actions/get-notifications.action';
+import { getNotificationAction } from '../lib/actions/get-notifications.action';
 
 export function useNotifications() {
   return useInfiniteQuery({

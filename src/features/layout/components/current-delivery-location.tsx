@@ -4,7 +4,7 @@ import { LocationEdit } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
-import { getCurrentAddressAction } from '@/features/user/lib/actions/get-current-address.action';
+import { getCurrentAddressAction } from '@/features/layout/lib/actions/get-current-address.action';
 
 export default function CurrentDeliveryLocation() {
   const tDelivery = useTranslations('header.delivery');
