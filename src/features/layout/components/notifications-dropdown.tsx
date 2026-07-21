@@ -17,7 +17,7 @@ import {
 import NotificationItem from './notification-item';
 import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
 
-export default function Notifications() {
+export default function NotificationsDropdown() {
   // Translation
   const tNotifications = useTranslations('header.notifications');
 
