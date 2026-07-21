@@ -1,7 +1,7 @@
 'use client';
 
-import { LocationEdit } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { LocationEdit } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { getCurrentAddressAction } from '@/features/layout/lib/actions/get-current-address.action';

@@ -1,14 +1,14 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Check, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { cn } from '@/shared/lib/utils';
-import { DropdownMenuSeparator, DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 import { deleteNotificationAction } from '@/features/layout/lib/actions/delete-notification.action';
 import { markNotificationReadAction } from '@/features/layout/lib/actions/mark-as-read.action';
 import type { Notification } from '@/features/layout/lib/types/notification';
+import { cn } from '@/shared/lib/utils';
+import { DropdownMenuSeparator, DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 
 interface NotificationItemProps {
   notification: Notification;
