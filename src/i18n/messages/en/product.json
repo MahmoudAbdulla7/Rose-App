@@ -16,6 +16,20 @@
     "previousSlide": "Previous products",
     "nextSlide": "Next products"
   },
+  "productDetails": {
+    "emptyState": {
+      "title": "Product not found",
+      "description": "This product may have been removed or is unavailable."
+    },
+    "leftInStock": "{count, number, decimal} left in stock",
+    "ratingLabel": "Rating:",
+    "ratingValue": "{rating, number, decimal}/{maxRating, number, decimal}",
+    "ratingsCount": "({count, number, decimal} ratings)",
+    "addToCart": "Add to Cart",
+    "gallery": {
+      "thumbnail": "View image {number}"
+    }
+  },
   "popularProducts": {
     "sectionTitle": "Most Popular",
     "viewMore": "View More",
