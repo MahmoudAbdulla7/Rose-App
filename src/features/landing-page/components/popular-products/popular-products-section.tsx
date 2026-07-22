@@ -11,6 +11,7 @@ import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 import { PRODUCTS_OPTIONS } from '@/shared/lib/apis/products/products.options';
 import { isMobileDevice } from '@/shared/lib/utils/device.utils';
 import SectionHeading from '../home/section-heading';
+import { PRODUCT_FILTER_KEYS } from '@/features/products/lib/utils/filter.utils';
 
 export interface IPopularProductsSectionProps {
   searchParams?: ISearchParams;
@@ -63,7 +64,9 @@ async function PopularProductsSectionContent({ searchParams = {} }: IPopularProd
 
       <div className="flex h-10 w-full items-center justify-end gap-2.5">
         <Link
-          href={occasionId ? `/products?occasion=${occasionId}` : '/products'}
+          href={
+            occasionId ? `/products?${PRODUCT_FILTER_KEYS.OCCASION}=${occasionId}` : '/products'
+          }
           className="text-maroon-700 dark:text-soft-pink-200 inline-flex items-center gap-2.5 text-base leading-none font-semibold transition-opacity hover:opacity-90"
         >
           {t('viewMore')}
