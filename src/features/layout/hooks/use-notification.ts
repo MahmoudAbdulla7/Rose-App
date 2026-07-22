@@ -1,7 +1,11 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getNotificationAction } from '../lib/actions/get-notifications.action';
 
-export function useNotifications() {
+interface UseNotificationsOptions {
+  enabled?: boolean;
+}
+
+export function useNotifications({ enabled = true }: UseNotificationsOptions = {}) {
   return useInfiniteQuery({
     queryKey: ['notifications'],
 
@@ -12,6 +16,8 @@ export function useNotifications() {
         page: pageParam,
         limit: 4,
       }),
+
+    enabled,
 
     getNextPageParam: (lastPage) => {
       const { page, totalPages } = lastPage.metadata;

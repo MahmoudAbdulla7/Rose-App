@@ -7,9 +7,11 @@ import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 import ThemeToggle from '@/shared/components/theme-toggle';
 import { SearchInput } from '@/shared/ui/search-input';
 import { Separator } from '@/shared/ui/separator';
-import { Bell, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
+import CurrentDeliveryLocation from './current-delivery-location';
+import NotificationsDropdown from './notifications-dropdown';
 
 export default async function Header() {
   // Translation
@@ -30,6 +32,8 @@ export default async function Header() {
                 priority
               />
             </Link>
+
+            <CurrentDeliveryLocation />
 
             <SearchInput
               placeholder={t('searchPlaceholder')}
@@ -53,13 +57,7 @@ export default async function Header() {
 
             <HeaderCartLink />
 
-            <Link
-              href="/notifications"
-              className="text-ds-text-default hidden p-2 lg:inline-flex"
-              aria-label={t('notifications.label')}
-            >
-              <Bell className="size-5" />
-            </Link>
+            <NotificationsDropdown />
 
             <div className="hidden items-center lg:flex">
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
