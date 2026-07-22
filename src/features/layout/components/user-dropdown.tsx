@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
 
-export default function HeaderDropdown() {
+export default function UserDropdown() {
   // Translation
   const tGreeting = useTranslations('header.greeting');
   const tUserMenu = useTranslations('header.userMenu');
@@ -38,7 +38,7 @@ export default function HeaderDropdown() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex px-4">
       <div className="flex flex-col">
         {/* Greeting */}
         <span className="text-xs text-zinc-500"> {tGreeting('hello')}</span>

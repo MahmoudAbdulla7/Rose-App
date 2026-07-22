@@ -11,6 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
 } from '@/shared/ui/dropdown-menu';
+import { useAuth } from '@/shared/hooks';
 import NotificationItem from './notification-item';
 import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
 import NotificationsToolbar from './notifications-toolbar';
@@ -20,8 +21,9 @@ export default function NotificationsDropdown() {
   const tNotifications = useTranslations('header.notifications');
 
   // Custom hooks
+  const { user, isAuthenticated } = useAuth();
   const { data, fetchNextPage, hasNextPage, refetch, isFetchingNextPage, error, isLoading } =
-    useNotifications();
+    useNotifications({ enabled: isAuthenticated });
 
   // Variables
   const notifications = useMemo(() => data?.pages.flatMap((page) => page.data) ?? [], [data]);
@@ -42,6 +44,14 @@ export default function NotificationsDropdown() {
     }
   };
 
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="text-ds-text-default hidden p-2 lg:inline-flex">
+        <Bell className="size-5" />
+      </div>
+    );
+  }
+
   return (
     <DropdownMenu
       onOpenChange={(open) => {
@@ -53,10 +63,10 @@ export default function NotificationsDropdown() {
       {/* Trigger */}
       <DropdownMenuTrigger
         render={
-          <button className="group text-muted-foreground hover:text-foreground relative cursor-pointer items-center p-1" />
+          <button className="group text-ds-text-default relative hidden cursor-pointer items-center p-2 lg:inline-flex" />
         }
       >
-        <Bell strokeWidth={1.5} className="cursor-pointer" />
+        <Bell className="size-5" />
 
         {/* Count */}
         {!error && unreadCount > 0 && (
