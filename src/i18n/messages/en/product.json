@@ -8,6 +8,7 @@
   "addToCart": "Add {name} to cart",
   "addToWishlist": "Add {name} to wishlist",
   "removeFromWishlist": "Remove {name} from wishlist",
+  "removeFromWishlistLabel": "Remove from wishlist",
   "bestSelling": {
     "label": "Best Selling",
     "headline": "<accent>Check Out</accent> What Everyone's <accent>Buying</accent> Right Now",

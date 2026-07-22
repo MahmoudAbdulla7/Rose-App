@@ -8,6 +8,7 @@
   "addToCart": "أضف {name} إلى السلة",
   "addToWishlist": "أضف {name} إلى المفضلة",
   "removeFromWishlist": "إزالة {name} من المفضلة",
+  "removeFromWishlistLabel": "إزالة من المفضلة",
   "bestSelling": {
     "label": "الأكثر مبيعًا",
     "headline": "<accent>اطّلع على</accent> ما يشتريه الجميع <accent>الآن</accent>",

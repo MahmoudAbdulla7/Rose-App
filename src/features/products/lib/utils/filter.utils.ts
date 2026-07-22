@@ -1,3 +1,5 @@
+import type { IProductSearchParams } from '@/shared/lib/types/product';
+
 export const PRODUCT_FILTER_KEYS = {
   CATEGORY: 'categoryId',
   OCCASION: 'occasionId',
@@ -6,7 +8,23 @@ export const PRODUCT_FILTER_KEYS = {
   MAX_PRICE: 'maxPrice',
 } as const;
 
+export const PRODUCT_PAGE_KEY = 'page';
+
 export const ALL_PRODUCT_FILTER_KEYS = Object.values(PRODUCT_FILTER_KEYS);
+
+const PRODUCT_SEARCH_PARAM_KEYS = [
+  'limit',
+  'page',
+  'categoryId',
+  'subCategoryId',
+  'occasionId',
+  'minPrice',
+  'maxPrice',
+  'minRating',
+  'maxRating',
+  'sortBy',
+  'sortOrder',
+] as const satisfies readonly (keyof IProductSearchParams)[];
 
 /** Gets a search param value. */
 export function getSearchParam(
@@ -40,8 +58,10 @@ export function buildFilterHref(
 ): string {
   const params = new URLSearchParams();
   const current = getSearchParam(searchParams, key);
+  // Changing a filter should restart at page 1.
+  const excludeKeys = key === PRODUCT_PAGE_KEY ? [key] : [key, PRODUCT_PAGE_KEY];
 
-  appendSearchParams(params, searchParams, [key]);
+  appendSearchParams(params, searchParams, excludeKeys);
 
   if (current !== value) {
     params.set(key, value);
@@ -67,8 +87,10 @@ export function setFiltersHref(
 ): string {
   const keys = Object.keys(updates);
   const params = new URLSearchParams();
+  // Changing filters (not page) should restart at page 1.
+  const excludeKeys = keys.includes(PRODUCT_PAGE_KEY) ? keys : [...keys, PRODUCT_PAGE_KEY];
 
-  appendSearchParams(params, searchParams, keys);
+  appendSearchParams(params, searchParams, excludeKeys);
 
   for (const [key, value] of Object.entries(updates)) {
     const trimmed = value.trim();
@@ -82,7 +104,8 @@ export function setFiltersHref(
 /** Clears multiple filter keys in one href; empty values remove their keys. */
 export function clearFilterHref(searchParams: ISearchParams | undefined, keys: string[]): string {
   const params = new URLSearchParams();
-  appendSearchParams(params, searchParams, keys);
+  const excludeKeys = keys.includes(PRODUCT_PAGE_KEY) ? keys : [...keys, PRODUCT_PAGE_KEY];
+  appendSearchParams(params, searchParams, excludeKeys);
 
   const query = params.toString();
   return query ? `?${query}` : '?';
@@ -112,4 +135,24 @@ export function isValidPriceRange(min: string, max: string): boolean {
 /** Sorts items by title. */
 export function sortByTitle<T extends { title: string }>(items: T[]): T[] {
   return [...items].sort((a, b) => a.title.localeCompare(b.title));
+}
+
+/** Maps URL search params to product API search params. */
+export function toProductSearchParams(
+  searchParams: ISearchParams | undefined,
+): Partial<IProductSearchParams> {
+  const params: Partial<IProductSearchParams> = {};
+
+  for (const key of PRODUCT_SEARCH_PARAM_KEYS) {
+    const value = getSearchParam(searchParams, key);
+    if (value) params[key] = value as IProductSearchParams[typeof key];
+  }
+
+  // Landing "view more" uses `occasion`; products filters use `occasionId`.
+  if (!params.occasionId) {
+    const occasion = getSearchParam(searchParams, 'occasion');
+    if (occasion) params.occasionId = occasion;
+  }
+
+  return params;
 }

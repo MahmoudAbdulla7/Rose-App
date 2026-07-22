@@ -52,28 +52,30 @@ export default async function ProductCard({
       aria-describedby={outOfStock ? stockId : undefined}
     >
       {/* Image */}
-      <div className="relative h-72 w-full overflow-hidden rounded-2xl">
-        <HoveredLink
-          href={productHref}
-          className="absolute inset-0 block"
-          aria-labelledby={nameId}
-          tabIndex={-1}
-        >
-          {cover ? (
-            <Image
-              src={cover}
-              alt=""
-              fill
-              className="object-cover"
-              priority={priority}
-              sizes="20rem"
-            />
-          ) : (
-            <div className="bg-maroon-50 size-full" aria-hidden="true" />
-          )}
-        </HoveredLink>
+      <div className="relative h-72 w-full rounded-2xl">
+        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+          <HoveredLink
+            href={productHref}
+            className="absolute inset-0 block"
+            aria-labelledby={nameId}
+            tabIndex={-1}
+          >
+            {cover ? (
+              <Image
+                src={cover}
+                alt=""
+                fill
+                className="object-cover"
+                priority={priority}
+                sizes="20rem"
+              />
+            ) : (
+              <div className="bg-maroon-50 size-full" aria-hidden="true" />
+            )}
+          </HoveredLink>
+        </div>
 
-        {/* Actions and badges */}
+        {/* Actions and badges (outside overflow so remove label can expand) */}
         <div className="pointer-events-none absolute inset-0 z-10 flex items-start justify-between p-2.5">
           <div className="pointer-events-auto">
             <ProductWishlistButton
