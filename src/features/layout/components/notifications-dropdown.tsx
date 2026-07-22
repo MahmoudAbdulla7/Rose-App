@@ -1,13 +1,10 @@
 'use client';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Bell, BellOff, BrushCleaning, CheckCheck } from 'lucide-react';
+import { Bell, BellOff } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 import { useNotifications } from '@/features/layout/hooks/use-notification';
-import { deleteAllNotificationsAction } from '@/features/layout/lib/actions/delete-notification.action';
-import { markAllNotificationsReadAction } from '@/features/layout/lib/actions/mark-as-read.action';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -16,34 +13,11 @@ import {
 } from '@/shared/ui/dropdown-menu';
 import NotificationItem from './notification-item';
 import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
+import NotificationsToolbar from './notifications-toolbar';
 
 export default function NotificationsDropdown() {
   // Translation
   const tNotifications = useTranslations('header.notifications');
-
-  // Query
-  const queryClient = useQueryClient();
-
-  // Mutation
-  const markAllReadMutation = useMutation({
-    mutationFn: markAllNotificationsReadAction,
-
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['notifications'],
-      });
-    },
-  });
-
-  const deleteAllNotificationsMutation = useMutation({
-    mutationFn: deleteAllNotificationsAction,
-
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['notifications'],
-      });
-    },
-  });
 
   // Custom hooks
   const { data, fetchNextPage, hasNextPage, refetch, isFetchingNextPage, error, isLoading } =
@@ -100,77 +74,41 @@ export default function NotificationsDropdown() {
           {!error && ` (${unreadCount})`}
         </div>
 
-        {/* Error */}
+        {/* Body */}
         {error ? (
           <div className="flex justify-center p-8">
             <p className="text-center text-sm">{tNotifications('error')}</p>
           </div>
-        ) : notifications.length === 0 && !isLoading ? (
-          <>
-            {/* Empty, header */}
-            <div className="flex cursor-default justify-between p-2.5 text-xs text-zinc-400">
-              {/* Clear all */}
-              <div className="flex items-center gap-1.5">
-                <BrushCleaning size={18} strokeWidth={1.5} />
-                <span>{tNotifications('clearAll')}</span>
-              </div>
-
-              {/* Mark all as read */}
-              <div className="flex items-center gap-1.5">
-                <CheckCheck size={15} strokeWidth={1.5} />
-                <span>{tNotifications('markAllRead')}</span>
-              </div>
-            </div>
-
-            <DropdownMenuSeparator />
-
-            {/* Body */}
-            <div className="flex flex-col items-center gap-2.5 py-20 text-zinc-500">
-              <BellOff size={50} strokeWidth={1} />
-              <span>{tNotifications('empty')}</span>
-            </div>
-          </>
         ) : (
           <>
-            {/* Not empty, header */}
-            <div className="text-ds-text-plain flex cursor-default justify-between p-2.5 text-xs">
-              {/* Clear all */}
-              <button
-                type="button"
-                onClick={() => deleteAllNotificationsMutation.mutate()}
-                disabled={
-                  !hasNotifications || isLoading || deleteAllNotificationsMutation.isPending
-                }
-                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:text-zinc-400 dark:hover:text-zinc-200"
-              >
-                <BrushCleaning size={18} strokeWidth={1.5} />
-                <span>{tNotifications('clearAll')}</span>
-              </button>
-
-              {/* Mark all as read */}
-              <button
-                type="button"
-                onClick={() => markAllReadMutation.mutate()}
-                disabled={isLoading || unreadCount === 0 || markAllReadMutation.isPending}
-                className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:text-zinc-400 dark:hover:text-zinc-200"
-              >
-                <CheckCheck size={15} strokeWidth={1.5} />
-                <span>{tNotifications('markAllRead')}</span>
-              </button>
-            </div>
+            {/* Toolbar */}
+            <NotificationsToolbar
+              hasNotifications={hasNotifications}
+              unreadCount={unreadCount}
+              isLoading={isLoading}
+            />
 
             <DropdownMenuSeparator />
 
-            {/* Body */}
-            <div onScroll={handleScroll} className="max-h-120 overflow-x-hidden overflow-y-auto">
-              {isLoading
-                ? Array.from({ length: 4 }).map((_, index) => (
-                    <NotificationItemSkeleton key={index} />
-                  ))
-                : notifications.map((notification) => (
-                    <NotificationItem key={notification.id} notification={notification} />
-                  ))}
-            </div>
+            {/* Content */}
+            {!hasNotifications && !isLoading ? (
+              // Empty state
+              <div className="flex flex-col items-center gap-2.5 py-20 text-zinc-500">
+                <BellOff size={50} strokeWidth={1} />
+                <span>{tNotifications('empty')}</span>
+              </div>
+            ) : (
+              // Notifications list
+              <div onScroll={handleScroll} className="max-h-120 overflow-x-hidden overflow-y-auto">
+                {isLoading
+                  ? Array.from({ length: 4 }).map((_, index) => (
+                      <NotificationItemSkeleton key={index} />
+                    ))
+                  : notifications.map((notification) => (
+                      <NotificationItem key={notification.id} notification={notification} />
+                    ))}
+              </div>
+            )}
           </>
         )}
       </DropdownMenuContent>
