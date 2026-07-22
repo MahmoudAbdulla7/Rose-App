@@ -13,6 +13,7 @@ export default async function ProductsGrid({ products }: ProductsGridProps) {
   if (!products.length) {
     return (
       <EmptyState
+        className="h-full flex-1"
         title={t('emptyState.title')}
         subtitle={t('emptyState.description', { entity: t('entities.products') })}
       />

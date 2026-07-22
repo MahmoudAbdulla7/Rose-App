@@ -9,6 +9,10 @@
   "addToWishlist": "Add {name} to wishlist",
   "removeFromWishlist": "Remove {name} from wishlist",
   "removeFromWishlistLabel": "Remove from wishlist",
+  "metadata": {
+    "title": "Products",
+    "description": "Browse our collection of flowers and gifts. Filter by category, occasion, price, and rating to find the perfect pick."
+  },
   "bestSelling": {
     "label": "Best Selling",
     "headline": "<accent>Check Out</accent> What Everyone's <accent>Buying</accent> Right Now",

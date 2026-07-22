@@ -1,9 +1,25 @@
 import ProductsContent from '@/features/products/components/products-content/products-content';
 import Filters from '@/features/products/components/sidebar/filters';
+import type { Metadata } from 'next';
+import type { Locale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 type ProductsPageProps = {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<ISearchParams>;
 };
+
+export async function generateMetadata({ params }: ProductsPageProps): Promise<Metadata> {
+  const { locale } = await params;
+
+  const productT = await getTranslations({ locale: locale as Locale, namespace: 'product' });
+  const commonT = await getTranslations({ locale: locale as Locale, namespace: 'common' });
+
+  return {
+    title: `${commonT('app.title')} | ${productT('metadata.title')}`,
+    description: productT('metadata.description'),
+  };
+}
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const resolvedSearchParams = await searchParams;
@@ -13,7 +29,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <section className="min-w-0 lg:rounded-lg">
         <Filters searchParams={resolvedSearchParams} />
       </section>
-      <section className="min-w-0 rounded-lg">
+      <section className="flex min-w-0 flex-col rounded-lg">
         <ProductsContent searchParams={resolvedSearchParams} />
       </section>
     </main>

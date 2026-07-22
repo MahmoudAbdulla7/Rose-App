@@ -1,4 +1,4 @@
-import PaginationComponent from '@/shared/components/pagination';
+import Pagination from '@/shared/components/pagination';
 
 type ProductsContentPaginationProps = {
   metadata: IPaginatedData<unknown>['metadata'];
@@ -7,7 +7,7 @@ type ProductsContentPaginationProps = {
 export default function ProductsContentPagination({ metadata }: ProductsContentPaginationProps) {
   return (
     <div className="pt-2">
-      <PaginationComponent totalPages={metadata.totalPages} />
+      <Pagination totalPages={metadata.totalPages} />
     </div>
   );
 }
