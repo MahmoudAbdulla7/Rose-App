@@ -9,6 +9,10 @@
   "addToWishlist": "أضف {name} إلى المفضلة",
   "removeFromWishlist": "إزالة {name} من المفضلة",
   "removeFromWishlistLabel": "إزالة من المفضلة",
+  "metadata": {
+    "title": "المنتجات",
+    "description": "تصفّح مجموعتنا من الزهور والهدايا. صفِّ حسب الفئة والمناسبة والسعر والتقييم لتجد الاختيار المناسب."
+  },
   "bestSelling": {
     "label": "الأكثر مبيعًا",
     "headline": "<accent>اطّلع على</accent> ما يشتريه الجميع <accent>الآن</accent>",

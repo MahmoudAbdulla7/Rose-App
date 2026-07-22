@@ -15,7 +15,7 @@ export default function EmptyState({ title, subtitle, className, children }: IEm
     <div
       role="status"
       className={cn(
-        'relative isolate flex w-full flex-col items-center justify-center overflow-hidden rounded-2xl px-6 py-16 text-center',
+        'relative isolate flex min-h-[min(28rem,calc(100dvh-14rem))] w-full flex-col items-center justify-center overflow-hidden rounded-2xl px-6 py-16 text-center',
         'from-soft-pink-50/80 to-maroon-50/40 bg-linear-to-b via-white',
         'dark:to-maroon-950/40 dark:from-zinc-900 dark:via-zinc-950',
         className,

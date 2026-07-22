@@ -25,7 +25,7 @@ export async function getFilteredProducts({
   cacheTag(...PRODUCTS_OPTIONS.TAGS);
 
   const productSearchParams = {
-    limit: PRODUCTS_OPTIONS.PAGE_LIMIT.toString(),
+    limit: PRODUCTS_OPTIONS.PRODUCT_PAGE_LIMIT.toString(),
     ...toProductSearchParams(searchParams),
   };
 

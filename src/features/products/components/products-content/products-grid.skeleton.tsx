@@ -6,7 +6,7 @@ type ProductsGridSkeletonProps = {
 };
 
 export default function ProductsGridSkeleton({
-  limit = PRODUCTS_OPTIONS.PAGE_LIMIT,
+  limit = PRODUCTS_OPTIONS.PRODUCT_PAGE_LIMIT,
 }: ProductsGridSkeletonProps) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
