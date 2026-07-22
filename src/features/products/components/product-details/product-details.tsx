@@ -27,12 +27,15 @@ export default async function ProductDetails({ id }: { id: string }) {
 
   // Variables (derived)
   const availableStock = product.stock - product._count.cartItems;
-  const { price: finalPrice, originalPrice } = getProductDisplayPrice({
+  const {
+    price: finalPrice,
+    originalPrice,
+    hasDiscount,
+  } = getProductDisplayPrice({
     price: product.price,
     discountType: product.discountType,
     discountValue: product.discountValue,
   });
-  const hasDiscount = originalPrice !== undefined;
 
   return (
     <section className="container grid gap-10 lg:grid-cols-2 lg:gap-17.5">
