@@ -1,5 +1,5 @@
-import type { ICouponType } from './coupon';
 import type { IOccasion } from './occasions';
+import type { IProduct } from './product';
 
 export type ICategory = IOccasion;
 
@@ -9,25 +9,28 @@ export interface IProductOccasion extends IDBFields {
   occasion: IOccasion;
 }
 
-export interface ISingleProduct extends IDBFields {
-  title: string;
-  description: string;
+export interface IReview extends IDBFields {
+  userId: string;
+  productId: string;
+  headline: string;
+  content: string;
   rating: number;
-  ratings: number;
-  stock: number;
-  price: string;
-  discountType: ICouponType;
-  discountValue: string;
-  cover: string;
-  gallery: string[];
-  categoryId: string;
-  subCategoryId: string | null;
-  immutable: boolean;
-  deletedAt: string | null;
+  user: {
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+  };
+}
+
+export interface ISingleProduct extends Omit<
+  IProduct,
+  'category' | 'subCategory' | 'occasions' | 'count'
+> {
   category: ICategory;
   subCategory: ICategory | null;
   occasions: IProductOccasion[];
-  reviews: unknown[];
+  reviews: IReview[];
   _count: {
     reviews: number;
     cartItems: number;

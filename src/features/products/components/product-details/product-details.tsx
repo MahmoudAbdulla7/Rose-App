@@ -83,7 +83,7 @@ export default async function ProductDetails({ id }: { id: string }) {
 
         {/* Rating */}
         <div className="flex items-center gap-1.5">
-          <Star size={20} fill="#FFA508" className="text-[#FFA508]" />
+          <Star size={20} className="fill-ds-warning text-ds-warning" />
           <span className="text-ds-text-plain text-base">
             {t('productDetails.ratingLabel')}{' '}
             <span className="font-medium">
