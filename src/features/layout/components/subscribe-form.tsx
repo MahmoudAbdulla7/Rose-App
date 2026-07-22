@@ -63,7 +63,7 @@ export default function SubscribeForm() {
           disabled={isSubmitting}
           aria-busy={isSubmitting}
           tabIndex={isSubmitting ? -1 : 0}
-          className="bg-maroon-50 text-maroon-700 hover:bg-maroon-100 flex h-9.5 shrink-0 items-center justify-center gap-2.5 rounded-full px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+          className="bg-maroon-50 dark:bg-soft-pink-300 text-maroon-700 hover:bg-maroon-100 flex h-9.5 shrink-0 cursor-pointer items-center justify-center gap-2.5 rounded-full px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 dark:text-zinc-800"
         >
           {t('subscribe')}
           <ArrowRight aria-hidden="true" className="size-4 rtl:rotate-180" />

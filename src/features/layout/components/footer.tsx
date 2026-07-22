@@ -20,7 +20,7 @@ export default async function Footer() {
   const t = await getTranslations('footer');
 
   return (
-    <footer className="bg-zinc-800 py-10">
+    <footer className="bg-zinc-800 py-10 dark:bg-zinc-900">
       <div className="container grid w-full grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-[2fr_4fr_3fr]">
         {/* Brand */}
         <div className="flex flex-col items-center justify-center gap-1.5">
