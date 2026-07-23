@@ -1,4 +1,4 @@
-import { cartDb } from '../db/cart.db';
+import { cartDb, type CartItem } from '../db/cart.db';
 import type { IProduct } from '@/shared/lib/types/product';
 
 export const guestCart = {

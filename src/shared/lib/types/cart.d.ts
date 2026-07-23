@@ -17,8 +17,7 @@ export interface IUpdateCartQuantity {
   quantity: number;
 }
 
-export type UpdateCartQuantityResponse = IAPIResponse<null>;
-
+export type UpdateCartQuantityResponse = IAPIResponse<ICartItem>;
 export type ICartResponse = IAPIResponse<{ cartItems: ICartItem[] }>;
 
 export type AddToCartResponse = IAPIResponse<ICartItem>;
