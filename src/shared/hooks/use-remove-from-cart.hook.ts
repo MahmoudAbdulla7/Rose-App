@@ -1,17 +1,17 @@
-import { removeFromWishlist as serverRemove } from '@/shared/lib/actions/wishlist.actions';
-import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
-import { guestWishlist } from '@/shared/lib/services/guest-wishlist.service';
-import type { IRemoveFromWishlist, RemoveFromWishlistResponse } from '@/shared/lib/types/wishlist';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { removeFromCart as serverRemove } from '@/shared/lib/actions/cart.actions';
+import { guestCart } from '@/shared/lib/services/guest-cart.service';
+import { CART_OPTIONS } from '@/shared/lib/apis/cart/cart.options';
+import type { IRemoveFromCart, RemoveFromCartResponse } from '@/shared/lib/types/cart';
 
-export function useRemoveFromWishlist() {
+export function useRemoveFromCart() {
   const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ productId }: IRemoveFromWishlist): Promise<RemoveFromWishlistResponse> => {
+    mutationFn: async ({ productId }: IRemoveFromCart): Promise<RemoveFromCartResponse> => {
       if (isAuthenticated) {
         const response = await serverRemove({ productId });
 
@@ -22,8 +22,7 @@ export function useRemoveFromWishlist() {
           payload: null,
         };
       } else {
-        await guestWishlist.remove(productId);
-
+        await guestCart.remove(productId);
         return {
           status: true,
           code: 200,
@@ -33,7 +32,7 @@ export function useRemoveFromWishlist() {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: WISHLIST_OPTIONS.QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     },
   });
 }

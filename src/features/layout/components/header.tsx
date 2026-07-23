@@ -1,18 +1,18 @@
 import HeaderAuth from './header-auth';
-import HeaderCartLink from './header-cart-link';
 import HeaderMobileMenu from './header-mobile-menu';
 import HeaderNav from './header-nav';
+import HeaderWishlistLink from './header-wishlist-link'; // 👈 new import
 import { Link } from '@/i18n/navigation';
 import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 import ThemeToggle from '@/shared/components/theme-toggle';
 import { SearchInput } from '@/shared/ui/search-input';
 import { Separator } from '@/shared/ui/separator';
-import { Bell, Heart } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
+import HeaderCartLink from './header-cart-link';
 
 export default async function Header() {
-  // Translation
   const t = await getTranslations('header');
 
   return (
@@ -43,13 +43,7 @@ export default async function Header() {
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
             </div>
 
-            <Link
-              href="/wishlist"
-              className="text-ds-text-default p-1.5 sm:p-2"
-              aria-label={t('wishlist')}
-            >
-              <Heart className="size-5" />
-            </Link>
+            <HeaderWishlistLink />
 
             <HeaderCartLink />
 

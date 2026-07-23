@@ -7,6 +7,7 @@
   "rating": "{rating} out of {maxRating} stars",
   "addToCart": "Add {name} to cart",
   "addToWishlist": "Add {name} to wishlist",
+  "addToWishlistLabel": "Add to wishlist",
   "removeFromWishlist": "Remove {name} from wishlist",
   "removeFromWishlistLabel": "Remove from wishlist",
   "metadata": {

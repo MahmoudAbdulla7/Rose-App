@@ -14,7 +14,7 @@ export default function Occasions({ occasions }: OccasionsProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+    <div className="text-ds-text-inverse dark:text-ds-text-plain grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
       {occasions.map((occasion) => (
         <Link
           key={occasion.id}
