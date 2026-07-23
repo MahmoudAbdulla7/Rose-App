@@ -1,16 +1,14 @@
-import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 
 import ProductCartButton from '@/features/landing-page/components/product/product-cart-button';
 import ProductRating from '@/features/landing-page/components/product/product-rating';
 import ProductWishlistButton from '@/features/landing-page/components/product/product-wishlist-button';
+import HoveredLink from '@/shared/components/hovered-link';
 import { PRODUCT_BADGE_VARIANT_CLASSES } from '@/shared/lib/constants/product-badge.constant';
 import type { IProduct } from '@/shared/lib/types/product';
 import { cn } from '@/shared/lib/utils';
 import { getProductDisplayPrice } from '@/shared/lib/utils/product-price.utils';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
-import HoveredLink from '@/shared/components/hovered-link';
 
 export interface IProductCardProps {
   product: IProduct;
@@ -25,11 +23,6 @@ export default async function ProductCard({
 }: IProductCardProps) {
   // Translations
   const t = await getTranslations('product');
-
-  // user status
-  const session = await getServerSession(authOptions);
-  const user = session?.user;
-  const isAuthenticated = !!user;
 
   // Product data
   const { id, title, cover, rating, stock, discountType, discountValue } = product;
@@ -79,8 +72,10 @@ export default async function ProductCard({
         <div className="pointer-events-none absolute inset-0 z-10 flex items-start justify-between p-2.5">
           <div className="pointer-events-auto">
             <ProductWishlistButton
-              productMetadata={{ id, name: title }}
-              isAuthenticated={isAuthenticated}
+              className={cn(
+                'group/wishlist focus-visible:ring-ds-ring flex size-fit cursor-pointer items-center justify-center rounded-full p-1.5 transition-all hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:animate-pulse disabled:cursor-not-allowed disabled:opacity-50',
+              )}
+              productMetadata={product}
             />
           </div>
 
@@ -132,7 +127,6 @@ export default async function ProductCard({
               <span>{t('price', { price })}</span>
               {hasSalePrice && (
                 <>
-                  {' '}
                   <span className="sr-only">
                     {t('originalPrice')}: {t('price', { price: originalPrice })}
                   </span>
@@ -145,10 +139,7 @@ export default async function ProductCard({
           </div>
 
           {/* Cart button */}
-          <ProductCartButton
-            productMetadata={{ id, name: title, outOfStock }}
-            isAuthenticated={isAuthenticated}
-          />
+          <ProductCartButton productMetadata={product} outOfStock={outOfStock} />
         </div>
       </div>
     </article>
