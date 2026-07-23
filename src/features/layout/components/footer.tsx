@@ -1,4 +1,4 @@
-import { Link } from '@/i18n/navigation';
+import HoveredLink from '@/shared/components/hovered-link';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import SubscribeForm from './subscribe-form';
@@ -41,12 +41,12 @@ export default async function Footer() {
           <ul className="flex flex-col items-start gap-1.5">
             {NAV_LINKS.map((link) => (
               <li key={link.label}>
-                <Link
+                <HoveredLink
                   href={link.href}
                   className="hover:text-soft-pink-300 text-base font-medium text-zinc-100"
                 >
                   {t(`nav.${link.label}`)}
-                </Link>
+                </HoveredLink>
               </li>
             ))}
           </ul>

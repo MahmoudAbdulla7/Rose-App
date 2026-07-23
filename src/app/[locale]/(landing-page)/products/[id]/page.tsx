@@ -27,8 +27,8 @@ export default async function ProductDetailPage({ params }: Props) {
   const { id } = await params;
 
   return (
-    <main className="mt-10 lg:mt-17">
+    <section className="mt-10 lg:mt-17">
       <ProductDetails id={id} />
-    </main>
+    </section>
   );
 }

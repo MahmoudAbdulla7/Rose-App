@@ -38,7 +38,7 @@ export default async function ProductDetails({ id }: { id: string }) {
   });
 
   return (
-    <section className="container grid gap-10 lg:grid-cols-2 lg:gap-17.5">
+    <div className="container grid gap-10 lg:grid-cols-2 lg:gap-17.5">
       {/* Product Images */}
       <ProductGallery cover={product.cover} gallery={product.gallery} alt={product.title} />
 
@@ -109,6 +109,6 @@ export default async function ProductDetails({ id }: { id: string }) {
           <AddToCartButton />
         </div>
       </div>
-    </section>
+    </div>
   );
 }
