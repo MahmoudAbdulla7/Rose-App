@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { LoginDialogProvider } from '@/features/auth/providers/login-dialog.provider';
+import Footer from '@/features/layout/components/footer';
 import Header from '@/features/layout/components/header';
 
 type Props = {
@@ -13,6 +14,7 @@ export default function LandingPageLayout({ children }: Props) {
       <LoginDialogProvider>
         <Header />
         {children}
+        <Footer />
       </LoginDialogProvider>
     </main>
   );

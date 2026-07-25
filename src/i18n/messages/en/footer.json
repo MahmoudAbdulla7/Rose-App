@@ -1,0 +1,25 @@
+{
+  "brand": "Rose E-Commerce App",
+  "rights": "All rights reserved | 2025",
+  "nav": {
+    "title": "Discover our website",
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "occasions": "Occasions",
+    "contact": "Contact",
+    "about": "About",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "faqs": "FAQs"
+  },
+  "discount": {
+    "title": "Get <amount>20%</amount> Off Discount Coupon",
+    "subtitle": "By subscribing to our newsletter",
+    "placeholder": "Enter Your Email",
+    "subscribe": "Subscribe",
+    "invalidEmail": "Please enter a valid email",
+    "success": "You're subscribed! Check your inbox.",
+    "error": "Something went wrong. Please try again."
+  }
+}

@@ -16,6 +16,20 @@
     "previousSlide": "المنتجات السابقة",
     "nextSlide": "المنتجات التالية"
   },
+  "productDetails": {
+    "emptyState": {
+      "title": "المنتج غير موجود",
+      "description": "قد يكون هذا المنتج قد أُزيل أو أنه غير متاح."
+    },
+    "leftInStock": "{count, number, decimal} متبقٍ في المخزون",
+    "ratingLabel": "التقييم:",
+    "ratingValue": "{rating, number, decimal}/{maxRating, number, decimal}",
+    "ratingsCount": "({count, number, decimal} تقييم)",
+    "addToCart": "أضف إلى السلة",
+    "gallery": {
+      "thumbnail": "عرض الصورة {number}"
+    }
+  },
   "popularProducts": {
     "sectionTitle": "الأكثر شعبية",
     "viewMore": "عرض المزيد",
