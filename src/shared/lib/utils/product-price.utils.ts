@@ -13,28 +13,29 @@ type ProductPriceInput = {
 export function getProductDisplayPrice(args: ProductPriceInput): {
   price: number;
   originalPrice?: number;
+  hasDiscount: boolean;
 } {
   const { price, discountType, discountValue } = args;
 
   // Check if price is a number
   if (Number.isNaN(Number(price))) {
-    return { price: 0 };
+    return { price: 0, hasDiscount: false };
   }
 
   // Check if discount value is a number
   if (Number.isNaN(Number(discountValue))) {
-    return { price: 0 };
+    return { price: 0, hasDiscount: false };
   }
 
   const basePrice = Number(price);
   const discount = Number(discountValue);
 
   if (Number.isNaN(basePrice)) {
-    return { price: 0 };
+    return { price: 0, hasDiscount: false };
   }
 
   if (!discount || Number.isNaN(discount) || discount <= 0) {
-    return { price: basePrice };
+    return { price: basePrice, hasDiscount: false };
   }
 
   // Calculate sale price
@@ -46,5 +47,6 @@ export function getProductDisplayPrice(args: ProductPriceInput): {
   return {
     price: Math.max(0, salePrice),
     originalPrice: basePrice,
+    hasDiscount: true,
   };
 }
