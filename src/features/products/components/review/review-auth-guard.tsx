@@ -2,7 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 
-import { usePathname, useRouter } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
+import { cn } from '@/shared/lib/utils';
 import { useAuth } from '@/shared/hooks';
 
 export function ReviewAuthGuard({ children }: { children: React.ReactNode }) {
@@ -10,42 +11,36 @@ export function ReviewAuthGuard({ children }: { children: React.ReactNode }) {
   const t = useTranslations('review.form');
 
   // Navigation
-  const router = useRouter();
+  const pathname = usePathname();
 
   // Custom hooks
   const { isAuthenticated, isLoading } = useAuth();
-  const pathname = usePathname();
 
   // Variables
-  const isLocked = !isAuthenticated || isLoading;
+  const showLoginOverlay = !isAuthenticated || isLoading;
 
-  // Functions
-  const handleLogin = () => {
-    const currentUrl = `${pathname}${window.location.search}`;
-    router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
-  };
+  const callbackUrl =
+    typeof window !== 'undefined' ? `${pathname}${window.location.search}` : pathname;
 
   return (
     <div className="relative overflow-hidden">
       {/* Layer */}
       <div
-        aria-disabled={isLocked}
-        className="transition-[filter,opacity] duration-200"
-        style={isLocked ? { filter: 'blur(2px)' } : undefined}
+        inert={showLoginOverlay}
+        className={cn('transition-[filter,opacity] duration-200', showLoginOverlay && 'blur-[2px]')}
       >
         {children}
       </div>
 
-      {/* Button */}
+      {/* Login overlay */}
       {!isAuthenticated && !isLoading && (
-        <button
-          type="button"
-          onClick={handleLogin}
-          className="focus-visible:ring-ds-primary absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center gap-2 p-6 text-center outline-none focus-visible:ring-2 focus-visible:ring-inset"
+        <Link
+          href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+          className="focus-visible:ring-ds-primary absolute inset-0 z-10 flex items-center justify-center p-6 text-center font-semibold outline-none focus-visible:ring-2 focus-visible:ring-inset"
           aria-label={t('loginRequired')}
         >
-          <span className="font-semibold">{t('loginRequired')}</span>
-        </button>
+          {t('loginRequired')}
+        </Link>
       )}
     </div>
   );

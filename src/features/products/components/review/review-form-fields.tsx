@@ -25,25 +25,27 @@ export default function ReviewFormFields({ register, errors }: ReviewFormFieldsP
         <Input
           label={t('title')}
           placeholder={t('titlePlaceholder')}
+          error={errors.headline?.message}
           {...register('headline', {
             required: tValidation('required.title'),
           })}
         />
-        {errors.headline && <p className="text-sm text-red-500">{errors.headline.message}</p>}
       </div>
 
       {/* Content */}
-      <label className="text-sm">{t('content')}</label>
+      <label htmlFor="content" className="text-sm">
+        {t('content')}
+      </label>
       <div>
         <Textarea
+          id="content"
+          placeholder={t('contentPlaceholder')}
           {...register('content', {
             required: tValidation('required.content'),
           })}
-          placeholder={t('contentPlaceholder')}
-          aria-label={t('content')}
           className="mt-1.5"
         />
-        {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
+        {errors.content && <p className="text-ds-danger mt-2 text-xs">{errors.content.message}</p>}
       </div>
     </>
   );
