@@ -30,6 +30,9 @@
       "thumbnail": "View image {number}"
     }
   },
+  "relatedProducts": {
+    "title": "Related Products"
+  },
   "popularProducts": {
     "sectionTitle": "Most Popular",
     "viewMore": "View More",
