@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/shared/ui/button';
@@ -30,17 +29,10 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
     register,
     handleSubmit,
     reset,
-    setValue,
     control,
     formState: { errors },
   } = useForm<ReviewFormValues>({
     defaultValues: { rating: 0, headline: '', content: '' },
-  });
-
-  // Variables
-  const rating = useWatch({
-    control,
-    name: 'rating',
   });
 
   // Functions
@@ -55,23 +47,12 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
       },
       {
         onSuccess: (review) => {
-          reset({
-            rating: 0,
-            headline: '',
-            content: '',
-          });
+          reset();
           onSubmitted?.(review);
         },
       },
     );
   };
-
-  // Effects
-  useEffect(() => {
-    register('rating', {
-      validate: (value) => value > 0 || t('selectRating'),
-    });
-  }, [register, t]);
 
   return (
     <section className="relative m-4 w-1/3 overflow-hidden p-5">
@@ -81,22 +62,26 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
         <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset disabled={createReview.isPending} className="space-y-4">
             {/* Rating */}
-            <ReviewRating
-              rating={rating}
-              error={errors.rating}
-              onChange={(value) =>
-                setValue('rating', value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                })
-              }
+            <Controller
+              name="rating"
+              control={control}
+              rules={{
+                validate: (value) => value > 0 || t('selectRating'),
+              }}
+              render={({ field, fieldState }) => (
+                <ReviewRating
+                  rating={field.value}
+                  error={fieldState.error}
+                  onChange={field.onChange}
+                />
+              )}
             />
 
             {/* Fields */}
             <ReviewFormFields register={register} errors={errors} />
 
             {createReview.error && (
-              <p className="text-sm text-red-500">{createReview.error.message}</p>
+              <p className="text-ds-danger text-xs">{createReview.error.message}</p>
             )}
 
             {/* Button */}
