@@ -30,6 +30,9 @@
       "thumbnail": "عرض الصورة {number}"
     }
   },
+  "relatedProducts": {
+    "title": "منتجات ذات صلة"
+  },
   "popularProducts": {
     "sectionTitle": "الأكثر شعبية",
     "viewMore": "عرض المزيد",
