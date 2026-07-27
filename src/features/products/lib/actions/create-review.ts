@@ -1,6 +1,7 @@
 'use server';
 
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
 import type { Review, ReviewInput, ReviewPayload } from '../types/review';
 
@@ -12,7 +13,9 @@ export async function createReviewAction(input: ReviewInput): Promise<Review> {
     throw new Error('Authentication required');
   }
 
-  const response = await fetch(`${process.env.NEXT_BASE_URL}reviews`, {
+  const endpoint = buildApiEndpoint('/reviews');
+
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       ...API_HEADERS.JSON,
