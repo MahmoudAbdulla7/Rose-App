@@ -24,7 +24,7 @@ export default async function Testimonials() {
       <SectionHeading id="testimonials-heading">{t('title')}</SectionHeading>
 
       {/* Review cards */}
-      <div className="bg-ds-primary-fade mx-auto mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20">
+      <div className="bg-maroon-50 mx-auto mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20 dark:bg-zinc-700">
         <TestimonialsCarousel isRTL={isRTL}>
           {TESTIMONIALS.map((testimonial) => {
             // Variables
@@ -41,7 +41,7 @@ export default async function Testimonials() {
                 className="relative flex basis-full flex-col px-3! ps-0 sm:basis-3/4 md:basis-1/2 md:px-6! xl:basis-1/3"
               >
                 {/* Avatar Image */}
-                <div className="border-ds-primary-fade bg-ds-plain absolute -top-15 left-1/2 z-10 size-30 -translate-x-1/2 overflow-hidden rounded-full border-4">
+                <div className="absolute -top-15 left-1/2 z-10 size-30 -translate-x-1/2 overflow-hidden rounded-full border-4 border-white bg-white">
                   <Image
                     src={testimonial.imageUrl}
                     alt={name}
@@ -68,9 +68,8 @@ export default async function Testimonials() {
                         strokeWidth={1.5}
                         className={cn(
                           'size-4',
-                          i < testimonial.rating
-                            ? 'fill-ds-warning text-ds-warning'
-                            : 'text-ds-warning fill-transparent',
+                          'text-yellow-400',
+                          i < testimonial.rating ? 'fill-yellow-400' : 'fill-transparent',
                         )}
                       />
                     ))}
