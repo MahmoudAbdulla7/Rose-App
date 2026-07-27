@@ -1,11 +1,9 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { signOut } from 'next-auth/react';
 
-import { getUserDataAction } from '@/features/layout/lib/actions/get-user-data.action';
 import { Link } from '@/i18n/navigation';
 import {
   DropdownMenu,
@@ -14,17 +12,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
+import { useAuth } from '@/shared/hooks';
 
 export default function UserDropdown() {
   // Translation
   const tGreeting = useTranslations('header.greeting');
   const tUserMenu = useTranslations('header.userMenu');
 
-  // Query
-  const { data: user } = useQuery({
-    queryKey: ['user-data'],
-    queryFn: getUserDataAction,
-  });
+  // Custom hooks
+  const { user } = useAuth();
 
   // Variables
   const menuItemClasses =

@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getNotificationAction } from '../lib/actions/get-notifications.action';
+
+const NOTIFICATIONS_LIMIT = 4;
 
 interface UseNotificationsOptions {
   enabled?: boolean;
@@ -11,11 +12,17 @@ export function useNotifications({ enabled = true }: UseNotificationsOptions = {
 
     initialPageParam: 1,
 
-    queryFn: ({ pageParam }) =>
-      getNotificationAction({
-        page: pageParam,
-        limit: 4,
-      }),
+    queryFn: async ({ pageParam }) => {
+      const response = await fetch(
+        `/api/notifications?page=${pageParam}&limit=${NOTIFICATIONS_LIMIT}`,
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch notifications');
+      }
+
+      return response.json();
+    },
 
     enabled,
 
