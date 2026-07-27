@@ -1,6 +1,7 @@
 'use server';
 
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
 
 async function getHeaders() {
@@ -18,7 +19,9 @@ async function getHeaders() {
 }
 
 export async function deleteNotificationAction(id: string) {
-  const response = await fetch(`${process.env.NEXT_BASE_URL}notifications/${id}`, {
+  const endpoint = buildApiEndpoint(`notifications/${id}`);
+
+  const response = await fetch(endpoint, {
     method: 'DELETE',
     headers: await getHeaders(),
   });
@@ -33,7 +36,9 @@ export async function deleteNotificationAction(id: string) {
 }
 
 export async function deleteAllNotificationsAction() {
-  const response = await fetch(`${process.env.NEXT_BASE_URL}notifications/clear-all`, {
+  const endpoint = buildApiEndpoint('notifications/clear-all');
+
+  const response = await fetch(endpoint, {
     method: 'DELETE',
     headers: await getHeaders(),
   });

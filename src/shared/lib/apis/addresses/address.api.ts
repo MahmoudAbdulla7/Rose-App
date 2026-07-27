@@ -1,11 +1,11 @@
-'use server';
+import 'server-only';
 
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
+import type { AddressesPayload } from '@/features/layout/lib/types/address';
 
-import type { UserPayload } from '../types/user';
-
-export async function getUserDataAction() {
+export async function getCurrentAddress() {
   const jwt = await getNextAuthToken();
   const token = jwt?.accessToken;
 
@@ -13,7 +13,9 @@ export async function getUserDataAction() {
     throw new Error('Authentication required');
   }
 
-  const response = await fetch(`${process.env.NEXT_BASE_URL}users/profile`, {
+  const endpoint = buildApiEndpoint(`addresses`);
+
+  const response = await fetch(endpoint, {
     method: 'GET',
     headers: {
       ...API_HEADERS.JSON,
@@ -21,11 +23,11 @@ export async function getUserDataAction() {
     },
   });
 
-  const data: IAPIResponse<UserPayload> = await response.json();
+  const data: IAPIResponse<AddressesPayload> = await response.json();
 
   if (!data.status) {
     throw new Error(data.message || 'Request failed');
   }
 
-  return data.payload.user;
+  return data.payload.addresses;
 }
