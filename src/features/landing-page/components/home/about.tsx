@@ -26,7 +26,7 @@ export default async function About() {
         <div className="grid grid-cols-[1.2fr_.8fr] items-stretch gap-2 max-lg:order-last">
           {/* Hero Image */}
           <div className="relative flex h-full items-start justify-end">
-            <div className="before:border-ds-primary before:rounded-bl-8xl before:rounded-br-8xl before:rounded-tl-6xl before:rounded-tr-8xl relative w-[97%] before:pointer-events-none before:absolute before:inset-s-[-6%] before:top-[-5%] before:h-[106%] before:w-[89%] before:rotate-3 before:border-3 before:content-[''] rtl:before:-rotate-3">
+            <div className="before:border-maroon-600 dark:before:border-soft-pink-400 before:rounded-bl-8xl before:rounded-br-8xl before:rounded-tl-6xl before:rounded-tr-8xl relative w-[97%] before:pointer-events-none before:absolute before:inset-s-[-6%] before:top-[-5%] before:h-[106%] before:w-[89%] before:rotate-3 before:border-3 before:content-[''] rtl:before:-rotate-3">
               <div className="bg-ds-primary-fade rounded-bl-8xl rounded-br-8xl rounded-tl-6xl rounded-tr-8xl relative aspect-302/344 w-full overflow-hidden">
                 <Image
                   src={ABOUT_IMAGES.hero.imageUrl}
@@ -68,7 +68,7 @@ export default async function About() {
           {/* Section Header */}
           <div className="space-y-2">
             {/* Tagline */}
-            <span className="text-ds-secondary text-base font-bold tracking-[25%] uppercase">
+            <span className="text-soft-pink-500 dark:text-maroon-400 text-base font-bold tracking-[25%] uppercase">
               {t('tagline')}
             </span>
 
@@ -78,12 +78,16 @@ export default async function About() {
               className="text-ds-primary-saturated max-w-151 text-3xl font-bold"
             >
               {t.rich('title', {
-                highlight: (chunks) => <span className="text-ds-secondary">{chunks}</span>,
+                highlight: (chunks) => (
+                  <span className="text-soft-pink-500 dark:text-maroon-400">{chunks}</span>
+                ),
               })}
             </h2>
 
             {/* Desc */}
-            <p className="text-ds-text-soft text-base leading-[100%]">{t('description')}</p>
+            <p className="text-base leading-[100%] text-zinc-500 dark:text-zinc-400">
+              {t('description')}
+            </p>
           </div>
 
           {/* Call to Action */}
@@ -103,7 +107,7 @@ export default async function About() {
               <li key={feature.id} className="flex items-center gap-2">
                 <span
                   aria-hidden="true"
-                  className="fade text-ds-primary grid size-10.5 shrink-0 place-items-center"
+                  className="dark:text-soft-pink-400 text-maroon-600 grid size-10.5 shrink-0 place-items-center"
                 >
                   <Check className="size-5" strokeWidth={2.5} />
                 </span>
