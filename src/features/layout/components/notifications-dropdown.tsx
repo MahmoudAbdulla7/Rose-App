@@ -16,7 +16,7 @@ import NotificationItem from './notification-item';
 import NotificationsToolbar from './notifications-toolbar';
 import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
 
-export default function DropdownTest() {
+export default function NotificationsDropdown() {
   // Translation
   const tNotifications = useTranslations('header.notifications');
 
