@@ -8,7 +8,13 @@ import { deleteNotificationAction } from '@/features/layout/lib/actions/delete-n
 import { markNotificationReadAction } from '@/features/layout/lib/actions/mark-as-read.action';
 import type { Notification } from '@/features/layout/lib/types/notification';
 import { cn } from '@/shared/lib/utils';
-import { DropdownMenuSeparator, DropdownMenuItem } from '@/shared/ui/dropdown-menu';
+import { DropdownMenuItem } from '@/shared/ui/dropdown-menu';
+import {
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from '@/shared/ui/dropdown-menu';
 
 interface NotificationItemProps {
   notification: Notification;
@@ -41,53 +47,44 @@ export default function NotificationItem({ notification }: NotificationItemProps
   });
 
   return (
-    <div key={notification.id}>
-      <DropdownMenuItem
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger
         className={cn(
-          'flex min-h-30.5 cursor-pointer flex-col p-4',
+          'hover:[&_p:last-of-type]:text-ds-text-muted flex min-h-30.5 flex-col p-4',
           notification.isRead && 'bg-ds-soft',
         )}
       >
-        <div className="flex w-full justify-between">
-          {/* Title */}
-          <p className="text-ds-text-plain font-semibold">{notification.title}</p>
-
-          <div className="flex items-center gap-1">
-            {/* Mark as read */}
-            {!notification.isRead && (
-              <button
-                type="button"
-                onClick={() => markNotificationReadMutation.mutate(notification.id)}
-                disabled={markNotificationReadMutation.isPending}
-                className="text-ds-primary-saturated hover:bg-ds-soft cursor-pointer rounded-md p-1.5 transition-colors"
-                aria-label={tNotifications('markRead')}
-                title={tNotifications('markRead')}
-              >
-                <Check size={16} strokeWidth={2} />
-              </button>
-            )}
-
-            {/* Delete */}
-            <button
-              type="button"
-              onClick={() => deleteNotificationMutation.mutate(notification.id)}
-              disabled={deleteNotificationMutation.isPending}
-              className="text-ds-danger hover:bg-ds-soft cursor-pointer rounded-md p-1.5 transition-colors"
-              aria-label={tNotifications('delete')}
-              title={tNotifications('delete')}
-            >
-              <Trash2 size={16} strokeWidth={1.75} />
-            </button>
-          </div>
-        </div>
+        {/* Title */}
+        <p className="text-ds-text-plain w-full text-start font-semibold">{notification.title}</p>
 
         {/* Message */}
-        <p className="line-clamp-3 w-full text-start text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-ds-text-muted line-clamp-3 w-full text-start text-sm">
           {notification.message}
         </p>
-      </DropdownMenuItem>
+      </DropdownMenuSubTrigger>
+      <DropdownMenuPortal>
+        <DropdownMenuSubContent className="dark:bg-ds-default">
+          {/* Mark as read */}
+          <DropdownMenuItem
+            onClick={() => markNotificationReadMutation.mutate(notification.id)}
+            disabled={notification.isRead || markNotificationReadMutation.isPending}
+            className="cursor-pointer"
+          >
+            <Check size={18} strokeWidth={1.5} />
+            <span>{tNotifications('markRead')}</span>
+          </DropdownMenuItem>
 
-      <DropdownMenuSeparator />
-    </div>
+          {/* Delete */}
+          <DropdownMenuItem
+            onClick={() => deleteNotificationMutation.mutate(notification.id)}
+            disabled={deleteNotificationMutation.isPending}
+            className="cursor-pointer"
+          >
+            <Trash2 size={18} strokeWidth={1.5} className="[&_path]:stroke-ds-danger" />
+            <span>{tNotifications('delete')}</span>
+          </DropdownMenuItem>
+        </DropdownMenuSubContent>
+      </DropdownMenuPortal>
+    </DropdownMenuSub>
   );
 }

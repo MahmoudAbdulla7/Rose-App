@@ -1,8 +1,8 @@
 'use client';
 
+import { signOut } from 'next-auth/react';
 import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { signOut } from 'next-auth/react';
 
 import { Link } from '@/i18n/navigation';
 import {
@@ -55,7 +55,7 @@ export default function UserDropdown() {
           />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="dark:bg-ds-default w-56">
           {/* Name */}
           <div className="text-ds-primary-saturated hover:text-ds-primary-saturated dark:hover:text-ds-primary-saturated px-2 py-1.5 font-semibold hover:bg-transparent dark:hover:bg-transparent">
             {user?.firstName ?? ''} {user?.lastName ?? ''}

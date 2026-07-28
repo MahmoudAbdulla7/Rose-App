@@ -1,11 +1,11 @@
 'use client';
 
+import { BrushCleaning, CheckCheck } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { deleteAllNotificationsAction } from '@/features/layout/lib/actions/delete-notification.action';
 import { markAllNotificationsReadAction } from '@/features/layout/lib/actions/mark-as-read.action';
-import { BrushCleaning, CheckCheck } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 interface NotificationsToolbarProps {
   hasNotifications: boolean;
@@ -46,13 +46,13 @@ export default function NotificationsToolbar({
   });
 
   return (
-    <div className="text-ds-text-plain flex cursor-default justify-between p-2.5 text-xs">
+    <div className="dark:bg-ds-default text-ds-text-plain flex cursor-default justify-between p-2.5 text-xs">
       {/* Clear all */}
       <button
         type="button"
         onClick={() => deleteAllNotificationsMutation.mutate()}
         disabled={!hasNotifications || isLoading || deleteAllNotificationsMutation.isPending}
-        className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:text-zinc-400 dark:hover:text-zinc-200"
+        className="dark:disabled:hover:text-ds-text-muted disabled:text-ds-text-muted dark:hover:text-ds-text-default flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default"
       >
         <BrushCleaning size={18} strokeWidth={1.5} />
         <span>{tNotifications('clearAll')}</span>
@@ -65,7 +65,7 @@ export default function NotificationsToolbar({
         disabled={
           !hasNotifications || isLoading || markAllReadMutation.isPending || unreadCount === 0
         }
-        className="flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default disabled:text-zinc-400 dark:hover:text-zinc-200"
+        className="dark:disabled:hover:text-ds-text-muted disabled:text-ds-text-muted dark:hover:text-ds-text-default flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default"
       >
         <CheckCheck size={15} strokeWidth={1.5} />
         <span>{tNotifications('markAllRead')}</span>

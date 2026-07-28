@@ -1,22 +1,22 @@
 'use client';
 
 import { Bell, BellOff } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { useNotifications } from '@/features/layout/hooks/use-notification';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
 import { useAuth } from '@/shared/hooks';
 import NotificationItem from './notification-item';
-import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
 import NotificationsToolbar from './notifications-toolbar';
+import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
 
-export default function NotificationsDropdown() {
+export default function DropdownTest() {
   // Translation
   const tNotifications = useTranslations('header.notifications');
 
@@ -77,7 +77,7 @@ export default function NotificationsDropdown() {
       </DropdownMenuTrigger>
 
       {/* Dropdown */}
-      <DropdownMenuContent className="w-96">
+      <DropdownMenuContent className="w-96" align="start">
         {/* Header */}
         <div className="bg-ds-primary-saturated text-ds-text-inverse p-4 text-xl font-bold">
           {tNotifications('title')}
@@ -103,7 +103,7 @@ export default function NotificationsDropdown() {
             {/* Content */}
             {!hasNotifications && !isLoading ? (
               // Empty state
-              <div className="flex flex-col items-center gap-2.5 py-20 text-zinc-500">
+              <div className="dark:bg-ds-default text-ds-text-muted flex flex-col items-center gap-2.5 py-20">
                 <BellOff size={50} strokeWidth={1} />
                 <span>{tNotifications('empty')}</span>
               </div>
