@@ -1,45 +1,29 @@
+import { getTranslations } from 'next-intl/server';
+
+import type { IReview } from '@/shared/lib/types/single-product';
 import { cn } from '@/shared/lib/utils';
 
-import ReviewItem, { type ProductReview } from './review-item';
-
-const defaultReviews: ProductReview[] = [
-  {
-    id: 'adrian-1',
-    authorName: 'Adrian',
-    dateLabel: 'Apr 7, 2025',
-    rating: 4.5,
-    title: 'Awesome Bouquet!',
-    content:
-      "I ordered this bouquet for a special occasion, and it absolutely exceeded my expectations! The flowers were fresh, beautifully arranged, and exactly as pictured-if not better. The color combination was stunning and gave off such a luxurious vibe. Even the wrapping was elegant and thoughtful. Delivery was right on time, and the bouquet arrived in perfect condition. The recipient was genuinely touched and couldn't stop admiring it. Highly recommend for anyone looking to make a lasting impression. Will definitely order again!",
-  },
-  {
-    id: 'adrian-2',
-    authorName: 'Adrian',
-    dateLabel: 'Apr 7, 2025',
-    rating: 4.5,
-    title: 'Awesome Bouquet!',
-    content:
-      'I ordered this bouquet for a special occasion, and it absolutely exceeded my expectations! The flowers were fresh, beautifully arranged, and exactly as pictured-if not better.',
-  },
-];
+import ReviewItem from './review-item';
 
 type ProductReviewsSectionProps = {
-  reviews?: ProductReview[];
+  reviews: IReview[];
   className?: string;
 };
 
-export default function ProductReviewsSection({
-  reviews = defaultReviews,
+export default async function ProductReviewsSection({
+  reviews,
   className,
 }: ProductReviewsSectionProps) {
   if (reviews.length === 0) {
     return null;
   }
 
+  const t = await getTranslations('product.productDetails.reviews');
+
   return (
     <section
       className={cn('max-h-125 scrollbar-none overflow-y-auto', className)}
-      aria-label="Customer reviews"
+      aria-label={t('customerReviews')}
     >
       <div className="divide-ds-border-subtle flex flex-col divide-y">
         {reviews.map((review) => (

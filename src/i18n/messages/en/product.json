@@ -32,6 +32,11 @@
     "ratingValue": "{rating, number, decimal}/{maxRating, number, decimal}",
     "ratingsCount": "({count, number, decimal} ratings)",
     "addToCart": "Add to Cart",
+    "reviews": {
+      "title": "Product Reviews",
+      "generalRating": "General rating:",
+      "customerReviews": "Customer reviews"
+    },
     "gallery": {
       "thumbnail": "View image {number}"
     }
