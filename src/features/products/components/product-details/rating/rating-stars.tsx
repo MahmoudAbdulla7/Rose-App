@@ -8,6 +8,7 @@ type RatingStarsProps = {
   maxRating?: number;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  ariaLabel?: string;
 };
 
 const starSizeClassName = {
@@ -21,12 +22,13 @@ export default function RatingStars({
   maxRating = 5,
   size = 'md',
   className,
+  ariaLabel,
 }: RatingStarsProps) {
   return (
     <div
       className={cn('flex items-center gap-1', className)}
       role="img"
-      aria-label={`${rating} out of ${maxRating} stars`}
+      aria-label={ariaLabel ?? `${rating} out of ${maxRating} stars`}
     >
       {Array.from({ length: maxRating }, (_, index) => {
         const star = index + 1;

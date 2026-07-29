@@ -31,6 +31,11 @@
     "ratingValue": "{rating, number, decimal}/{maxRating, number, decimal}",
     "ratingsCount": "({count, number, decimal} تقييم)",
     "addToCart": "أضف إلى السلة",
+    "reviews": {
+      "title": "تقييمات المنتج",
+      "generalRating": "التقييم العام:",
+      "customerReviews": "تقييمات العملاء"
+    },
     "gallery": {
       "thumbnail": "عرض الصورة {number}"
     }
