@@ -9,7 +9,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { getProduct } from '@/shared/lib/apis/product/product.api';
 import { getProductDisplayPrice } from '@/shared/lib/utils/product-price.utils';
 import type { IProduct } from '@/shared/lib/types/product'; // 👈 import
-import ProductRating from './rating/product-rating';
+import ProductRating from '../rating/product-rating';
 
 export default async function ProductDetails({ id }: { id: string }) {
   const locale = await getLocale();
