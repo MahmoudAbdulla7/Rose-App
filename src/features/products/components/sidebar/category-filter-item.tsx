@@ -26,7 +26,7 @@ export default function CategoryFilterItem({
       aria-current={isSelected ? 'true' : undefined}
       aria-label={tActions('selectCategory', { name: category.title })}
       className={cn(
-        'focus-visible:ring-ds-ring flex h-9 w-full items-center gap-2.5 rounded-sm pe-2.5 transition-colors focus-visible:ring-2 focus-visible:outline-none',
+        'focus-visible:ring-ds-ring flex h-9 w-full items-center gap-2.5 rounded-sm pe-2.5 transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:outline-none',
         isSelected
           ? 'bg-maroon-50 dark:bg-ds-primary-fade'
           : 'bg-zinc-200 hover:bg-zinc-300 active:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-600',
@@ -34,7 +34,7 @@ export default function CategoryFilterItem({
     >
       <span
         className={cn(
-          'relative flex size-9 shrink-0 items-center justify-center overflow-hidden',
+          'relative flex size-9 shrink-0 items-center justify-center overflow-hidden transition-colors duration-200 ease-out',
           isSelected ? 'bg-maroon-600 dark:bg-ds-primary' : 'bg-zinc-500',
         )}
       >
