@@ -1,4 +1,13 @@
-import { PAGINATION_OPTIONS } from '../pagination.options';
+import { PAGINATION_OPTIONS } from '../api.options';
+
+export const PRODUCT_SORT_BY = {
+  PRICE: 'price',
+  RATING: 'rating',
+  TITLE: 'title',
+  CREATED_AT: 'createdAt',
+  BEST_SELLING: 'bestSelling',
+  MOST_POPULAR: 'mostPopular',
+} as const;
 
 export const PRODUCTS_OPTIONS = {
   QUERY_KEY: ['products'] as const,
@@ -9,4 +18,5 @@ export const PRODUCTS_OPTIONS = {
   BEST_SELLING_LIMIT: 6,
   DESKTOP_LIMIT: PAGINATION_OPTIONS.DESKTOP_DEFAULT_LIMIT,
   MOBILE_LIMIT: PAGINATION_OPTIONS.MOBILE_DEFAULT_LIMIT,
+  MAX_RATING: 5,
 } as const;

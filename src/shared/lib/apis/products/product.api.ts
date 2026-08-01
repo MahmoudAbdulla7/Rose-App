@@ -1,19 +1,20 @@
 import 'server-only';
 
-import type { IProductResponse } from '../../types/product';
+import type { IProductResponse, IProductSearchParams } from '../../types/product';
 import { buildApiEndpoint } from '../../utils/api-endpoint-builder.utils';
 import { API_HEADERS } from '../headers.options';
 import { PRODUCTS_OPTIONS } from './products.options';
 import { routing } from '@/i18n/routing';
 
 export async function getProducts(
-  searchParams: ISearchParams = {},
+  searchParams: Partial<IProductSearchParams> = {},
   options: { locale: string } = { locale: routing.defaultLocale },
 ): Promise<IProductResponse | undefined> {
-  const endpoint = buildApiEndpoint('/products', {
-    limit: String(searchParams?.limit ?? PRODUCTS_OPTIONS.DESKTOP_LIMIT),
+  const params = {
+    limit: (searchParams?.limit ?? PRODUCTS_OPTIONS.DESKTOP_LIMIT).toString(),
     ...searchParams,
-  });
+  };
+  const endpoint = buildApiEndpoint('/products', params);
 
   const response = await fetch(endpoint.toString(), {
     method: 'GET',
