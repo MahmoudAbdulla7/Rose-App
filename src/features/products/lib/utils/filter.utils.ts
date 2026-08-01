@@ -21,7 +21,6 @@ export const PRODUCT_FILTER_KEYS = {
 } as const;
 
 export const PRODUCT_PAGE_KEY = PAGE_KEY;
-
 export const ALL_PRODUCT_FILTER_KEYS = Object.values(PRODUCT_FILTER_KEYS);
 
 const PRODUCT_SEARCH_PARAM_KEYS = [
