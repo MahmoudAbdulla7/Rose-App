@@ -25,7 +25,8 @@
     "reviewCurrentImages": "Review current image(s)",
     "removeFile": "Remove file",
     "imagePreview": "Image preview",
-    "searchPlaceholder": "Search..."
+    "searchPlaceholder": "Search...",
+    "clearSearch": "Clear search"
   },
   "textarea": {
     "placeholder": "Type your message here.",
