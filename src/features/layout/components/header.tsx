@@ -7,11 +7,11 @@ import { Link } from '@/i18n/navigation';
 import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 import ThemeToggle from '@/shared/components/theme-toggle';
 import { Separator } from '@/shared/ui/separator';
-import { Bell } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import HeaderCartLink from './header-cart-link';
 import HeaderWishlistLink from './header-wishlist-link';
+import NotificationsDropdown from './notifications-dropdown';
 
 export default async function Header() {
   const t = await getTranslations('header');
