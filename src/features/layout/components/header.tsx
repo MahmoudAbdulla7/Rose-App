@@ -2,18 +2,20 @@ import HeaderAuth from './header-auth';
 import HeaderCartLink from './header-cart-link';
 import HeaderMobileMenu from './header-mobile-menu';
 import HeaderNav from './header-nav';
+import HeaderSearch from './header-search';
+import { getHeaderSearchSuggestions } from '@/features/layout/lib/services/search-suggestions.service';
 import { Link } from '@/i18n/navigation';
 import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 import ThemeToggle from '@/shared/components/theme-toggle';
-import { SearchInput } from '@/shared/ui/search-input';
 import { Separator } from '@/shared/ui/separator';
 import { Bell, Heart } from 'lucide-react';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 
 export default async function Header() {
-  // Translation
   const t = await getTranslations('header');
+  const locale = await getLocale();
+  const suggestions = await getHeaderSearchSuggestions({ options: { locale } }).catch(() => []);
 
   return (
     <header className="font-primary sticky top-0 z-50">
@@ -31,7 +33,8 @@ export default async function Header() {
               />
             </Link>
 
-            <SearchInput
+            <HeaderSearch
+              suggestions={suggestions}
               placeholder={t('searchPlaceholder')}
               wrapperClassName="hidden min-w-0 flex-1 md:block md:max-w-xl lg:max-w-2xl xl:max-w-none xl:w-input"
             />
@@ -73,7 +76,11 @@ export default async function Header() {
         </div>
 
         <div className="w-full px-3 pb-2.5 sm:px-4 sm:pb-3 md:hidden">
-          <SearchInput placeholder={t('searchPlaceholder')} wrapperClassName="w-full max-w-none" />
+          <HeaderSearch
+            suggestions={suggestions}
+            placeholder={t('searchPlaceholder')}
+            wrapperClassName="w-full max-w-none"
+          />
         </div>
       </div>
 

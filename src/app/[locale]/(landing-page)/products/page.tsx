@@ -4,11 +4,13 @@ import type { Metadata } from 'next';
 import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
+/** Route props for the products listing page (locale + filter query params). */
 type ProductsPageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<ISearchParams>;
 };
 
+/** Builds localized title/description for the products page. */
 export async function generateMetadata({ params }: ProductsPageProps): Promise<Metadata> {
   const { locale } = await params;
 
