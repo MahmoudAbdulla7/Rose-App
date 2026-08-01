@@ -11,11 +11,10 @@ export default async function Partner() {
 
   return (
     <section className="w-full">
-      <div className="bg-ds-primary-fade space-y-10 rounded-[20px] px-6 py-10">
+      <div className="bg-maroon-50 space-y-10 rounded-[20px] px-6 py-10 dark:bg-zinc-700">
         <h2 className="text-ds-primary-saturated text-center text-3xl font-bold md:text-4xl">
-          {t.rich('title', {
-            highlight: (chunks) => <span className="text-ds-secondary">{chunks}</span>,
-          })}
+          {/* Figma keeps the whole heading one color in both themes — no highlight tint */}
+          {t.rich('title', { highlight: (chunks) => chunks })}
         </h2>
 
         <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-10 xl:gap-x-18">
