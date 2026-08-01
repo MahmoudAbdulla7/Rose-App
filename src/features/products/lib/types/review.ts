@@ -1,4 +1,4 @@
-import type { User } from '@/features/user/lib/types/user';
+import type { User } from 'next-auth';
 
 export interface ReviewPayload {
   review: Review;
