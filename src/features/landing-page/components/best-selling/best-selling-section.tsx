@@ -5,6 +5,7 @@ import BestSellingProducts from '@/features/landing-page/components/best-selling
 import { getBestSellingProducts } from '@/features/landing-page/lib/services/best-selling-products.service';
 import { Link } from '@/i18n/navigation';
 import LoadErrorBoundary from '@/shared/components/load-error-boundary';
+import { PRODUCT_SORT_BY } from '@/shared/lib/apis/products/products.options';
 import { cn } from '@/shared/lib/utils';
 import { isMobileDevice } from '@/shared/lib/utils/device.utils';
 import { buttonVariants } from '@/shared/ui/button';
@@ -23,7 +24,7 @@ async function BestSellingSectionContent() {
   const t = await getTranslations('product.bestSelling');
 
   const products = await getBestSellingProducts({
-    searchParams: {},
+    searchParams: { sortBy: PRODUCT_SORT_BY.BEST_SELLING },
     options: { locale, isMobile },
   });
 
