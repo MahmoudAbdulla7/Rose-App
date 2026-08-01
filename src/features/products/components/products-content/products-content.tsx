@@ -5,11 +5,11 @@ type ProductsContentProps = {
   searchParams?: ISearchParams;
 };
 
-export default function ProductsContent(_props: ProductsContentProps) {
+export default function ProductsContent({ searchParams = {} }: ProductsContentProps) {
   return (
     <>
-      <ProductsGrid />
-      <ProductsContentPagination />
+      <ProductsGrid searchParams={searchParams} />
+      <ProductsContentPagination searchParams={searchParams} />
     </>
   );
 }

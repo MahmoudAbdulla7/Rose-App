@@ -1,12 +1,33 @@
+import type { IProductSearchParams } from '@/shared/lib/types/product';
+
+/**
+ * Products page URL contract — shared by sidebar filters and the products Grid.
+ * Values match `IProductSearchParams` keys so both sides stay API-aligned.
+ */
 export const PRODUCT_FILTER_KEYS = {
   CATEGORY: 'categoryId',
   OCCASION: 'occasionId',
   MIN_RATING: 'minRating',
   MIN_PRICE: 'minPrice',
   MAX_PRICE: 'maxPrice',
-} as const;
+} as const satisfies Record<string, keyof IProductSearchParams>;
+
+export type ProductFilterKey = (typeof PRODUCT_FILTER_KEYS)[keyof typeof PRODUCT_FILTER_KEYS];
+
+export type ProductFilterParams = Pick<IProductSearchParams, ProductFilterKey>;
 
 export const ALL_PRODUCT_FILTER_KEYS = Object.values(PRODUCT_FILTER_KEYS);
+
+/** Grid-owned query keys on the same URL. */
+export const PRODUCT_GRID_KEYS = {
+  PAGE: 'page',
+  LIMIT: 'limit',
+  SORT_BY: 'sortBy',
+  SORT_ORDER: 'sortOrder',
+} as const satisfies Record<string, keyof IProductSearchParams>;
+
+/** Keys stripped whenever a filter write occurs (restart results at page 1). */
+const FILTER_WRITE_CLEARS = [PRODUCT_GRID_KEYS.PAGE] as const;
 
 /** Gets a search param value. */
 export function getSearchParam(
@@ -17,6 +38,20 @@ export function getSearchParam(
   const value = searchParams[key];
   if (value == null) return undefined;
   return Array.isArray(value) ? value[0] : value;
+}
+
+/** Picks active sidebar filter params from the URL for Grid / API requests. */
+export function pickProductFilterParams(
+  searchParams: ISearchParams | undefined,
+): Partial<ProductFilterParams> {
+  const result: Partial<ProductFilterParams> = {};
+
+  for (const key of ALL_PRODUCT_FILTER_KEYS) {
+    const value = getSearchParam(searchParams, key)?.trim();
+    if (value) result[key] = value;
+  }
+
+  return result;
 }
 
 /** Appends search params to the URLSearchParams object. */
@@ -41,7 +76,7 @@ export function buildFilterHref(
   const params = new URLSearchParams();
   const current = getSearchParam(searchParams, key);
 
-  appendSearchParams(params, searchParams, [key]);
+  appendSearchParams(params, searchParams, [key, ...FILTER_WRITE_CLEARS]);
 
   if (current !== value) {
     params.set(key, value);
@@ -68,7 +103,7 @@ export function setFiltersHref(
   const keys = Object.keys(updates);
   const params = new URLSearchParams();
 
-  appendSearchParams(params, searchParams, keys);
+  appendSearchParams(params, searchParams, [...keys, ...FILTER_WRITE_CLEARS]);
 
   for (const [key, value] of Object.entries(updates)) {
     const trimmed = value.trim();
@@ -82,7 +117,7 @@ export function setFiltersHref(
 /** Clears multiple filter keys in one href; empty values remove their keys. */
 export function clearFilterHref(searchParams: ISearchParams | undefined, keys: string[]): string {
   const params = new URLSearchParams();
-  appendSearchParams(params, searchParams, keys);
+  appendSearchParams(params, searchParams, [...keys, ...FILTER_WRITE_CLEARS]);
 
   const query = params.toString();
   return query ? `?${query}` : '?';
