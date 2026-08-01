@@ -19,12 +19,14 @@ export default async function Testimonials() {
   const format = await getFormatter();
 
   return (
-    <section className="">
+    <section className="w-full">
       {/* Heading */}
-      <SectionHeading id="testimonials-heading">{t('title')}</SectionHeading>
+      <div className="container">
+        <SectionHeading id="testimonials-heading">{t('title')}</SectionHeading>
+      </div>
 
-      {/* Review cards */}
-      <div className="bg-maroon-50 mx-auto mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20 dark:bg-zinc-700">
+      {/* Review cards — full-bleed band */}
+      <div className="bg-ds-primary-fade mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20">
         <TestimonialsCarousel isRTL={isRTL}>
           {TESTIMONIALS.map((testimonial) => {
             // Variables
