@@ -43,7 +43,7 @@ export default async function Filters({ searchParams = {} }: FiltersProps) {
 
       <aside
         aria-label={tFilters('sidebarLabel')}
-        className="hidden flex-col border-e border-zinc-100 pe-6 lg:flex dark:border-zinc-800"
+        className="animate-in fade-in-0 slide-in-from-start-2 hidden flex-col border-e border-zinc-100 pe-6 duration-300 ease-out lg:flex dark:border-zinc-800"
       >
         <FiltersPanel {...panelProps}>
           <ResetAllFilters href={resetAllHref} hasActiveFilters={hasActiveFilters} />

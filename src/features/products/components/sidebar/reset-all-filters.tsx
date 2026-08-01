@@ -19,11 +19,14 @@ export default async function ResetAllFilters({ href, hasActiveFilters }: ResetA
       tabIndex={hasActiveFilters ? undefined : -1}
       className={cn(
         buttonVariants({ variant: 'secondary' }),
-        'h-10.25 w-full rounded-xl font-semibold',
+        'h-10.25 w-full rounded-xl font-semibold transition-all duration-200 ease-out',
         !hasActiveFilters && 'pointer-events-none opacity-50',
       )}
     >
-      <RotateCcw className="size-4.5 shrink-0" aria-hidden="true" />
+      <RotateCcw
+        className="size-4.5 shrink-0 transition-transform duration-300 ease-out group-hover/button:-rotate-45"
+        aria-hidden="true"
+      />
       {tButton('resetAll')}
     </Link>
   );

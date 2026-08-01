@@ -43,7 +43,7 @@ export default async function CategoryFilters({ categories, searchParams }: Cate
       }
     >
       <ul
-        className="no-scrollbar flex h-49.75 flex-col gap-1 overflow-y-auto"
+        className="no-scrollbar flex h-49.75 max-h-49.75 min-h-0 flex-col gap-1 overflow-y-auto"
         aria-label={tFilters('category')}
       >
         {sortedCategories.map((category) => (
