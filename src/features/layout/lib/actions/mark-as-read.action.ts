@@ -1,20 +1,27 @@
 'use server';
 
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
 
 async function getHeaders() {
   const jwt = await getNextAuthToken();
   const token = jwt?.accessToken;
 
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
   return {
     ...API_HEADERS.JSON,
-    ...API_HEADERS.AUTHORIZATION(token!),
+    ...API_HEADERS.AUTHORIZATION(token),
   };
 }
 
 export async function markNotificationReadAction(id: string) {
-  const response = await fetch(`${process.env.NEXT_BASE_URL}notifications/${id}`, {
+  const endpoint = buildApiEndpoint(`notifications/${id}`);
+
+  const response = await fetch(endpoint, {
     method: 'PATCH',
     headers: await getHeaders(),
     body: JSON.stringify({
@@ -32,7 +39,9 @@ export async function markNotificationReadAction(id: string) {
 }
 
 export async function markAllNotificationsReadAction() {
-  const response = await fetch(`${process.env.NEXT_BASE_URL}notifications/mark-all-read`, {
+  const endpoint = buildApiEndpoint('notifications/mark-all-read');
+
+  const response = await fetch(endpoint, {
     method: 'PATCH',
     headers: await getHeaders(),
   });
