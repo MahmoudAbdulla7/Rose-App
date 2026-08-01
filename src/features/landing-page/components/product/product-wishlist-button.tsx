@@ -8,55 +8,40 @@ import { useLoginDialog } from '@/features/auth/providers/login-dialog.provider'
 import { useAddToWishlist, useRemoveFromWishlist, useWishlist } from '@/shared/hooks';
 import type { IWishlistItem } from '@/shared/lib/types/wishlist';
 import { cn } from '@/shared/lib/utils';
-import { stopEvent } from '@/shared/lib/utils/event.utils';
 
 type ProductWishlistButtonProps = {
-  productMetadata: {
-    id: string;
-    name: string;
-  };
-  isAuthenticated: boolean;
+  productMetadata: IProduct;
+  className?: string;
+  showLabel?: boolean;
+  labelClassName?: string;
 };
 
 export default function ProductWishlistButton({
+  className,
   productMetadata,
-  isAuthenticated,
+  showLabel = true,
+  labelClassName,
 }: ProductWishlistButtonProps) {
   const t = useTranslations('product');
-  const { openLoginDialog } = useLoginDialog();
-  const { name, id } = productMetadata;
-
-  const { data: wishlistData } = useWishlist({ enabled: isAuthenticated });
-  const { mutate: addToWishlist, isPending: isAddingToWishlist } = useAddToWishlist();
-  const { mutate: removeFromWishlist, isPending: isRemovingFromWishlist } = useRemoveFromWishlist();
-
-  const isWishlisted = useMemo(() => {
-    if (!wishlistData || !wishlistData.status) return false;
-    return wishlistData.payload.wishlistItems.some(
-      (item: IWishlistItem) => item.productId === id || item.product?.id === id,
-    );
-  }, [wishlistData, id]);
+  const { data: wishlistData, isLoading } = useWishlist();
+  const { mutate: add } = useAddToWishlist();
+  const { mutate: remove } = useRemoveFromWishlist();
 
   const isPending = isAddingToWishlist || isRemovingFromWishlist;
   const Icon = isWishlisted ? HeartMinus : HeartPlus;
 
-  const onToggle = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      stopEvent(e);
-      if (!isAuthenticated) {
-        openLoginDialog();
-        return;
-      }
+  const isWishlisted =
+    wishlistItems?.some((item) => item.productId === productMetadata.id) ?? false;
 
-      if (isWishlisted) {
-        removeFromWishlist({ productId: id });
-        return;
-      }
+  const Icon = isWishlisted ? HeartMinus : HeartPlus;
 
-      addToWishlist({ productId: id });
-    },
-    [isAuthenticated, openLoginDialog, isWishlisted, removeFromWishlist, addToWishlist, id],
-  );
+  const toggle = () => {
+    if (isWishlisted) {
+      remove({ productId: productMetadata.id });
+    } else {
+      add({ productId: productMetadata.id, product: productMetadata });
+    }
+  };
 
   return (
     <button
