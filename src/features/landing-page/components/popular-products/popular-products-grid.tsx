@@ -30,9 +30,9 @@ export default async function PopularProductsGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 self-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-6 self-center lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
-        <ProductCard className="w-full md:min-w-85" key={product.id} product={product} />
+        <ProductCard className="w-full min-w-58 md:min-w-70" key={product.id} product={product} />
       ))}
     </div>
   );
