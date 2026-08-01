@@ -1,0 +1,20 @@
+{
+  "form": {
+    "title": "العنوان",
+    "titlePlaceholder": "أدخل عنوان التقييم",
+    "content": "التقييم",
+    "contentPlaceholder": "ما رأيك في هذا المنتج؟",
+    "rating": "تقييمك:",
+    "selectRating": "يرجى اختيار التقييم",
+    "submit": "إضافة تقييم",
+    "loginRequired": "يرجى تسجيل الدخول لتتمكن من تقييم المنتج",
+    "alreadyReviewed": "لقد قمت بتقييم هذا المنتج مسبقًا.",
+    "success": "تمت إضافة تقييمك بنجاح."
+  },
+  "validation": {
+    "required": {
+      "title": "العنوان مطلوب",
+      "content": "التقييم مطلوب"
+    }
+  }
+}

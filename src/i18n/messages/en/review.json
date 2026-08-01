@@ -1,0 +1,20 @@
+{
+  "form": {
+    "title": "Title",
+    "titlePlaceholder": "Enter review title",
+    "content": "Review",
+    "contentPlaceholder": "What do you think of this product?",
+    "rating": "Your rating:",
+    "selectRating": "Please select a rating",
+    "submit": "Add Review",
+    "loginRequired": "Please login to be able to review the product",
+    "alreadyReviewed": "You have already reviewed this product.",
+    "success": "Your review was added successfully."
+  },
+  "validation": {
+    "required": {
+      "title": "Title is required",
+      "content": "Review is required"
+    }
+  }
+}
