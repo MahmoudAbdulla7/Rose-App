@@ -1,4 +1,5 @@
 import type { IProductSearchParams } from '@/shared/lib/types/product';
+import { PRODUCTS_OPTIONS } from '@/shared/lib/apis/products/products.options';
 import { getSearchParam, PAGE_KEY } from '@/shared/lib/utils/filter.utils';
 
 export {
@@ -16,6 +17,7 @@ export const PRODUCT_FILTER_KEYS = {
   MIN_RATING: 'minRating',
   MIN_PRICE: 'minPrice',
   MAX_PRICE: 'maxPrice',
+  SEARCH: 'search',
 } as const;
 
 export const PRODUCT_PAGE_KEY = PAGE_KEY;
@@ -34,6 +36,7 @@ const PRODUCT_SEARCH_PARAM_KEYS = [
   'maxRating',
   'sortBy',
   'sortOrder',
+  'search',
 ] as const satisfies readonly (keyof IProductSearchParams)[];
 
 /** Partial ranges are allowed; only rejects when both values are set and max < min. */
@@ -69,6 +72,12 @@ export function toProductSearchParams(
   if (!params.occasionId) {
     const occasion = getSearchParam(searchParams, 'occasion');
     if (occasion) params.occasionId = occasion;
+  }
+
+  if (params.search) {
+    const trimmed = params.search.trim().slice(0, PRODUCTS_OPTIONS.SEARCH_MAX_CHARS);
+    if (trimmed) params.search = trimmed;
+    else delete params.search;
   }
 
   return params;

@@ -63,7 +63,7 @@ export default async function ProductCard({
             {cover ? (
               <Image
                 src={cover}
-                alt=""
+                alt={title}
                 fill
                 className="object-cover"
                 priority={priority}
