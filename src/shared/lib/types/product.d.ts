@@ -40,4 +40,5 @@ export interface IProductSearchParams {
   maxRating: string;
   sortBy: TProductSortBy;
   sortOrder: TSortOrder;
+  search: string;
 }

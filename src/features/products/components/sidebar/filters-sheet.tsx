@@ -34,7 +34,7 @@ export default function FiltersSheet({
           render={
             <Button
               variant="subtle"
-              className="relative h-10.25 w-full rounded-xl font-semibold"
+              className="relative h-10.25 w-full rounded-xl font-semibold transition-all duration-200 ease-out"
               aria-label={tFilters('open')}
             />
           }
@@ -43,7 +43,7 @@ export default function FiltersSheet({
           {tFilters('open')}
           {hasActiveFilters && (
             <span
-              className="bg-ds-primary absolute end-3 top-1/2 size-2 -translate-y-1/2 rounded-full"
+              className="bg-ds-primary animate-in fade-in-0 zoom-in-50 absolute end-3 top-1/2 size-2 -translate-y-1/2 rounded-full duration-200"
               aria-hidden="true"
             />
           )}
@@ -56,7 +56,7 @@ export default function FiltersSheet({
             'bg-ds-plain data-open:slide-in-from-start data-closed:slide-out-to-start',
             'data-open:zoom-in-100 data-closed:zoom-out-100',
             'inset-y-0! inset-s-0! inset-e-auto! top-0! flex h-dvh max-h-dvh w-[min(100%,20rem)] max-w-none! flex-col',
-            'translate-x-0! translate-y-0! gap-0 overflow-hidden rounded-none p-0 ring-0',
+            'translate-x-0! translate-y-0! gap-0 overflow-hidden rounded-none p-0 ring-0 duration-300 ease-out',
           )}
         >
           <DialogHeader className="border-ds-border-muted flex flex-row items-center justify-between border-b py-3 ps-4 pe-12">
