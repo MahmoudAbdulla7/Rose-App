@@ -6,19 +6,46 @@ import { Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
+type SearchInputProps = Omit<InputProps, 'type' | 'leftIcon' | 'rightIcon'> & {
+  onClear?: () => void;
+};
+
 function SearchInput({
   onChange,
+  onClear,
   value,
   defaultValue,
   wrapperClassName,
   ...props
-}: Omit<InputProps, 'type' | 'leftIcon' | 'rightIcon'>) {
+}: SearchInputProps) {
   const t = useTranslations('common.input');
-  const [searchValue, setSearchValue] = React.useState<string>(String(defaultValue ?? value ?? ''));
+  const isControlled = value !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = React.useState<string>(
+    String(defaultValue ?? ''),
+  );
+
+  const searchValue = isControlled ? String(value ?? '') : uncontrolledValue;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+    if (!isControlled) {
+      setUncontrolledValue(e.target.value);
+    }
     onChange?.(e);
+  };
+
+  const handleClear = () => {
+    if (!isControlled) {
+      setUncontrolledValue('');
+    }
+    onClear?.();
+
+    if (onChange) {
+      const event = {
+        target: { value: '' },
+        currentTarget: { value: '' },
+      } as React.ChangeEvent<HTMLInputElement>;
+      onChange(event);
+    }
   };
 
   return (
@@ -32,8 +59,9 @@ function SearchInput({
         searchValue ? (
           <button
             type="button"
-            onClick={() => setSearchValue('')}
+            onClick={handleClear}
             className="text-ds-text-muted hover:text-ds-text-default transition-colors"
+            aria-label={t('clearSearch')}
           >
             <X className="size-4" />
           </button>
