@@ -40,6 +40,5 @@ export interface IProductSearchParams {
   maxRating: string;
   sortBy: TProductSortBy;
   sortOrder: TSortOrder;
-  /** Optional substring filter on product title or description (trimmed, max 200 chars). */
   search: string;
 }

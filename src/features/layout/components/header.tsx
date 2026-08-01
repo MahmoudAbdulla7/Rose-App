@@ -1,5 +1,4 @@
 import HeaderAuth from './header-auth';
-import HeaderCartLink from './header-cart-link';
 import HeaderMobileMenu from './header-mobile-menu';
 import HeaderNav from './header-nav';
 import HeaderSearch from './header-search';
@@ -11,6 +10,7 @@ import { Separator } from '@/shared/ui/separator';
 import { Bell, Heart } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import Image from 'next/image';
+import HeaderCartLink from './header-cart-link';
 
 export default async function Header() {
   const t = await getTranslations('header');
@@ -46,13 +46,7 @@ export default async function Header() {
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
             </div>
 
-            <Link
-              href="/wishlist"
-              className="text-ds-text-default p-1.5 sm:p-2"
-              aria-label={t('wishlist')}
-            >
-              <Heart className="size-5" />
-            </Link>
+            <HeaderWishlistLink />
 
             <HeaderCartLink />
 

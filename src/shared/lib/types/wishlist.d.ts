@@ -13,3 +13,5 @@ export interface IWishlistItem extends Omit<IDBFields, 'updatedAt'> {
 export type IWishlistResponse = IAPIResponse<{ wishlistItems: IWishlistItem[] }>;
 
 export type AddToWishlistResponse = IAPIResponse<IWishlistItem>;
+
+export type RemoveFromWishlistResponse = IAPIResponse<null>;
