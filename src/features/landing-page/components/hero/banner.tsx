@@ -6,15 +6,16 @@ import HeroCarousel from './hero-carousel';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { BANNER_IMAGE } from '../../lib/constants/home/hero.constant';
 
 export default function Banner() {
   const t = useTranslations('hero');
   return (
-    <div className="grid grid-cols-1 gap-4 md:gap-6.25 lg:grid-cols-[minmax(0,25%)_minmax(0,1fr)] lg:items-stretch">
+    <div className="text-ds-text-inverse dark:text-ds-text-plain grid grid-cols-1 gap-4 md:gap-6.25 lg:grid-cols-[minmax(0,25%)_minmax(0,1fr)] lg:items-stretch">
       {/* Card */}
       <div className="relative order-2 aspect-4/3 w-full overflow-hidden rounded-4xl sm:aspect-3/4 lg:order-1 lg:aspect-auto lg:h-full lg:min-h-0">
         <Image
-          src="/assets/images/image.png"
+          src={BANNER_IMAGE.image}
           alt={t('banner.card.title')}
           fill
           className="z-0 object-cover"

@@ -5,6 +5,7 @@ import { useAuth } from '@/shared/hooks';
 import { cn } from '@/shared/lib/utils';
 import { User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import UserDropdown from './user-dropdown';
 
 type HeaderAuthProps = {
   className?: string;
@@ -21,19 +22,7 @@ export default function HeaderAuth({ className, alwaysShowLabel = false }: Heade
   }
 
   if (isAuthenticated && user) {
-    return (
-      <div className={cn('flex items-center gap-2 px-2', className)}>
-        <User className="text-ds-text-default size-4 shrink-0" />
-        <span
-          className={cn(
-            'text-ds-text-default max-w-36 truncate text-sm',
-            !alwaysShowLabel && 'hidden sm:inline',
-          )}
-        >
-          {user.username ?? ''}
-        </span>
-      </div>
-    );
+    return <UserDropdown />;
   }
 
   return (
