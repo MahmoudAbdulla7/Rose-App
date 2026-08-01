@@ -4,42 +4,16 @@
     "description": "اكتشف واطلب زهور وهدايا بسهولة مع تطبيق روز."
   },
   "pages": {
-    "wishlist": {
-      "title": "المفضلة",
-      "comingSoon": "قريباً"
-    },
-    "cart": {
-      "title": "السلة",
-      "comingSoon": "قريباً"
-    },
-    "notifications": {
-      "title": "الإشعارات",
-      "comingSoon": "قريباً"
-    },
-    "products": {
-      "title": "المنتجات",
-      "comingSoon": "قريباً"
-    },
-    "categories": {
-      "title": "الفئات",
-      "comingSoon": "قريباً"
-    },
-    "occasions": {
-      "title": "المناسبات",
-      "comingSoon": "قريباً"
-    },
-    "contact": {
-      "title": "تواصل معنا",
-      "comingSoon": "قريباً"
-    },
-    "about": {
-      "title": "من نحن",
-      "comingSoon": "قريباً"
-    },
-    "orders": {
-      "title": "طلباتي",
-      "comingSoon": "قريباً"
-    }
+    "comingSoon": "قريباً",
+    "wishlist": "المفضلة",
+    "cart": "السلة",
+    "notifications": "الإشعارات",
+    "products": "المنتجات",
+    "categories": "الفئات",
+    "occasions": "المناسبات",
+    "contact": "تواصل معنا",
+    "about": "من نحن",
+    "orders": "طلباتي"
   },
   "toast": {
     "error": "خطأ"
@@ -51,7 +25,8 @@
     "reviewCurrentImages": "معاينة الصورة الحالية",
     "removeFile": "حذف الملف",
     "imagePreview": "معاينة الصورة",
-    "searchPlaceholder": "بحث..."
+    "searchPlaceholder": "بحث...",
+    "clearSearch": "مسح البحث"
   },
   "textarea": {
     "placeholder": "اكتب رسالتك هنا.",
@@ -63,7 +38,28 @@
     "search": "بحث..."
   },
   "button": {
-    "loading": "جاري التحميل..."
+    "loading": "جاري التحميل...",
+    "reset": "إعادة تعيين",
+    "resetAll": "إعادة تعيين الكل"
+  },
+  "actions": {
+    "clearCategory": "مسح فلتر الفئة",
+    "clearOccasion": "مسح فلتر المناسبة",
+    "clearRating": "مسح فلتر التقييم",
+    "clearPrice": "مسح فلتر السعر",
+    "selectCategory": "تصفية حسب الفئة {name}",
+    "selectOccasion": "تصفية حسب المناسبة {name}",
+    "selectRating": "تصفية حسب {rating} نجوم فأكثر"
+  },
+  "filters": {
+    "category": "الفئة",
+    "occasion": "المناسبة",
+    "rating": "التقييم",
+    "price": "السعر",
+    "from": "من",
+    "to": "إلى",
+    "sidebarLabel": "فلاتر المنتجات",
+    "open": "الفلاتر"
   },
   "error": {
     "networkError": "حدث خطأ ما. يرجى المحاولة مجدداً."

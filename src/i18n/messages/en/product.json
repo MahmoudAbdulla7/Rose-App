@@ -7,7 +7,13 @@
   "rating": "{rating} out of {maxRating} stars",
   "addToCart": "Add {name} to cart",
   "addToWishlist": "Add {name} to wishlist",
+  "addToWishlistLabel": "Add to wishlist",
   "removeFromWishlist": "Remove {name} from wishlist",
+  "removeFromWishlistLabel": "Remove from wishlist",
+  "metadata": {
+    "title": "Products",
+    "description": "Browse our collection of flowers and gifts. Filter by category, occasion, price, and rating to find the perfect pick."
+  },
   "bestSelling": {
     "label": "Best Selling",
     "headline": "<accent>Check Out</accent> What Everyone's <accent>Buying</accent> Right Now",
@@ -15,6 +21,23 @@
     "exploreButton": "Explore gifts",
     "previousSlide": "Previous products",
     "nextSlide": "Next products"
+  },
+  "productDetails": {
+    "emptyState": {
+      "title": "Product not found",
+      "description": "This product may have been removed or is unavailable."
+    },
+    "leftInStock": "{count, number, decimal} left in stock",
+    "ratingLabel": "Rating:",
+    "ratingValue": "{rating, number, decimal}/{maxRating, number, decimal}",
+    "ratingsCount": "({count, number, decimal} ratings)",
+    "addToCart": "Add to Cart",
+    "gallery": {
+      "thumbnail": "View image {number}"
+    }
+  },
+  "relatedProducts": {
+    "title": "Related Products"
   },
   "popularProducts": {
     "sectionTitle": "Most Popular",

@@ -8,6 +8,11 @@
   "addToCart": "أضف {name} إلى السلة",
   "addToWishlist": "أضف {name} إلى المفضلة",
   "removeFromWishlist": "إزالة {name} من المفضلة",
+  "removeFromWishlistLabel": "إزالة من المفضلة",
+  "metadata": {
+    "title": "المنتجات",
+    "description": "تصفّح مجموعتنا من الزهور والهدايا. صفِّ حسب الفئة والمناسبة والسعر والتقييم لتجد الاختيار المناسب."
+  },
   "bestSelling": {
     "label": "الأكثر مبيعًا",
     "headline": "<accent>اطّلع على</accent> ما يشتريه الجميع <accent>الآن</accent>",
@@ -15,6 +20,23 @@
     "exploreButton": "استكشف الهدايا",
     "previousSlide": "المنتجات السابقة",
     "nextSlide": "المنتجات التالية"
+  },
+  "productDetails": {
+    "emptyState": {
+      "title": "المنتج غير موجود",
+      "description": "قد يكون هذا المنتج قد أُزيل أو أنه غير متاح."
+    },
+    "leftInStock": "{count, number, decimal} متبقٍ في المخزون",
+    "ratingLabel": "التقييم:",
+    "ratingValue": "{rating, number, decimal}/{maxRating, number, decimal}",
+    "ratingsCount": "({count, number, decimal} تقييم)",
+    "addToCart": "أضف إلى السلة",
+    "gallery": {
+      "thumbnail": "عرض الصورة {number}"
+    }
+  },
+  "relatedProducts": {
+    "title": "منتجات ذات صلة"
   },
   "popularProducts": {
     "sectionTitle": "الأكثر شعبية",

@@ -9,6 +9,9 @@ export function getFormats(locale: AppLocale): Formats {
 
   return {
     number: {
+      decimal: {
+        numberingSystem,
+      },
       precise: {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,

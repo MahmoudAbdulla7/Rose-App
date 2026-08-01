@@ -1,5 +1,7 @@
 import type { ICouponType } from './coupon';
+import type { PRODUCT_SORT_BY } from '../apis/products/products.options';
 
+export type TProductSortBy = (typeof PRODUCT_SORT_BY)[keyof typeof PRODUCT_SORT_BY];
 export interface IProduct extends IDBFields {
   title: string;
   description: string;
@@ -26,3 +28,17 @@ export interface IProduct extends IDBFields {
 }
 
 export type IProductResponse = IAPIResponse<IPaginatedData<IProduct>>;
+export interface IProductSearchParams {
+  limit: string;
+  page: string;
+  categoryId: string;
+  subCategoryId: string;
+  occasionId: string;
+  minPrice: string;
+  maxPrice: string;
+  minRating: string;
+  maxRating: string;
+  sortBy: TProductSortBy;
+  sortOrder: TSortOrder;
+  search: string;
+}

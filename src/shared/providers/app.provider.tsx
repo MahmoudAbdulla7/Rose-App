@@ -1,10 +1,12 @@
 import ReactQueryProvider from './react-query.provider';
 import ThemeProvider from './theme.provider';
-
-import type { NextIntlConfigProps } from '../lib/types/global';
 import { Toaster } from '../ui/sonner';
 import NextAuthProvider from './next-auth.provider';
 import NextIntlProvider from './next-intl.provider';
+import { WishlistSyncProvider } from '@/features/auth/providers/wishlist-sync.provider';
+
+import type { NextIntlConfigProps } from '../lib/types/global';
+import { CartSyncProvider } from '@/features/auth/providers/cart-sync.provider';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -16,7 +18,11 @@ export default function AppProvider({ children, nextIntlConfig }: AppProviderPro
     <NextIntlProvider nextIntlConfig={nextIntlConfig}>
       <ThemeProvider>
         <ReactQueryProvider>
-          <NextAuthProvider>{children}</NextAuthProvider>
+          <NextAuthProvider>
+            <WishlistSyncProvider>
+              <CartSyncProvider>{children}</CartSyncProvider>
+            </WishlistSyncProvider>
+          </NextAuthProvider>
           <Toaster duration={3000} closeButton />
         </ReactQueryProvider>
       </ThemeProvider>
