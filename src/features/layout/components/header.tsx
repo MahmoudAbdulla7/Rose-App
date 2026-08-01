@@ -51,13 +51,7 @@ export default async function Header() {
 
             <HeaderCartLink />
 
-            <Link
-              href="/notifications"
-              className="text-ds-text-default hidden p-2 lg:inline-flex"
-              aria-label={t('notifications.label')}
-            >
-              <Bell className="size-5" />
-            </Link>
+            <NotificationsDropdown />
 
             <div className="hidden items-center lg:flex">
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />

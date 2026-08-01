@@ -1,19 +1,25 @@
-'use server';
+import 'server-only';
 
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
+import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
+import type { AddressesPayload } from '@/features/layout/lib/types/address';
 
-import type { AddressesPayload } from '../types/address';
-
-export async function getCurrentAddressAction() {
+export async function getCurrentAddress() {
   const jwt = await getNextAuthToken();
   const token = jwt?.accessToken;
 
-  const response = await fetch(`${process.env.NEXT_BASE_URL}addresses`, {
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
+  const endpoint = buildApiEndpoint(`addresses`);
+
+  const response = await fetch(endpoint, {
     method: 'GET',
     headers: {
       ...API_HEADERS.JSON,
-      ...API_HEADERS.AUTHORIZATION(token!),
+      ...API_HEADERS.AUTHORIZATION(token),
     },
   });
 

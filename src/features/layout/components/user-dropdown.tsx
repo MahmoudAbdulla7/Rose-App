@@ -1,10 +1,9 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { signOut } from 'next-auth/react';
 import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { getUserDataAction } from '@/features/user/lib/actions/get-user-data.action';
 import { Link } from '@/i18n/navigation';
 import {
   DropdownMenu,
@@ -13,20 +12,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
-import { signOut } from 'next-auth/react';
+import { useAuth } from '@/shared/hooks';
 
-export default function HeaderDropdown() {
+export default function UserDropdown() {
+  // Translation
   const tGreeting = useTranslations('header.greeting');
   const tUserMenu = useTranslations('header.userMenu');
 
+  // Custom hooks
+  const { user } = useAuth();
+
+  // Variables
   const menuItemClasses =
     'text-ds-text-plain flex w-full items-center gap-2 font-medium cursor-pointer';
 
-  const { data: user } = useQuery({
-    queryKey: ['user-data'],
-    queryFn: getUserDataAction,
-  });
-
+  // Functions
   const handleLogout = () => {
     signOut({
       callbackUrl: '/',
@@ -34,7 +34,7 @@ export default function HeaderDropdown() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex px-4">
       <div className="flex flex-col">
         {/* Greeting */}
         <span className="text-xs text-zinc-500"> {tGreeting('hello')}</span>
@@ -55,7 +55,7 @@ export default function HeaderDropdown() {
           />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="dark:bg-ds-default w-56">
           {/* Name */}
           <div className="text-ds-primary-saturated hover:text-ds-primary-saturated dark:hover:text-ds-primary-saturated px-2 py-1.5 font-semibold hover:bg-transparent dark:hover:bg-transparent">
             {user?.firstName ?? ''} {user?.lastName ?? ''}
@@ -64,19 +64,19 @@ export default function HeaderDropdown() {
           <DropdownMenuSeparator />
 
           {/* Account */}
-          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+          <DropdownMenuItem render={<Link href="/profile" className={menuItemClasses} />}>
             <User size={16} strokeWidth={1.5} />
             <span>{tUserMenu('account')}</span>
           </DropdownMenuItem>
 
           {/* Addresses */}
-          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+          <DropdownMenuItem disabled render={<Link href="#" className={menuItemClasses} />}>
             <MapPinHouse size={16} strokeWidth={1.5} />
             <span>{tUserMenu('addresses')}</span>
           </DropdownMenuItem>
 
           {/* Orders */}
-          <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+          <DropdownMenuItem render={<Link href="/orders" className={menuItemClasses} />}>
             <ScrollText size={16} strokeWidth={1.5} />
             <span>{tUserMenu('orders')}</span>
           </DropdownMenuItem>
@@ -86,7 +86,7 @@ export default function HeaderDropdown() {
           {/* Dashboard */}
           {user?.role === 'ADMIN' && (
             <>
-              <DropdownMenuItem render={<Link href="#" className={menuItemClasses} />}>
+              <DropdownMenuItem disabled render={<Link href="#" className={menuItemClasses} />}>
                 <Settings size={16} strokeWidth={1.5} />
                 <span>{tUserMenu('dashboard')}</span>
               </DropdownMenuItem>
