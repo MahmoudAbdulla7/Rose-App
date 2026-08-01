@@ -55,7 +55,7 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
   };
 
   return (
-    <section className="relative m-4 w-1/3 overflow-hidden p-5">
+    <section className="relative container m-4 w-1/3 overflow-hidden p-5">
       {/* Auth layer */}
       <ReviewAuthGuard>
         {/* Form */}
