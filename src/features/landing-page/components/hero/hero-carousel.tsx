@@ -1,26 +1,29 @@
 'use client';
 import { Link } from '@/i18n/navigation';
+import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/shared/ui/carousel';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { CAROUSEL_SLIDES } from '../../lib/constants/carousel.constant';
+import { CAROUSEL_SLIDES } from '../../lib/constants/home/carousel.constant';
 
 export default function HeroCarousel() {
-  // Carousel API state
-  const [api, setApi] = useState<CarouselApi>();
-  //Prev button disabled state
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(true);
+  // Translation
+  const locale = useLocale();
+  const t = useTranslations('hero.banner');
+  const isRtl = locale === 'ar';
+
   // Current slide index state
   const [current, setCurrent] = useState(0);
 
-  const path = usePathname();
+  // Carousel API state
+  const [api, setApi] = useState<CarouselApi>();
 
-  const t = useTranslations('hero.banner');
+  //Button disabled states
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
 
   useEffect(() => {
     if (!api) return;
@@ -34,7 +37,6 @@ export default function HeroCarousel() {
     // Initial state
     updateState();
 
-    // Listen to select and reInit events
     api.on('select', updateState);
     api.on('reInit', updateState);
 
@@ -44,9 +46,7 @@ export default function HeroCarousel() {
     };
   }, [api]);
 
-  const slides = CAROUSEL_SLIDES;
-
-  const SLIDES_COUNT = slides.length;
+  const SLIDES_COUNT = CAROUSEL_SLIDES.length;
 
   return (
     <>
@@ -56,7 +56,7 @@ export default function HeroCarousel() {
         opts={{
           align: 'start',
           slidesToScroll: 1,
-          direction: path.includes('/ar') ? 'rtl' : 'ltr',
+          direction: isRtl ? 'rtl' : 'ltr',
         }}
       >
         {/* Carousel Indicators */}
@@ -65,7 +65,7 @@ export default function HeroCarousel() {
             <button
               key={index}
               onClick={() => api?.scrollTo(index)}
-              className={`h-2.5 rounded-full transition-all ${current === index ? 'bg-maroon-600 w-10' : 'bg-maroon-50 size-2.5'}`}
+              className={cn`h-2.5 rounded-full transition-all ${current === index ? 'bg-maroon-600 w-10' : 'bg-maroon-50 size-2.5'}`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
@@ -73,9 +73,9 @@ export default function HeroCarousel() {
 
         {/* Main Slides */}
         <CarouselContent className="aspect-4/3 object-cover sm:aspect-video">
-          {slides.map((slide, index) => (
+          {CAROUSEL_SLIDES.map((slide, index) => (
             <CarouselItem key={index} className="relative">
-              <Image src={slide.image} alt={slide.alt} fill />
+              <Image src={slide.image} alt={slide.alt + (index + 1)} fill placeholder="empty" />
               <div className="absolute inset-0 from-black/80 from-0% via-10% to-transparent p-4 sm:p-9 ltr:bg-linear-to-r rtl:bg-linear-to-l" />
             </CarouselItem>
           ))}
@@ -97,18 +97,18 @@ export default function HeroCarousel() {
             </Link>
 
             {/* Carousel Nav Buttons */}
-            <div className="bg-maroon-50 *:text-maroon-700 flex shrink-0 items-center justify-evenly rounded-full *:bg-transparent *:p-2.5 *:hover:bg-transparent *:disabled:bg-transparent sm:*:p-3.5 rtl:*:rotate-180">
+            <div className="bg-maroon-50 *:text-maroon-700 rounded-full *:bg-transparent *:px-3 *:hover:bg-transparent *:disabled:bg-transparent rtl:*:rotate-180">
               <Button
                 onClick={() => api?.scrollPrev()}
-                disabled={!canScrollPrev || slides.length <= 1}
+                disabled={!canScrollPrev || CAROUSEL_SLIDES.length <= 1}
               >
-                <ChevronLeft strokeWidth={2} className="size-5 sm:size-6" />
+                <ChevronLeft strokeWidth={2} className="size-4.75" />
               </Button>
               <Button
                 onClick={() => api?.scrollNext()}
-                disabled={!canScrollNext || slides.length <= 1}
+                disabled={!canScrollNext || CAROUSEL_SLIDES.length <= 1}
               >
-                <ChevronRight strokeWidth={2} className="size-5 sm:size-6" />
+                <ChevronRight strokeWidth={2} className="size-4.75" />
               </Button>
             </div>
           </div>
