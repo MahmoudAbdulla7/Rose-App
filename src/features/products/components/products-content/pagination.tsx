@@ -10,3 +10,4 @@ export default function ProductsContentPagination({ metadata }: ProductsContentP
       <Pagination totalPages={metadata.totalPages} />
     </div>
   );
+}
