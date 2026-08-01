@@ -25,7 +25,8 @@
     "reviewCurrentImages": "معاينة الصورة الحالية",
     "removeFile": "حذف الملف",
     "imagePreview": "معاينة الصورة",
-    "searchPlaceholder": "بحث..."
+    "searchPlaceholder": "بحث...",
+    "clearSearch": "مسح البحث"
   },
   "textarea": {
     "placeholder": "اكتب رسالتك هنا.",
