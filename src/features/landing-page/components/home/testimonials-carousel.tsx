@@ -8,10 +8,8 @@ import { Carousel, CarouselContent } from '@/shared/ui/carousel';
 export function TestimonialsCarousel({
   children,
   isRTL,
-}: {
-  children: React.ReactNode;
-  isRTL?: boolean;
-}) {
+  ...props
+}: React.ComponentProps<typeof Carousel> & { isRTL?: boolean }) {
   const plugin = React.useMemo(
     () => AutoScroll({ speed: 2, startDelay: 0, stopOnInteraction: false }),
     [],
@@ -21,6 +19,7 @@ export function TestimonialsCarousel({
     <Carousel
       opts={{ align: 'start', loop: true, direction: isRTL ? 'rtl' : 'ltr' }}
       plugins={[plugin]}
+      {...props}
     >
       <CarouselContent
         className="ms-0 pt-25.75 pb-30.5"
