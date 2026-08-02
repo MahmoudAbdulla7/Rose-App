@@ -41,8 +41,8 @@ async function TestimonialsContent() {
       </div>
 
       {/* Review cards — full-bleed band */}
-      <div className="bg-ds-primary-fade mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20">
-        <TestimonialsCarousel isRTL={isRTL}>
+      <div className="bg-ds-primary-fade mt-10 w-full">
+        <TestimonialsCarousel isRTL={isRTL} className="container">
           {testimonials.map((testimonial) => {
             // Variables
             const ratingLabel = t('ratingLabel', {
