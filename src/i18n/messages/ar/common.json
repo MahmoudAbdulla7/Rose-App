@@ -66,7 +66,8 @@
   },
   "entities": {
     "products": "المنتجات",
-    "occasions": "المناسبات"
+    "occasions": "المناسبات",
+    "testimonials": "آراء العملاء"
   },
   "loadError": {
     "title": "فشل تحميل {entity}. حاول مرة أخرى.",

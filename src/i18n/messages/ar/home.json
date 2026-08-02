@@ -10,7 +10,11 @@
   "testimonials": {
     "tagline": "آراء العملاء",
     "title": "كلمات حقيقية من عملاء سعداء",
-    "ratingLabel": "التقييم {rating} من {max} نجوم"
+    "ratingLabel": "التقييم {rating} من {max} نجوم",
+    "emptyState": {
+      "title": "لا توجد آراء بعد",
+      "description": "كن أول من يشارك تجربته معنا."
+    }
   },
   "about": {
     "tagline": "من نحن",

@@ -10,7 +10,11 @@
   "testimonials": {
     "tagline": "Testimonials",
     "title": "Real Words from Happy Customers",
-    "ratingLabel": "Rated {rating} out of {max} stars"
+    "ratingLabel": "Rated {rating} out of {max} stars",
+    "emptyState": {
+      "title": "No testimonials yet",
+      "description": "Be the first to share your experience with us."
+    }
   },
   "about": {
     "tagline": "About",
