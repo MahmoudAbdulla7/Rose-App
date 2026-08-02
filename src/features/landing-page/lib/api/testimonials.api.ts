@@ -4,7 +4,10 @@ import { cacheLife, cacheTag } from 'next/cache';
 
 import { routing } from '@/i18n/routing';
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
-import type { ITestimonial, ITestimonialResponse } from '@/shared/lib/types/testimonials';
+import type {
+  ITestimonial,
+  ITestimonialResponse,
+} from '@/features/landing-page/lib/types/home/testimonials';
 import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
 import { pickData } from '@/shared/lib/utils/pick-data.utils';
 
