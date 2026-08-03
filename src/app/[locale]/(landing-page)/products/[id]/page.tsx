@@ -1,4 +1,6 @@
 import ProductDetails from '@/features/products/components/product-details/product-details';
+import ReviewForm from '@/features/products/components/review/review-form';
+import RelatedProductsSection from '@/features/products/components/related-products/related-products-section';
 import { getProduct } from '@/shared/lib/apis/product/product.api';
 import type { Metadata } from 'next';
 
@@ -24,11 +26,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-  const { id } = await params;
+  const { id, locale } = await params;
+  const product = await getProduct(id, { locale });
 
   return (
     <section className="mt-10 lg:mt-17">
       <ProductDetails id={id} />
+      <ReviewForm productId={id} />
+      <div className="container mt-12 lg:mt-16">
+        <RelatedProductsSection
+          currentProductId={id}
+          currentCategoryId={product?.category?.id}
+          currentSubCategoryId={product?.subCategory?.id ?? null}
+        />
+      </div>
     </section>
   );
 }

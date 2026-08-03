@@ -12,7 +12,7 @@ export default function RatingStarIcon({ fill }: RatingStarIconProps) {
       {fill !== 'empty' && (
         <span
           className={cn(
-            'absolute inset-y-0 start-0 overflow-hidden',
+            'absolute inset-y-0 start-0 overflow-hidden transition-[width] duration-200 ease-out',
             fill === 'half' ? 'w-1/2' : 'w-full',
           )}
         >

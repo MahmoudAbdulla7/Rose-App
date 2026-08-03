@@ -2,37 +2,52 @@ import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 
-import {
-  TESTIMONIALS,
-  TESTIMONIAL_MAX_RATING,
-} from '@/features/landing-page/lib/constants/home/testimonials.constant';
 import SectionHeading from '@/features/landing-page/components/home/section-heading';
 import { TestimonialsCarousel } from '@/features/landing-page/components/home/testimonials-carousel';
+import { getTestimonials } from '@/features/landing-page/lib/api/testimonials.api';
+import { TESTIMONIALS_OPTIONS } from '@/features/landing-page/lib/api/testimonials.options';
+import EmptyState from '@/shared/components/empty-state';
+import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 import { cn } from '@/shared/lib/utils';
 import { CarouselItem } from '@/shared/ui/carousel';
 
-export default async function Testimonials() {
+export default function Testimonials() {
+  return (
+    <LoadErrorBoundary entity="testimonials">
+      <TestimonialsContent />
+    </LoadErrorBoundary>
+  );
+}
+
+async function TestimonialsContent() {
   // Translation
   const locale = await getLocale();
   const isRTL = locale === 'ar';
   const t = await getTranslations('home.testimonials');
   const format = await getFormatter();
 
-  return (
-    <section className="">
-      {/* Heading */}
-      <SectionHeading id="testimonials-heading">{t('title')}</SectionHeading>
+  // Query
+  const testimonials = await getTestimonials({ locale });
 
-      {/* Review cards */}
-      <div className="bg-ds-primary-fade mx-auto mt-10 w-full px-5 sm:px-8 md:px-12 xl:px-20">
-        <TestimonialsCarousel isRTL={isRTL}>
-          {TESTIMONIALS.map((testimonial) => {
+  if (!testimonials.length) {
+    return <EmptyState title={t('emptyState.title')} subtitle={t('emptyState.description')} />;
+  }
+
+  return (
+    <section className="w-full">
+      {/* Heading */}
+      <div className="container">
+        <SectionHeading id="testimonials-heading">{t('title')}</SectionHeading>
+      </div>
+
+      {/* Review cards — full-bleed band */}
+      <div className="bg-ds-primary-fade mt-10 w-full">
+        <TestimonialsCarousel isRTL={isRTL} className="container">
+          {testimonials.map((testimonial) => {
             // Variables
-            const name = isRTL ? testimonial.nameAr : testimonial.nameEn;
-            const comment = isRTL ? testimonial.commentAr : testimonial.commentEn;
             const ratingLabel = t('ratingLabel', {
               rating: testimonial.rating,
-              max: TESTIMONIAL_MAX_RATING,
+              max: TESTIMONIALS_OPTIONS.MAX_RATING,
             });
 
             return (
@@ -41,19 +56,28 @@ export default async function Testimonials() {
                 className="relative flex basis-full flex-col px-3! ps-0 sm:basis-3/4 md:basis-1/2 md:px-6! xl:basis-1/3"
               >
                 {/* Avatar Image */}
-                <div className="border-ds-primary-fade bg-ds-plain absolute -top-15 left-1/2 z-10 size-30 -translate-x-1/2 overflow-hidden rounded-full border-4">
-                  <Image
-                    src={testimonial.imageUrl}
-                    alt={name}
-                    fill
-                    sizes="120px"
-                    className="object-cover"
-                  />
+                <div className="absolute -top-15 left-1/2 z-10 size-30 -translate-x-1/2 overflow-hidden rounded-full border-4 border-white bg-white">
+                  {testimonial.image ? (
+                    <Image
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      fill
+                      sizes="120px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="bg-ds-primary-fade flex size-full items-center justify-center text-3xl font-semibold text-zinc-500 uppercase"
+                    >
+                      {testimonial.name.charAt(0)}
+                    </span>
+                  )}
                 </div>
 
                 <article className="rounded-5xl shadow-ds-soft-lg flex h-full w-full flex-col items-center bg-white px-5 pt-16 pb-5">
                   {/* name */}
-                  <h3 className="mb-9 text-base font-semibold text-zinc-800">{name}</h3>
+                  <h3 className="mb-9 text-base font-semibold text-zinc-800">{testimonial.name}</h3>
 
                   {/* Rating */}
                   <div
@@ -61,16 +85,15 @@ export default async function Testimonials() {
                     role="img"
                     aria-label={ratingLabel}
                   >
-                    {Array.from({ length: TESTIMONIAL_MAX_RATING }).map((_, i) => (
+                    {Array.from({ length: TESTIMONIALS_OPTIONS.MAX_RATING }).map((_, i) => (
                       <Star
                         key={i}
                         aria-hidden="true"
                         strokeWidth={1.5}
                         className={cn(
                           'size-4',
-                          i < testimonial.rating
-                            ? 'fill-ds-warning text-ds-warning'
-                            : 'text-ds-warning fill-transparent',
+                          'text-yellow-400',
+                          i < testimonial.rating ? 'fill-yellow-400' : 'fill-transparent',
                         )}
                       />
                     ))}
@@ -78,12 +101,15 @@ export default async function Testimonials() {
 
                   {/* Message */}
                   <p className="mb-9 flex-1 text-start text-base leading-[100%] font-medium text-zinc-800">
-                    {comment}
+                    {testimonial.content}
                   </p>
 
                   {/* Time */}
-                  <time dateTime={testimonial.date} className="text-xs font-medium text-zinc-400">
-                    {format.dateTime(new Date(testimonial.date), { dateStyle: 'long' })}
+                  <time
+                    dateTime={new Date(testimonial.createdAt).toISOString()}
+                    className="text-xs font-medium text-zinc-400"
+                  >
+                    {format.dateTime(new Date(testimonial.createdAt), { dateStyle: 'long' })}
                   </time>
                 </article>
               </CarouselItem>
