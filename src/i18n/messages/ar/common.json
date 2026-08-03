@@ -25,7 +25,8 @@
     "reviewCurrentImages": "معاينة الصورة الحالية",
     "removeFile": "حذف الملف",
     "imagePreview": "معاينة الصورة",
-    "searchPlaceholder": "بحث..."
+    "searchPlaceholder": "بحث...",
+    "clearSearch": "مسح البحث"
   },
   "textarea": {
     "placeholder": "اكتب رسالتك هنا.",
@@ -65,7 +66,8 @@
   },
   "entities": {
     "products": "المنتجات",
-    "occasions": "المناسبات"
+    "occasions": "المناسبات",
+    "testimonials": "آراء العملاء"
   },
   "loadError": {
     "title": "فشل تحميل {entity}. حاول مرة أخرى.",

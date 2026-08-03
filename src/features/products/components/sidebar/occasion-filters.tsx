@@ -43,7 +43,7 @@ export default async function OccasionFilters({ occasions, searchParams }: Occas
       }
     >
       <ul
-        className="no-scrollbar grid h-60.5 grid-cols-2 content-start gap-2.5 overflow-y-auto"
+        className="no-scrollbar grid h-60.5 max-h-60.5 min-h-0 grid-cols-2 content-start gap-2.5 overflow-y-auto"
         aria-label={tFilters('occasion')}
       >
         {sortedOccasions.map((occasion) => (

@@ -25,7 +25,8 @@
     "reviewCurrentImages": "Review current image(s)",
     "removeFile": "Remove file",
     "imagePreview": "Image preview",
-    "searchPlaceholder": "Search..."
+    "searchPlaceholder": "Search...",
+    "clearSearch": "Clear search"
   },
   "textarea": {
     "placeholder": "Type your message here.",
@@ -65,7 +66,8 @@
   },
   "entities": {
     "products": "products",
-    "occasions": "occasions"
+    "occasions": "occasions",
+    "testimonials": "testimonials"
   },
   "loadError": {
     "title": "Failed to load {entity}. Try again.",

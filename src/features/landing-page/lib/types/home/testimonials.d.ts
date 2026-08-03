@@ -1,10 +1,11 @@
-export interface ITestimonial {
-  id: string;
-  imageUrl: string;
-  nameEn: string;
-  nameAr: string;
-  commentEn: string;
-  commentAr: string;
+export interface ITestimonial extends IDBFields {
+  name: string;
+  email: string;
+  content: string;
   rating: number;
-  date: string;
+  image: string | null;
+  isApproved: boolean;
+  immutable: boolean;
 }
+
+export type ITestimonialResponse = IAPIResponse<IPaginatedData<ITestimonial>>;

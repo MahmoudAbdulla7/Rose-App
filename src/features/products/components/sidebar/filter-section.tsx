@@ -16,7 +16,11 @@ export default function FilterSection({ title, clearLinkProps, children }: Filte
         <h2 className="text-lg leading-none font-semibold text-zinc-800 dark:text-zinc-100">
           {title}
         </h2>
-        {showClear ? <FilterClear {...clearLinkProps!} /> : null}
+        {showClear ? (
+          <span className="animate-in fade-in-0 zoom-in-95 duration-200 ease-out">
+            <FilterClear {...clearLinkProps!} />
+          </span>
+        ) : null}
       </div>
       {children}
     </section>

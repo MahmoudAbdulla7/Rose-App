@@ -25,6 +25,15 @@
   "logoAlt": "Rose",
   "homeAria": "Rose home",
   "searchPlaceholder": "What awesome gift are you looking for?",
+  "search": {
+    "youMayLike": "Products You May Like",
+    "suggestionsLabel": "Product suggestions",
+    "resultsLabel": "Search results",
+    "loading": "Searching products",
+    "noResults": "No products match your search.",
+    "emptySuggestions": "No suggestions available right now.",
+    "error": "Could not search products. Please try again."
+  },
   "login": "Login",
   "wishlist": "Wishlist",
   "cart": "Cart",
