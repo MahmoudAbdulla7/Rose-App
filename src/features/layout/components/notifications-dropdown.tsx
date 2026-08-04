@@ -4,7 +4,7 @@ import { Bell, BellOff } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { useNotifications } from '@/features/layout/hooks/use-notification';
+import { useNotifications } from '@/features/layout/hooks/use-notifications';
 import {
   DropdownMenu,
   DropdownMenuContent,

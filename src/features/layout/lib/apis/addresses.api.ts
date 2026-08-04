@@ -5,7 +5,7 @@ import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils'
 import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
 import type { AddressesPayload } from '@/features/layout/lib/types/address';
 
-export async function getCurrentAddress() {
+export async function getAddresses() {
   const jwt = await getNextAuthToken();
   const token = jwt?.accessToken;
 
