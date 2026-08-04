@@ -6,7 +6,7 @@ import ProductReviewsSection from './product-reviews-section';
 type ProductRatingProps = {
   rating: number;
   ratingsCount: number;
-  reviews: IReview[];
+  reviews?: IReview[];
 };
 
 export default function ProductRating({ rating, ratingsCount, reviews }: ProductRatingProps) {
