@@ -4,10 +4,10 @@ export default function NotificationItemSkeleton() {
   return (
     <div className="flex min-h-30.5 flex-col gap-1.5 p-4">
       {/* Title */}
-      <Skeleton className="h-5 w-3/4 bg-zinc-300 dark:bg-zinc-700" />
+      <Skeleton className="bg-ds-soft h-5 w-3/4" />
 
       {/* Message */}
-      <Skeleton className="h-14 w-full bg-zinc-300 dark:bg-zinc-700" />
+      <Skeleton className="bg-ds-soft h-14 w-full" />
     </div>
   );
 }

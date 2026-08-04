@@ -1,13 +1,21 @@
-export type AddressesPayload = {
+export interface AddressesPayload {
   addresses: Address[];
-};
+}
 
-export type Address = {
+export interface AddressPayload {
+  address: Address;
+}
+
+export interface Address {
+  id: string;
+  userId: string;
   title: string;
   isPrimary: boolean;
   city: string;
   street: string;
   phone: string;
-  latitude: number;
-  longitude: number;
-};
+  latitude: string;
+  longitude: string;
+  createdAt: string;
+  updatedAt: string;
+}
