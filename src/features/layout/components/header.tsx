@@ -12,6 +12,7 @@ import Image from 'next/image';
 import HeaderCartLink from './header-cart-link';
 import HeaderWishlistLink from './header-wishlist-link';
 import NotificationsDropdown from './notifications-dropdown';
+import CurrentDeliveryLocation from './current-delivery-location';
 
 export default async function Header() {
   const t = await getTranslations('header');
@@ -33,6 +34,8 @@ export default async function Header() {
                 priority
               />
             </Link>
+
+            <CurrentDeliveryLocation />
 
             <HeaderSearch
               suggestions={suggestions}
