@@ -9,6 +9,7 @@ import { Separator } from '@/shared/ui/separator';
 import { useAddresses } from '../../hooks/use-addresses';
 import type { Address } from '../../lib/types/address';
 import AddressesModalContent from './addresses-modal-content';
+import AddressForm from './address-form';
 
 interface AddressBookModalProps {
   open: boolean;
@@ -20,6 +21,8 @@ export function AddressesModal({ open, onOpenChange }: AddressBookModalProps) {
   const t = useTranslations('address');
 
   // State
+  const [view, setView] = useState<'list' | 'add' | 'edit'>('list');
+  const [editingAddress, setEditingAddress] = useState<Address | null>(null);
   const [addressToDelete, setAddressToDelete] = useState<Address | null>(null);
 
   // Custom hooks
@@ -40,24 +43,45 @@ export function AddressesModal({ open, onOpenChange }: AddressBookModalProps) {
       >
         <DialogHeader>
           <div className="flex justify-between">
+            {/* Title */}
             <DialogTitle className="text-ds-text-plain text-3xl font-bold">
-              {t('title')}
+              {view === 'list' ? t('title') : editingAddress ? t('edit') : t('actions.addFirst')}
             </DialogTitle>
-            <Button variant="secondary" size="xl">
-              {t('actions.addFirst')}
-            </Button>
+
+            {/* Add */}
+            {!editingAddress && (
+              <Button
+                variant="secondary"
+                size="xl"
+                onClick={() => {
+                  setEditingAddress(null);
+                  setView('add');
+                }}
+              >
+                {t('actions.addFirst')}
+              </Button>
+            )}
           </div>
           <Separator className="mt-2" />
         </DialogHeader>
 
+        {/* Content */}
         <div className="overflow-y-auto pe-6">
-          <AddressesModalContent
-            addresses={addresses}
-            isLoading={isLoading}
-            isError={isError}
-            addressToDelete={addressToDelete}
-            setAddressToDelete={setAddressToDelete}
-          />
+          {view === 'list' ? (
+            <AddressesModalContent
+              addresses={addresses}
+              isLoading={isLoading}
+              isError={isError}
+              addressToDelete={addressToDelete}
+              setAddressToDelete={setAddressToDelete}
+              onEdit={(address) => {
+                setEditingAddress(address);
+                setView('edit');
+              }}
+            />
+          ) : (
+            <AddressForm address={editingAddress} onBack={() => setView('list')} />
+          )}
         </div>
       </DialogContent>
     </Dialog>

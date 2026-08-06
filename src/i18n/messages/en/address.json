@@ -7,7 +7,7 @@
   },
 
   "form": {
-    "step1Title": "Address Details",
+    "step1Title": "Enter address Details",
     "step2Title": "Pin Your Location",
     "city": "City",
     "details": "Address",
@@ -34,5 +34,12 @@
     "added": "Address added",
     "updated": "Address updated",
     "deleted": "Address deleted"
+  },
+
+  "validation": {
+    "cityRequired": "City is required.",
+    "addressRequired": "Address is required.",
+    "phoneRequired": "Phone number is required.",
+    "phoneInvalid": "Please enter a valid phone number."
   }
 }

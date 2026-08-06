@@ -11,12 +11,14 @@ interface AddressesListProps {
   addresses: Address[];
   addressToDelete: Address | null;
   setAddressToDelete: React.Dispatch<React.SetStateAction<Address | null>>;
+  onEdit: (address: Address) => void;
 }
 
 export default function AddressesList({
   addresses,
   addressToDelete,
   setAddressToDelete,
+  onEdit,
 }: AddressesListProps) {
   return (
     <>
@@ -39,11 +41,7 @@ export default function AddressesList({
                 </Button>
 
                 {/* Edit */}
-                <Button
-                  variant="destructive"
-                  size="icon-rounded"
-                  onClick={() => setAddressToDelete(address)}
-                >
+                <Button variant="destructive" size="icon-rounded" onClick={() => onEdit(address)}>
                   <Trash2 />
                 </Button>
               </div>

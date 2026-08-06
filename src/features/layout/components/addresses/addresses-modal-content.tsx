@@ -10,6 +10,7 @@ interface AddressesModalContentProps {
   isError: boolean;
   addressToDelete: Address | null;
   setAddressToDelete: React.Dispatch<React.SetStateAction<Address | null>>;
+  onEdit: (address: Address) => void;
 }
 
 export default function AddressesModalContent({
@@ -18,6 +19,7 @@ export default function AddressesModalContent({
   isError,
   addressToDelete,
   setAddressToDelete,
+  onEdit,
 }: AddressesModalContentProps) {
   const t = useTranslations('address');
 
@@ -38,6 +40,7 @@ export default function AddressesModalContent({
       addresses={addresses}
       addressToDelete={addressToDelete}
       setAddressToDelete={setAddressToDelete}
+      onEdit={onEdit}
     />
   );
 }
