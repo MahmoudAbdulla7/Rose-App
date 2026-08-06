@@ -3,6 +3,7 @@
 import { ShoppingCart, Star, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 import HoveredLink from '@/shared/components/hovered-link';
 import { useAddToCart } from '@/shared/hooks/use-add-to-cart.hook';
@@ -35,6 +36,25 @@ export default function WishlistItemCard({ item, onRemoved }: WishlistItemCardPr
       { productId: product.id },
       {
         onSuccess: () => onRemoved?.(product.id),
+      },
+    );
+  };
+
+  const addWishlistItemToCart = () => {
+    addToCart(
+      { productId: product.id, product, quantity: 1 },
+      {
+        onSuccess: (response) => {
+          if (response.status) {
+            toast.success(tWishlist('addToCartSuccess', { name: product.title }));
+            return;
+          }
+
+          toast.error(tWishlist('addToCartError', { name: product.title }));
+        },
+        onError: () => {
+          toast.error(tWishlist('addToCartError', { name: product.title }));
+        },
       },
     );
   };
@@ -123,7 +143,7 @@ export default function WishlistItemCard({ item, onRemoved }: WishlistItemCardPr
             variant="primary"
             disabled={isAddingToCart}
             loading={isAddingToCart}
-            onClick={() => addToCart({ productId: product.id, product, quantity: 1 })}
+            onClick={addWishlistItemToCart}
             leftIcon={<ShoppingCart className="size-5" strokeWidth={1.8} aria-hidden="true" />}
             className="h-11 min-w-40 px-5 text-base"
           >
