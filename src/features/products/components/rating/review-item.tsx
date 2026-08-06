@@ -11,7 +11,7 @@ type ReviewItemProps = {
 };
 
 export default async function ReviewItem({ review, className }: ReviewItemProps) {
-  const [format, t] = await Promise.all([getFormatter(), getTranslations('product')]);
+  const [format, t] = await Promise.all([getFormatter(), getTranslations('review')]);
   const createdAt =
     review.createdAt instanceof Date ? review.createdAt : new Date(String(review.createdAt));
   const authorName =
@@ -40,7 +40,7 @@ export default async function ReviewItem({ review, className }: ReviewItemProps)
             <RatingStars
               rating={review.rating}
               size="md"
-              ariaLabel={t('rating', { rating: review.rating, maxRating: 5 })}
+              ariaLabel={t('summary.rating', { rating: review.rating, maxRating: 5 })}
             />
             <span className="text-ds-text-plain text-xl leading-none font-bold">
               ({review.rating.toFixed(1)})

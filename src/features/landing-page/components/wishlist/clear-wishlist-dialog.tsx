@@ -33,7 +33,7 @@ export default function ClearWishlistDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         overlayClassName="bg-black/80 supports-backdrop-filter:backdrop-blur-none"
-        className="w-[calc(100%-2rem)] max-w-[22.9375rem] gap-0 rounded-xl bg-white px-4 pt-14 pb-4 text-zinc-800 ring-0 sm:max-w-[22.9375rem] sm:px-4 sm:pt-14 sm:pb-4 dark:bg-white dark:text-zinc-800"
+        className="w-[calc(100%-2rem)] max-w-120 gap-0 rounded-xl bg-white p-6 text-zinc-800 ring-0 sm:p-10 dark:bg-white dark:text-zinc-800"
       >
         <DialogHeader className="items-center gap-0">
           <div
@@ -54,13 +54,7 @@ export default function ClearWishlistDialog({
           <DialogClose render={<Button variant="subtle" className="h-[2.1875rem] rounded-md" />}>
             {t('cancel')}
           </DialogClose>
-          <Button
-            type="button"
-            variant="destructive"
-            loading={pending}
-            onClick={onConfirm}
-            className="h-[2.1875rem] rounded-md bg-red-600 text-white hover:bg-red-700"
-          >
+          <Button type="button" variant="destructive" loading={pending} onClick={onConfirm}>
             {t('confirm')}
           </Button>
         </DialogFooter>
