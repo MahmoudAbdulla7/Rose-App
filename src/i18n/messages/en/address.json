@@ -1,0 +1,38 @@
+{
+  "title": "My Addresses",
+
+  "list": {
+    "empty": "No saved addresses",
+    "loadError": "Failed to load addresses."
+  },
+
+  "form": {
+    "step1Title": "Address Details",
+    "step2Title": "Pin Your Location",
+    "city": "City",
+    "details": "Address",
+    "phone": "Contact Number",
+    "findMyLocation": "Find My Location",
+    "locationDenied": "Location access denied. Please pin manually.",
+    "loadingMap": "Loading map..."
+  },
+
+  "actions": {
+    "addFirst": "Add a New Address",
+    "add": "Add Address",
+    "edit": "Edit",
+    "delete": "Confirm",
+    "cancel": "Cancel",
+    "next": "Next",
+    "back": "Back",
+    "save": "Save Changes",
+    "deleting": "Deleting..."
+  },
+
+  "messages": {
+    "confirmDelete": "Are you sure you want to delete this address?",
+    "added": "Address added",
+    "updated": "Address updated",
+    "deleted": "Address deleted"
+  }
+}
