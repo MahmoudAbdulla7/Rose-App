@@ -46,7 +46,7 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
         <div className="flex min-w-0 items-end gap-3">
           <FolderHeart
             className="mb-1 size-12 shrink-0 text-zinc-800 sm:size-14 dark:text-zinc-100"
-            strokeWidth={1.8}
+            strokeWidth={1.2}
             aria-hidden="true"
           />
           <div className="flex min-w-0 flex-wrap items-end gap-x-3 gap-y-1">
