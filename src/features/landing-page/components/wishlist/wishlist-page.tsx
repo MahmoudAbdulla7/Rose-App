@@ -11,6 +11,8 @@ import EmptyState from '@/shared/components/empty-state';
 import HoveredLink from '@/shared/components/hovered-link';
 import { useRemoveFromWishlist } from '@/shared/hooks';
 import type { IWishlistItem } from '@/shared/lib/types/wishlist';
+import { cn } from '@/shared/lib/utils';
+import { Button, buttonVariants } from '@/shared/ui/button';
 
 type WishlistPageContentProps = {
   initialItems: IWishlistItem[];
@@ -41,16 +43,16 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
   };
 
   return (
-    <main className="container flex min-h-[calc(100dvh-12rem)] flex-col pt-14 pb-10">
-      <header className="border-ds-border-subtle flex flex-wrap items-center justify-between gap-4 border-b pb-4">
+    <main className="container flex min-h-[calc(100dvh-12rem)] flex-col gap-6 pt-14 pb-10">
+      <header className="border-ds-border-subtle flex flex-wrap items-center justify-between gap-4 border-b pb-5">
         <div className="flex min-w-0 items-end gap-3">
           <FolderHeart
-            className="mb-1 size-12 shrink-0 text-zinc-800 sm:size-14 dark:text-zinc-100"
+            className="text-ds-primary mb-1 size-12 shrink-0 sm:size-14"
             strokeWidth={1.2}
             aria-hidden="true"
           />
           <div className="flex min-w-0 flex-wrap items-end gap-x-3 gap-y-1">
-            <h1 className="text-[2.625rem] leading-none font-bold text-zinc-800 sm:text-5xl dark:text-zinc-100">
+            <h1 className="text-ds-text-plain text-[2.625rem] leading-none font-bold sm:text-5xl">
               {t('title')}
             </h1>
             <span className="text-ds-text-default pb-1.5 text-base leading-none">
@@ -59,27 +61,33 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
           </div>
         </div>
 
-        <button
+        <Button
           type="button"
+          variant="destructive"
           disabled={!hasItems}
           onClick={() => setConfirmOpen(true)}
-          className="inline-flex h-11 min-w-45 cursor-pointer items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+          leftIcon={<BrushCleaning className="size-5" strokeWidth={1.8} aria-hidden="true" />}
+          className="h-11 min-w-45 text-base"
         >
-          <BrushCleaning className="size-5" strokeWidth={1.8} aria-hidden="true" />
           {t('clear')}
-        </button>
+        </Button>
       </header>
 
       {hasItems ? (
-        <section className="flex flex-col" aria-label={t('itemsLabel')}>
-          {wishlistItems.map((item) => (
-            <WishlistItemCard key={item.id} item={item} onRemoved={removeItem} />
-          ))}
+        <section className="flex flex-col gap-5" aria-label={t('itemsLabel')}>
+          <div className="border-ds-border-subtle divide-ds-border-subtle bg-ds-plain divide-y rounded-lg border">
+            {wishlistItems.map((item) => (
+              <WishlistItemCard key={item.id} item={item} onRemoved={removeItem} />
+            ))}
+          </div>
 
-          <div className="border-ds-border-subtle border-t pt-4">
+          <div className="flex justify-start">
             <HoveredLink
               href="/products"
-              className="inline-flex h-12 min-w-58 items-center justify-center gap-3 rounded-lg bg-[#64151d] px-6 text-base font-medium text-white transition-colors hover:bg-[#511017]"
+              className={cn(
+                buttonVariants({ variant: 'primary' }),
+                'h-12 min-w-58 gap-3 text-base',
+              )}
             >
               <ArrowLeft className="size-5 rtl:rotate-180" aria-hidden="true" />
               {t('continueShopping')}
@@ -88,7 +96,7 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
         </section>
       ) : (
         <EmptyState title={t('emptyTitle')} subtitle={t('emptyDescription')}>
-          <Heart className="text-maroon-600 dark:text-soft-pink-300 size-6" aria-hidden="true" />
+          <Heart className="text-ds-primary size-6" aria-hidden="true" />
         </EmptyState>
       )}
 
