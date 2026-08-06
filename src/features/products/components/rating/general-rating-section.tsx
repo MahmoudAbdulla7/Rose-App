@@ -16,20 +16,18 @@ export default async function GeneralRatingSection({
   ratingsCount,
   className,
 }: GeneralRatingSectionProps) {
-  const t = await getTranslations('product');
+  const t = await getTranslations('review');
 
   return (
     <section
       className={cn('border-ds-border-muted flex flex-col gap-4 border-b', className)}
       aria-labelledby="product-reviews-title"
     >
-      <SectionHeading id="product-reviews-title">
-        {t('productDetails.reviews.title')}
-      </SectionHeading>
+      <SectionHeading id="product-reviews-title">{t('summary.title')}</SectionHeading>
 
       <div className="flex flex-col gap-2">
         <p className="text-ds-text-plain text-xl leading-tight font-semibold">
-          {t('productDetails.reviews.generalRating')}
+          {t('summary.generalRating')}
         </p>
 
         <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-1">
@@ -37,14 +35,14 @@ export default async function GeneralRatingSection({
             {rating.toFixed(1)}
           </span>
           <span className="text-ds-text-muted text-lg leading-none">
-            {t('productDetails.ratingsCount', { count: ratingsCount })}
+            {t('summary.ratingsCount', { count: ratingsCount })}
           </span>
         </div>
         <div className="mb-4">
           <RatingStars
             rating={rating}
             size="lg"
-            ariaLabel={t('rating', { rating, maxRating: 5 })}
+            ariaLabel={t('summary.rating', { rating, maxRating: 5 })}
           />
         </div>
       </div>

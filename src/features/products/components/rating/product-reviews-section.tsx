@@ -15,12 +15,12 @@ export default async function ProductReviewsSection({
   reviews,
   className,
 }: ProductReviewsSectionProps) {
-  const t = await getTranslations('product.productDetails.reviews');
+  const t = await getTranslations('review');
   const normalizedReviews = reviews ?? [];
 
   if (normalizedReviews.length === 0) {
     return (
-      <section className={className} aria-label={t('customerReviews')}>
+      <section className={className} aria-label={t('summary.customerReviews')}>
         <EmptyState
           title={t('emptyState.title')}
           subtitle={t('emptyState.description')}
@@ -33,7 +33,7 @@ export default async function ProductReviewsSection({
   return (
     <section
       className={cn('max-h-125 scrollbar-none overflow-y-auto', className)}
-      aria-label={t('customerReviews')}
+      aria-label={t('summary.customerReviews')}
     >
       <div className="divide-ds-border-subtle flex flex-col divide-y">
         {normalizedReviews.map((review) => (
