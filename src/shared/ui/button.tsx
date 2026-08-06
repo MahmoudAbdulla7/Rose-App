@@ -2,7 +2,7 @@ import { Button as ButtonPrimitive } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { Loader2 } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'shared/lib/utils';
 import { useTranslations } from 'next-intl';
 
 const buttonVariants = cva(

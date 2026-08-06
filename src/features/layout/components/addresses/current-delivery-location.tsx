@@ -10,7 +10,7 @@ import { AddressesModal } from './addresses-modal';
 
 export default function CurrentDeliveryLocation() {
   // Translation
-  const tDelivery = useTranslations('header.delivery');
+  const t = useTranslations('header.delivery');
 
   // State
   const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function CurrentDeliveryLocation() {
         type="button"
         className="flex cursor-pointer flex-col px-2.5 text-start"
       >
-        <span className="text-ds-text-soft text-sm">{tDelivery('deliverTo')}:</span>
+        <span className="text-ds-text-soft text-sm">{t('deliverTo')}:</span>
 
         <div className="text-ds-primary-saturated flex items-center gap-1.5">
           <LocationEdit size={20} strokeWidth={1.5} />
