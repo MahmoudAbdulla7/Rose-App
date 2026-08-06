@@ -1,20 +1,13 @@
 'use client';
 
-import { Bell, BellOff } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { useNotifications } from '@/features/layout/hooks/use-notifications';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/shared/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 import { useAuth } from '@/shared/hooks';
-import NotificationItem from './notification-item';
-import NotificationsToolbar from './notifications-toolbar';
-import NotificationItemSkeleton from '../skeletons/notification-item.skeleton';
+import { NotificationsContent } from './notifications-content';
 
 export default function NotificationsDropdown() {
   // Translation
@@ -36,7 +29,6 @@ export default function NotificationsDropdown() {
   // Functions
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
-
     const reachedBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;
 
     if (reachedBottom && hasNextPage && !isFetchingNextPage && !isLoading) {
@@ -53,14 +45,7 @@ export default function NotificationsDropdown() {
   }
 
   return (
-    <DropdownMenu
-      onOpenChange={(open) => {
-        if (open) {
-          refetch();
-        }
-      }}
-    >
-      {/* Trigger */}
+    <DropdownMenu onOpenChange={(open) => open && refetch()}>
       <DropdownMenuTrigger
         render={
           <button className="group text-ds-text-default relative hidden cursor-pointer items-center p-2 lg:inline-flex" />
@@ -68,7 +53,6 @@ export default function NotificationsDropdown() {
       >
         <Bell className="size-5" />
 
-        {/* Count */}
         {!error && unreadCount > 0 && (
           <span className="bg-ds-danger text-ds-text-inverse absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs leading-none font-medium">
             {unreadCount > 99 ? '99+' : unreadCount}
@@ -76,7 +60,6 @@ export default function NotificationsDropdown() {
         )}
       </DropdownMenuTrigger>
 
-      {/* Dropdown */}
       <DropdownMenuContent className="w-96" align="start">
         {/* Header */}
         <div className="bg-ds-primary-saturated text-ds-text-inverse p-4 text-xl font-bold">
@@ -84,43 +67,14 @@ export default function NotificationsDropdown() {
           {!error && ` (${unreadCount})`}
         </div>
 
-        {/* Body */}
-        {error ? (
-          <div className="flex justify-center p-8">
-            <p className="text-center text-sm">{tNotifications('error')}</p>
-          </div>
-        ) : (
-          <>
-            {/* Toolbar */}
-            <NotificationsToolbar
-              hasNotifications={hasNotifications}
-              unreadCount={unreadCount}
-              isLoading={isLoading}
-            />
-
-            <DropdownMenuSeparator />
-
-            {/* Content */}
-            {!hasNotifications && !isLoading ? (
-              // Empty state
-              <div className="dark:bg-ds-default text-ds-text-muted flex flex-col items-center gap-2.5 py-20">
-                <BellOff size={50} strokeWidth={1} />
-                <span>{tNotifications('empty')}</span>
-              </div>
-            ) : (
-              // Notifications list
-              <div onScroll={handleScroll} className="max-h-120 overflow-x-hidden overflow-y-auto">
-                {isLoading
-                  ? Array.from({ length: 4 }).map((_, index) => (
-                      <NotificationItemSkeleton key={index} />
-                    ))
-                  : notifications.map((notification) => (
-                      <NotificationItem key={notification.id} notification={notification} />
-                    ))}
-              </div>
-            )}
-          </>
-        )}
+        <NotificationsContent
+          error={error}
+          notifications={notifications}
+          unreadCount={unreadCount}
+          hasNotifications={hasNotifications}
+          isLoading={isLoading}
+          handleScroll={handleScroll}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -11,8 +11,8 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import HeaderCartLink from './header-cart-link';
 import HeaderWishlistLink from './header-wishlist-link';
-import NotificationsDropdown from './notifications-dropdown';
-import CurrentDeliveryLocation from './current-delivery-location';
+import NotificationsDropdown from './notifications/notifications-dropdown';
+import CurrentDeliveryLocation from './addresses/current-delivery-location';
 
 export default async function Header() {
   const t = await getTranslations('header');
