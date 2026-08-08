@@ -1,6 +1,6 @@
 'use client';
 
-import { Component, type ReactNode } from 'react';
+import { catchError, type ErrorInfo } from 'next/error';
 import { useTranslations } from 'next-intl';
 
 import EmptyState from '@/shared/components/empty-state';
@@ -8,10 +8,9 @@ import { Button } from '@/shared/ui/button';
 
 export type LoadErrorBoundaryProps = {
   entity: string;
-  children: ReactNode;
 };
 
-function LoadErrorFallback({ entity, onRetry }: LoadErrorBoundaryProps & { onRetry: () => void }) {
+function LoadErrorFallback({ entity }: LoadErrorBoundaryProps, { retry }: ErrorInfo) {
   const t = useTranslations('common');
   const entityLabel = t(`entities.${entity}`);
 
@@ -20,29 +19,13 @@ function LoadErrorFallback({ entity, onRetry }: LoadErrorBoundaryProps & { onRet
       title={t('loadError.title', { entity: entityLabel })}
       subtitle={t('loadError.subtitle', { entity: entityLabel })}
     >
-      <Button type="button" variant="primary" onClick={onRetry}>
+      <Button type="button" variant="primary" onClick={() => retry()}>
         {t('loadError.retry')}
       </Button>
     </EmptyState>
   );
 }
 
-class LoadErrorBoundary extends Component<LoadErrorBoundaryProps, { hasError: boolean }> {
-  state = { hasError: false };
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <LoadErrorFallback {...this.props} onRetry={() => this.setState({ hasError: false })} />
-      );
-    }
-
-    return this.props.children;
-  }
-}
+const LoadErrorBoundary = catchError(LoadErrorFallback);
 
 export default LoadErrorBoundary;
