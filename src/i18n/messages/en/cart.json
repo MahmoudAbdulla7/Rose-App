@@ -1,0 +1,19 @@
+{
+  "title": "Cart",
+  "productsCount": "{count} products",
+  "priceAmount": "{price, number, precise}",
+  "currency": "EGP",
+  "clearCart": "Clear Cart",
+  "continueShopping": "Continue Shopping",
+  "empty": "Your cart is empty",
+  "startShopping": "Start Shopping",
+  "remove": "Remove",
+  "confirmClear": "Are you sure you want to clear your cart?",
+  "cancel": "Cancel",
+  "quantityTimes": "(x{quantity})",
+  "decreaseQuantity": "Decrease quantity",
+  "increaseQuantity": "Increase quantity",
+  "loadError": "Failed to load cart.",
+  "outOfStock": "Out of stock",
+  "updatingQuantity": "Updating quantity"
+}
