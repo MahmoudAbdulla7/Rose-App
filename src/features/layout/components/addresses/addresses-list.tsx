@@ -2,8 +2,9 @@
 
 import { MapPin, PenLine, Phone, Trash2 } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
 import type { Address } from '../../lib/types/address';
 import DeleteAddressDialog from './delete-address-dialog';
 
@@ -23,6 +24,8 @@ export default function AddressesList({
   return (
     <>
       <div className="flex flex-col gap-6">
+        <Separator />
+
         {addresses.map((address) => (
           <div
             key={address.id}
@@ -35,13 +38,17 @@ export default function AddressesList({
 
             <div className="absolute inset-e-0 top-1/2 translate-x-1/2 -translate-y-1/2 bg-transparent p-1 rtl:-translate-x-1/2">
               <div className="flex flex-col gap-2">
-                {/* Delete */}
-                <Button variant="soft" size="icon-rounded">
+                {/* Edit */}
+                <Button variant="soft" size="icon-rounded" onClick={() => onEdit(address)}>
                   <PenLine />
                 </Button>
 
-                {/* Edit */}
-                <Button variant="destructive" size="icon-rounded" onClick={() => onEdit(address)}>
+                {/* Delete */}
+                <Button
+                  variant="destructive"
+                  size="icon-rounded"
+                  onClick={() => setAddressToDelete(address)}
+                >
                   <Trash2 />
                 </Button>
               </div>

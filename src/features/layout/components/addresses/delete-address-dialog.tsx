@@ -14,10 +14,13 @@ interface DeleteAddressDialogProps {
 }
 
 export default function DeleteAddressDialog({ address, onClose }: DeleteAddressDialogProps) {
+  // Translation
   const t = useTranslations('address');
 
+  // Custom hooks
   const { mutate: deleteAddress, isPending } = useDeleteAddress();
 
+  // Functions
   const handleDelete = () => {
     deleteAddress(address.id, {
       onSuccess: () => {
@@ -35,6 +38,7 @@ export default function DeleteAddressDialog({ address, onClose }: DeleteAddressD
       {/* Confirmation */}
       <div className="absolute inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-background relative w-full max-w-sm rounded-xl p-6">
+          {/* Close */}
           <Button
             variant="ghost"
             size="icon-sm"
@@ -44,20 +48,25 @@ export default function DeleteAddressDialog({ address, onClose }: DeleteAddressD
           >
             <X />
           </Button>
+
           <div className="flex flex-col items-center text-center">
+            {/* Figure */}
             <div className="bg-ds-muted mb-6 flex h-24 w-24 items-center justify-center rounded-full">
               <div className="bg-ds-soft flex h-16 w-16 items-center justify-center rounded-full">
                 <Trash />
               </div>
             </div>
 
+            {/* Confirmation message */}
             <h2 className="text-lg font-semibold">{t('messages.confirmDelete')}</h2>
 
             <div className="mt-8 flex w-full gap-3">
+              {/* Cancel */}
               <Button variant="subtle" className="flex-1" disabled={isPending} onClick={onClose}>
                 {t('actions.cancel')}
               </Button>
 
+              {/* Delete */}
               <Button
                 variant="destructive"
                 className="flex-1"

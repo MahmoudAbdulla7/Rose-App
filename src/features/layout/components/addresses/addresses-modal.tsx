@@ -5,11 +5,10 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
-import { Separator } from '@/shared/ui/separator';
 import { useAddresses } from '../../hooks/use-addresses';
 import type { Address } from '../../lib/types/address';
-import AddressesModalContent from './addresses-modal-content';
 import AddressForm from './address-form';
+import AddressesModalContent from './addresses-modal-content';
 
 interface AddressBookModalProps {
   open: boolean;
@@ -45,11 +44,15 @@ export function AddressesModal({ open, onOpenChange }: AddressBookModalProps) {
           <div className="flex justify-between">
             {/* Title */}
             <DialogTitle className="text-ds-text-plain text-3xl font-bold">
-              {view === 'list' ? t('title') : editingAddress ? t('edit') : t('actions.addFirst')}
+              {view === 'list'
+                ? t('title')
+                : editingAddress
+                  ? t('actions.edit')
+                  : t('actions.addFirst')}
             </DialogTitle>
 
             {/* Add */}
-            {!editingAddress && (
+            {view === 'list' && (
               <Button
                 variant="secondary"
                 size="xl"
@@ -62,7 +65,6 @@ export function AddressesModal({ open, onOpenChange }: AddressBookModalProps) {
               </Button>
             )}
           </div>
-          <Separator className="mt-2" />
         </DialogHeader>
 
         {/* Content */}

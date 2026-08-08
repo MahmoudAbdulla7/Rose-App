@@ -44,6 +44,7 @@ export default function CurrentDeliveryLocation() {
           <span className="font-medium">{isError ? '' : city}</span>
         </div>
       </button>
+
       <AddressesModal open={open} onOpenChange={setOpen} />
     </>
   );
