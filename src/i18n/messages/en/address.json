@@ -8,7 +8,7 @@
 
   "form": {
     "step1Title": "Enter address Details",
-    "step2Title": "Pin Your Location",
+    "step2Title": "Find Your Location",
     "city": "City",
     "details": "Address",
     "phone": "Contact Number",
@@ -38,8 +38,6 @@
 
   "validation": {
     "cityRequired": "City is required.",
-    "addressRequired": "Address is required.",
-    "phoneRequired": "Phone number is required.",
-    "phoneInvalid": "Please enter a valid phone number."
+    "addressRequired": "Address is required."
   }
 }

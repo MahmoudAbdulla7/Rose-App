@@ -1,18 +1,26 @@
 'use client';
 
+import { ArrowLeft } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import type { LatLngLiteral } from 'leaflet';
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import type z from 'zod';
 
 import { Button } from '@/shared/ui/button';
-import { Field } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
-import { PhoneInput } from '@/shared/ui/phone-input';
 import { Separator } from '@/shared/ui/separator';
-import type { Address } from '../../lib/types/address';
+import type { Address, AddressFormInput, AddressPayload } from '../../lib/types/address';
 import { createAddressSchema } from '../../lib/schemas/address.schema';
+import { useCreateAddress } from '../../hooks/use-create-address';
+import { useUpdateAddress } from '../../hooks/use-update-address';
+import AddressStepOne from './address-step-one';
+import Stepper from './stepper';
+
+const AddressMap = dynamic(() => import('./address-map'), {
+  ssr: false,
+});
 
 interface AddressFormProps {
   address: Address | null;
@@ -25,19 +33,27 @@ export default function AddressForm({ address, onBack }: AddressFormProps) {
   const tAddressValidation = useTranslations('address.validation');
   const tRegisterValidation = useTranslations('auth.register.validation');
 
-  const isEditing = !!address;
-
   // State
   const [step, setStep] = useState<1 | 2>(1);
+  const [location, setLocation] = useState<LatLngLiteral | null>(
+    address
+      ? {
+          lat: Number(address.latitude),
+          lng: Number(address.longitude),
+        }
+      : null,
+  );
 
-  // Schema
-  const addressSchema = createAddressSchema(tAddressValidation, tRegisterValidation);
-  type AddressFormInput = z.infer<typeof addressSchema>;
+  // Custom hooks
+  const addAddress = useCreateAddress();
+  const updateAddress = useUpdateAddress();
 
   // Form
+  const addressSchema = createAddressSchema(tAddressValidation, tRegisterValidation);
   const {
     register,
     control,
+    handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<AddressFormInput>({
     resolver: zodResolver(addressSchema),
@@ -48,87 +64,99 @@ export default function AddressForm({ address, onBack }: AddressFormProps) {
     },
   });
 
+  // Variables
+  const isEditing = !!address;
+  const isPending = addAddress.isPending || updateAddress.isPending;
+  const goToStepTwo = handleSubmit(() => {
+    setStep(2);
+  });
+
+  // Functions
+  const handleBack = () => {
+    if (step === 2) {
+      setStep(1);
+      return;
+    }
+
+    onBack();
+  };
+
+  const submitAddress = handleSubmit((values) => {
+    if (!location) {
+      toast.error(t('locationRequired'));
+      return;
+    }
+
+    const payload: AddressPayload = {
+      title: address?.title ?? 'Home',
+      isPrimary: address?.isPrimary ?? false,
+      city: values.city,
+      street: values.street,
+      phone: values.phone,
+      latitude: location.lat,
+      longitude: location.lng,
+    };
+
+    if (isEditing) {
+      updateAddress.mutate(
+        {
+          id: address.id,
+          payload,
+        },
+        {
+          onSuccess: () => {
+            toast.success(t('messages.updated'));
+            setStep(1);
+            onBack();
+          },
+        },
+      );
+
+      return;
+    }
+
+    addAddress.mutate(payload, {
+      onSuccess: () => {
+        toast.success(t('messages.added'));
+        setStep(1);
+        onBack();
+      },
+    });
+  });
+
   return (
     <div className="flex flex-col gap-6">
-      {/* Step Indicator */}
-      <div className="flex items-center gap-3">
-        <div
-          className={`h-2 flex-1 rounded-full ${step === 1 ? 'bg-ds-primary' : 'bg-ds-success'}`}
-        />
-        <div
-          className={`h-2 flex-1 rounded-full ${
-            step === 2 ? 'bg-ds-primary' : 'bg-ds-border-soft'
-          }`}
-        />
-      </div>
+      {/* Step indicator */}
+      <Stepper step={step} />
 
-      {/* Subtitle */}
-      <div>
+      {/* Subheader*/}
+      <div className="flex gap-4">
+        <Button size="icon-rounded" onClick={handleBack}>
+          <ArrowLeft className="rtl:rotate-180" />
+        </Button>
+
         <p className="text-ds-primary mt-1 text-2xl font-medium">
-          {isEditing ? t('updated') : t('form.step1Title')}
+          {step === 1 ? t('form.step1Title') : t('form.step2Title')}
         </p>
       </div>
 
       <Separator />
 
       {step === 1 ? (
-        <form className="flex flex-col gap-5">
-          <Input
-            label={t('form.city')}
-            placeholder={t('form.city')}
-            error={errors.city?.message}
-            {...register('city')}
-          />
-
-          <Input
-            label={t('form.details')}
-            placeholder={t('form.details')}
-            error={errors.street?.message}
-            {...register('street')}
-          />
-
-          <Field>
-            <Controller
-              control={control}
-              name="phone"
-              render={({ field, fieldState }) => (
-                <PhoneInput
-                  id="phone"
-                  label={t('form.phone')}
-                  placeholder={t('form.phone')}
-                  defaultCountry="EG"
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-          </Field>
-
-          <div className="mt-2 flex justify-between">
-            <Button type="button" variant="outline" onClick={onBack}>
-              {t('actions.back')}
-            </Button>
-
-            <Button type="submit" loading={isSubmitting}>
-              {t('actions.next')}
-            </Button>
-          </div>
-        </form>
+        <AddressStepOne
+          register={register}
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+          goToStepTwo={goToStepTwo}
+        />
       ) : (
         <div className="flex flex-col gap-6">
-          <div className="flex h-96 items-center justify-center rounded-lg border border-dashed">
-            Map
-          </div>
+          <AddressMap location={location} onLocationChange={setLocation} />
 
-          <div className="flex justify-between">
-            <Button variant="outline" onClick={() => setStep(1)}>
-              {t('actions.back')}
-            </Button>
-
-            <Button>{address ? t('actions.save') : t('actions.add')}</Button>
-          </div>
+          <Button type="button" onClick={submitAddress} loading={isPending}>
+            {isEditing ? t('actions.save') : t('actions.add')}
+          </Button>
         </div>
       )}
     </div>

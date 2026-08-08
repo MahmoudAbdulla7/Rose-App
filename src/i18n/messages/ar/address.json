@@ -38,8 +38,6 @@
 
   "validation": {
     "cityRequired": "المدينة مطلوبة.",
-    "addressRequired": "العنوان مطلوب.",
-    "phoneRequired": "رقم الهاتف مطلوب.",
-    "phoneInvalid": "يرجى إدخال رقم هاتف صحيح."
+    "addressRequired": "العنوان مطلوب."
   }
 }
