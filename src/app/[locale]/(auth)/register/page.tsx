@@ -4,13 +4,15 @@ import type { Metadata } from 'next';
 import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
-type Props = LayoutProps<'/[locale]'>;
+type Props = {
+  params: Promise<{ locale: Locale }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const authT = await getTranslations({ locale: locale as Locale, namespace: 'auth' });
-  const commonT = await getTranslations({ locale: locale as Locale, namespace: 'common' });
+  const authT = await getTranslations({ locale, namespace: 'auth' });
+  const commonT = await getTranslations({ locale, namespace: 'common' });
 
   return {
     title: `${authT('register.pageTitle')} | ${commonT('app.title')}`,
