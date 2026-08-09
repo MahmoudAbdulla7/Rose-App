@@ -1,11 +1,11 @@
 import 'server-only';
 
-import type { IWishlistResponse } from '../../types/wishlist';
+import type { WishlistSuccessResponse } from '../../types/wishlist';
 import { buildApiEndpoint } from '../../utils/api-endpoint-builder.utils';
 import { getNextAuthToken } from '../../utils/auth.utils';
 import { API_HEADERS } from '../headers.options';
 
-export async function getWishlistItems(): Promise<IWishlistResponse> {
+export async function getWishlistItems(): Promise<WishlistSuccessResponse> {
   const token = await getNextAuthToken();
 
   if (!token) {
@@ -21,5 +21,15 @@ export async function getWishlistItems(): Promise<IWishlistResponse> {
     },
   });
 
-  return (await response.json()) as IWishlistResponse;
+  if (!response.ok) {
+    throw new Error('Failed to fetch wishlist');
+  }
+
+  const data = (await response.json()) as WishlistSuccessResponse;
+
+  if (!data.status) {
+    throw new Error(data.message || 'Failed to fetch wishlist');
+  }
+
+  return data;
 }

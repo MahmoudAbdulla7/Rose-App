@@ -1,15 +1,15 @@
 'use client';
 
-import { ArrowLeft, BrushCleaning, FolderHeart, Heart } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { ArrowLeft, BrushCleaning, FolderHeart, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 import ClearWishlistDialog from '@/features/landing-page/components/wishlist/clear-wishlist-dialog';
 import WishlistItemCard from '@/features/landing-page/components/wishlist/wishlist-item-card';
 import EmptyState from '@/shared/components/empty-state';
 import HoveredLink from '@/shared/components/hovered-link';
-import { useRemoveFromWishlist } from '@/shared/hooks';
+import { useClearWishlist, useWishlist } from '@/shared/hooks';
 import type { IWishlistItem } from '@/shared/lib/types/wishlist';
 import { cn } from '@/shared/lib/utils';
 import { Button, buttonVariants } from '@/shared/ui/button';
@@ -20,26 +20,30 @@ type WishlistPageContentProps = {
 
 export default function WishlistPageContent({ initialItems }: WishlistPageContentProps) {
   const t = useTranslations('common.wishlist');
-  const router = useRouter();
-  const [wishlistItems, setWishlistItems] = useState(initialItems);
+  const commonT = useTranslations('common');
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const removeMutation = useRemoveFromWishlist();
+  const {
+    data: wishlistData,
+    isError: isWishlistError,
+    isPending: isWishlistPending,
+    refetch: refetchWishlist,
+  } = useWishlist();
+  const clearMutation = useClearWishlist();
+
+  const wishlistItems = wishlistData?.payload.wishlistItems ?? initialItems;
+  const isInitialLoading = isWishlistPending && !wishlistData && initialItems.length === 0;
+  const showLoadError = isWishlistError && !wishlistData && initialItems.length === 0;
 
   const hasItems = wishlistItems.length > 0;
-  const isClearing = removeMutation.isPending;
+  const isClearing = clearMutation.isPending;
 
   const clearWishlist = async () => {
-    await Promise.all(
-      wishlistItems.map((item) => removeMutation.mutateAsync({ productId: item.productId })),
-    );
-    setWishlistItems([]);
-    setConfirmOpen(false);
-    router.refresh();
-  };
-
-  const removeItem = (productId: string) => {
-    setWishlistItems((items) => items.filter((item) => item.productId !== productId));
-    router.refresh();
+    try {
+      await clearMutation.mutateAsync();
+      setConfirmOpen(false);
+    } catch {
+      toast.error(commonT('error.networkError'));
+    }
   };
 
   return (
@@ -73,11 +77,25 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
         </Button>
       </header>
 
-      {hasItems ? (
+      {isInitialLoading ? (
+        <section className="flex min-h-72 items-center justify-center" role="status">
+          <Loader2 className="text-ds-primary size-8 animate-spin" aria-hidden="true" />
+          <span className="sr-only">{commonT('button.loading')}</span>
+        </section>
+      ) : showLoadError ? (
+        <EmptyState
+          title={commonT('loadError.title', { entity: commonT('pages.wishlist') })}
+          subtitle={commonT('loadError.subtitle', { entity: commonT('pages.wishlist') })}
+        >
+          <Button type="button" variant="primary" onClick={() => void refetchWishlist()}>
+            {commonT('loadError.retry')}
+          </Button>
+        </EmptyState>
+      ) : hasItems ? (
         <section className="flex flex-col gap-5" aria-label={t('itemsLabel')}>
           <div className="border-ds-border-subtle divide-ds-border-subtle bg-ds-plain divide-y rounded-lg border">
             {wishlistItems.map((item) => (
-              <WishlistItemCard key={item.id} item={item} onRemoved={removeItem} />
+              <WishlistItemCard key={item.id} item={item} />
             ))}
           </div>
 
@@ -96,7 +114,13 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
         </section>
       ) : (
         <EmptyState title={t('emptyTitle')} subtitle={t('emptyDescription')}>
-          <Heart className="text-ds-primary size-6" aria-hidden="true" />
+          <HoveredLink
+            href="/products"
+            className={cn(buttonVariants({ variant: 'primary' }), 'h-12 min-w-58 gap-3 text-base')}
+          >
+            <ArrowLeft className="size-5 rtl:rotate-180" aria-hidden="true" />
+            {t('continueShopping')}
+          </HoveredLink>
         </EmptyState>
       )}
 

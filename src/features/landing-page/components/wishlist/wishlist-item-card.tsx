@@ -15,14 +15,14 @@ import { Button, buttonVariants } from '@/shared/ui/button';
 
 type WishlistItemCardProps = {
   item: IWishlistItem;
-  onRemoved?: (productId: string) => void;
 };
 
-export default function WishlistItemCard({ item, onRemoved }: WishlistItemCardProps) {
+export default function WishlistItemCard({ item }: WishlistItemCardProps) {
   const tWishlist = useTranslations('common.wishlist');
   const { mutate: addToCart, isPending: isAddingToCart } = useAddToCart();
   const { mutate: removeFromWishlist, isPending: isRemoving } = useRemoveFromWishlist();
   const { product } = item;
+  const productId = item.productId || product.id;
   const outOfStock = product.stock <= 0;
   const { price, originalPrice } = getProductDisplayPrice({
     price: product.price,
@@ -32,17 +32,12 @@ export default function WishlistItemCard({ item, onRemoved }: WishlistItemCardPr
   const hasSalePrice = originalPrice != null && originalPrice > price;
 
   const removeItem = () => {
-    removeFromWishlist(
-      { productId: product.id },
-      {
-        onSuccess: () => onRemoved?.(product.id),
-      },
-    );
+    removeFromWishlist({ productId });
   };
 
   const addWishlistItemToCart = () => {
     addToCart(
-      { productId: product.id, product, quantity: 1 },
+      { productId, product, quantity: 1 },
       {
         onSuccess: (response) => {
           if (response.status) {
@@ -132,7 +127,7 @@ export default function WishlistItemCard({ item, onRemoved }: WishlistItemCardPr
 
         {outOfStock ? (
           <HoveredLink
-            href="/products"
+            href={`/products?categoryId=${product.categoryId}`}
             className={cn(buttonVariants({ variant: 'secondary' }), 'h-11 min-w-55 px-6 text-base')}
           >
             {tWishlist('exploreSimilar')}

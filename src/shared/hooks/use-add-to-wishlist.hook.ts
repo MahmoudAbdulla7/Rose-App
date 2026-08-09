@@ -22,6 +22,10 @@ export function useAddToWishlist() {
       productId,
       product,
     }: AddToWishlistVariables): Promise<AddToWishlistResponse> => {
+      if (status === 'loading') {
+        throw new Error('Session is still loading');
+      }
+
       if (isAuthenticated) {
         return await serverAdd({ productId });
       } else {
