@@ -1,11 +1,12 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
-import { guestWishlist } from '@/shared/lib/services/guest-wishlist.service';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+
 import { addToWishlist as serverAdd } from '@/shared/lib/actions/wishlist.actions';
 import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
+import { guestWishlist } from '@/shared/lib/services/guest-wishlist.service';
 
 export function WishlistSyncProvider({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -14,29 +15,27 @@ export function WishlistSyncProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     const syncGuestWishlist = async () => {
-      if (status === 'authenticated' && session && !syncedRef.current) {
-        const guestIds = await guestWishlist.getAll();
-        if (guestIds.length > 0) {
-          // Send each item to server
-          try {
-            for (const productId of guestIds) {
-              await serverAdd(productId);
-            }
-          } catch (error) {
-            console.error('Sync failed:', error);
-            // Optionally, you could keep guest items and retry later
-          }
-          // Clear guest DB after sync attempt (even on error – we log it)
-          await guestWishlist.clear();
-          // Invalidate wishlist query to refetch fresh data
-          queryClient.invalidateQueries({ queryKey: WISHLIST_OPTIONS.QUERY_KEY });
-          syncedRef.current = true;
-        }
+      if (status !== 'authenticated' || !session || syncedRef.current) return;
+
+      const guestItems = await guestWishlist.getAll();
+
+      if (guestItems.length === 0) {
+        syncedRef.current = true;
+        return;
+      }
+
+      try {
+        await Promise.all(guestItems.map(({ productId }) => serverAdd({ productId })));
+        await guestWishlist.clear();
+        await queryClient.invalidateQueries({ queryKey: WISHLIST_OPTIONS.QUERY_KEY });
+        syncedRef.current = true;
+      } catch (error) {
+        console.error('Wishlist sync failed:', error);
       }
     };
 
-    syncGuestWishlist();
-  }, [status, session, queryClient]);
+    void syncGuestWishlist();
+  }, [queryClient, session, status]);
 
   return <>{children}</>;
 }

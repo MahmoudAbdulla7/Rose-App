@@ -1,4 +1,4 @@
-import type { IWishlistResponse } from '../../types/wishlist';
+import type { WishlistSuccessResponse } from '../../types/wishlist';
 
 type FetchWishlistItemsOptions = {
   origin?: string;
@@ -8,7 +8,7 @@ type FetchWishlistItemsOptions = {
 
 export async function fetchWishlistItems(
   options: FetchWishlistItemsOptions = {},
-): Promise<IWishlistResponse> {
+): Promise<WishlistSuccessResponse> {
   const endpoint = options.origin
     ? new URL('/api/wishlist', options.origin).toString()
     : '/api/wishlist';
@@ -26,5 +26,11 @@ export async function fetchWishlistItems(
     throw new Error('Failed to fetch wishlist');
   }
 
-  return (await response.json()) as IWishlistResponse;
+  const data = (await response.json()) as WishlistSuccessResponse;
+
+  if (!data.status) {
+    throw new Error(data.message || 'Failed to fetch wishlist');
+  }
+
+  return data;
 }

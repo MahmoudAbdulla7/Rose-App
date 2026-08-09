@@ -1,8 +1,8 @@
 import WishlistPageContent from '@/features/landing-page/components/wishlist/wishlist-page';
-import { fetchWishlistItems } from '@/shared/lib/apis/wishlist/user-wishlist-items.api';
+import { getWishlistItems } from '@/shared/lib/apis/wishlist/wishlist.api';
 import type { IWishlistItem } from '@/shared/lib/types/wishlist';
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
@@ -22,28 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function getServerWishlistItems(): Promise<IWishlistItem[]> {
-  const headerStore = await headers();
-  const host = headerStore.get('host');
+  const cookieStore = await cookies();
+  const sessionCookieName = process.env.NEXT_AUTH_SESSION_COOKIE;
 
-  if (!host) {
+  if (!sessionCookieName || !cookieStore.has(sessionCookieName)) {
     return [];
   }
 
-  const protocol =
-    headerStore.get('x-forwarded-proto') ?? (host.startsWith('localhost') ? 'http' : 'https');
-  const cookie = headerStore.get('cookie') ?? undefined;
-
-  try {
-    const data = await fetchWishlistItems({
-      origin: `${protocol}://${host}`,
-      cookie,
-      cache: 'no-store',
-    });
-
-    return data.status === true ? data.payload.wishlistItems : [];
-  } catch {
-    return [];
-  }
+  const data = await getWishlistItems();
+  return data.payload.wishlistItems;
 }
 
 export default async function WishlistPage() {
