@@ -1,4 +1,4 @@
 export const COUPONS_TYPES = {
   FIXED: 'FIXED',
-  PERCENTAGE: 'PERCENTAGE',
+  PERCENT: 'PERCENT',
 } as const;

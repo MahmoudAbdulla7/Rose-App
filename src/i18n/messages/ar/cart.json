@@ -15,5 +15,22 @@
   "increaseQuantity": "زيادة الكمية",
   "loadError": "فشل تحميل السلة.",
   "outOfStock": "غير متوفر",
-  "updatingQuantity": "جاري تحديث الكمية"
+  "updatingQuantity": "جاري تحديث الكمية",
+  "summary": "الملخص",
+  "couponPlaceholder": "كود الخصم",
+  "applyCoupon": "تطبيق الكوبون",
+  "noCouponsApplied": "لم يتم تطبيق أي كوبون",
+  "removeCoupon": "إزالة الكوبون",
+  "couponSaves": "توفّر {amount}",
+  "couponErrors": {
+    "notFound": "كود الخصم غير موجود.",
+    "invalid": "لا يمكن استخدام هذا الكوبون.",
+    "minPurchase": "إجمالي سلتك أقل من الحد الأدنى المطلوب لهذا الكوبون.",
+    "failed": "تعذّر التحقق من الكوبون. من فضلك حاول مرة أخرى."
+  },
+  "subtotal": "المجموع الفرعي",
+  "discount": "الخصم",
+  "total": "الإجمالي",
+  "checkout": "إتمام الشراء",
+  "productsYouMayLike": "منتجات قد تعجبك"
 }
