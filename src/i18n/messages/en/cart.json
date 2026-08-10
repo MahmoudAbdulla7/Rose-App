@@ -15,5 +15,22 @@
   "increaseQuantity": "Increase quantity",
   "loadError": "Failed to load cart.",
   "outOfStock": "Out of stock",
-  "updatingQuantity": "Updating quantity"
+  "updatingQuantity": "Updating quantity",
+  "summary": "Summary",
+  "couponPlaceholder": "Coupon Code",
+  "applyCoupon": "Apply Coupon",
+  "noCouponsApplied": "No coupons applied",
+  "removeCoupon": "Remove coupon",
+  "couponSaves": "You save {amount}",
+  "couponErrors": {
+    "notFound": "This coupon code doesn't exist.",
+    "invalid": "This coupon can no longer be used.",
+    "minPurchase": "Your cart total is below this coupon's minimum purchase.",
+    "failed": "Couldn't check this coupon. Please try again."
+  },
+  "subtotal": "Subtotal",
+  "discount": "Discount",
+  "total": "Total",
+  "checkout": "Checkout",
+  "productsYouMayLike": "Products You May Like"
 }
