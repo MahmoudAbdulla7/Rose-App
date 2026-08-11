@@ -19,7 +19,7 @@ export default function NotificationsToolbar({
   isLoading,
 }: NotificationsToolbarProps) {
   // Translation
-  const tNotifications = useTranslations('header.notifications');
+  const t = useTranslations('header.notifications');
 
   // Query
   const queryClient = useQueryClient();
@@ -55,7 +55,7 @@ export default function NotificationsToolbar({
         className="dark:disabled:hover:text-ds-text-muted disabled:text-ds-text-muted dark:hover:text-ds-text-default flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default"
       >
         <BrushCleaning size={18} strokeWidth={1.5} />
-        <span>{tNotifications('clearAll')}</span>
+        <span>{t('clearAll')}</span>
       </button>
 
       {/* Mark all as read */}
@@ -68,7 +68,7 @@ export default function NotificationsToolbar({
         className="dark:disabled:hover:text-ds-text-muted disabled:text-ds-text-muted dark:hover:text-ds-text-default flex cursor-pointer items-center gap-1.5 hover:text-zinc-950 disabled:cursor-default"
       >
         <CheckCheck size={15} strokeWidth={1.5} />
-        <span>{tNotifications('markAllRead')}</span>
+        <span>{t('markAllRead')}</span>
       </button>
     </div>
   );
