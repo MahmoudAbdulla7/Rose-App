@@ -9,13 +9,10 @@ type WishlistBadgeProps = {
 };
 
 export function WishlistBadge({ className, showZero = false }: WishlistBadgeProps) {
-  const { data, isLoading } = useWishlist();
+  const { wishlistItems, isLoading } = useWishlist();
 
   // Safely extract wishlist items count from successful responses
-  const count =
-    data && 'payload' in data && data.payload?.wishlistItems
-      ? data.payload.wishlistItems.length
-      : 0;
+  const count = wishlistItems !== undefined ? wishlistItems.length : 0;
 
   // Show nothing while loading or when count is 0 (unless showZero is true)
   if (isLoading) {

@@ -2,11 +2,9 @@
 
 import { HeartMinus, HeartPlus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-
-import { useAddToWishlist, useRemoveFromWishlist, useWishlist } from '@/shared/hooks';
-import type { IProduct } from '@/shared/lib/types/product';
-import type { IWishlistItem } from '@/shared/lib/types/wishlist';
 import { cn } from '@/shared/lib/utils';
+import type { IProduct } from '@/shared/lib/types/product';
+import { useToggleWishlist } from '@/shared/hooks/use-toggle-wishlist.hook';
 
 type ProductWishlistButtonProps = {
   productMetadata: IProduct;
@@ -22,26 +20,8 @@ export default function ProductWishlistButton({
   labelClassName,
 }: ProductWishlistButtonProps) {
   const t = useTranslations('product');
-  const { data: wishlistData, isLoading } = useWishlist();
-  const { mutate: add, isPending: isAddingToWishlist } = useAddToWishlist();
-  const { mutate: remove, isPending: isRemovingFromWishlist } = useRemoveFromWishlist();
-
-  const wishlistItems =
-    wishlistData?.status === true ? wishlistData.payload.wishlistItems : undefined;
-
-  const isWishlisted =
-    wishlistItems?.some((item: IWishlistItem) => item.productId === productMetadata.id) ?? false;
-
-  const isPending = isAddingToWishlist || isRemovingFromWishlist;
+  const { isWishlisted, toggle, isPending } = useToggleWishlist(productMetadata);
   const Icon = isWishlisted ? HeartMinus : HeartPlus;
-
-  const toggle = () => {
-    if (isWishlisted) {
-      remove({ productId: productMetadata.id });
-    } else {
-      add({ productId: productMetadata.id, product: productMetadata });
-    }
-  };
 
   return (
     <button
@@ -52,7 +32,7 @@ export default function ProductWishlistButton({
           ? t('removeFromWishlist', { name: productMetadata.title })
           : t('addToWishlist', { name: productMetadata.title })
       }
-      disabled={isLoading || isPending}
+      disabled={isPending}
       aria-pressed={isWishlisted}
       className={cn(
         'focus-visible:ring-ds-ring group/wishlist inline-flex h-8 cursor-pointer items-center justify-center rounded-full bg-white px-1.5 transition-all hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:animate-pulse disabled:cursor-not-allowed disabled:opacity-50',

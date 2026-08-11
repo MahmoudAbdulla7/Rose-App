@@ -1,45 +1,78 @@
-import { cartDb, type CartItem } from '../db/cart.db';
 import type { IProduct } from '@/shared/lib/types/product';
+import type { ICartItem } from '@/shared/lib/types/cart';
 
-export const guestCart = {
-  async add(productId: string, product: IProduct, quantity = 1): Promise<void> {
-    const existing = await cartDb.items.where('productId').equals(productId).first();
-    if (existing) {
-      await cartDb.items.update(existing.id!, { quantity: existing.quantity + quantity });
-    } else {
-      await cartDb.items.add({ productId, product, quantity, addedAt: new Date() });
-    }
-  },
+const STORAGE_KEY = 'guestCart';
+const listeners = new Set<() => void>();
 
-  async remove(productId: string): Promise<void> {
-    await cartDb.items.where('productId').equals(productId).delete();
-  },
+let cachedRaw: string | null = null;
+let cachedSnapshot: ICartItem[] = [];
 
-  async updateQuantity(productId: string, quantity: number): Promise<void> {
-    if (quantity <= 0) {
-      await this.remove(productId);
-      return;
-    }
-    const existing = await cartDb.items.where('productId').equals(productId).first();
-    if (existing) {
-      await cartDb.items.update(existing.id!, { quantity });
-    }
-  },
+function emitChange() {
+  listeners.forEach((listener) => listener());
+}
 
-  async getAll(): Promise<CartItem[]> {
-    return await cartDb.items.toArray();
-  },
+export function subscribeToGuestCart(callback: () => void) {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+}
 
-  async clear(): Promise<void> {
-    await cartDb.items.clear();
-  },
+export function getGuestCartSnapshot(): ICartItem[] {
+  if (typeof window === 'undefined') return cachedSnapshot;
 
-  async count(): Promise<number> {
-    return await cartDb.items.count();
-  },
+  const raw = localStorage.getItem(STORAGE_KEY);
 
-  async totalQuantity(): Promise<number> {
-    const items = await this.getAll();
-    return items.reduce((sum, item) => sum + item.quantity, 0);
-  },
-};
+  if (raw !== cachedRaw) {
+    cachedRaw = raw;
+    cachedSnapshot = raw ? JSON.parse(raw) : [];
+  }
+
+  return cachedSnapshot;
+}
+
+const EMPTY: ICartItem[] = [];
+export function getGuestCartServerSnapshot(): ICartItem[] {
+  return EMPTY;
+}
+
+// Adds if new, increments quantity if the product is already in the guest cart
+export function addToGuestCart(product: IProduct, quantity: number = 1) {
+  const current = getGuestCartSnapshot();
+  const existing = current.find((item) => item.productId === product.id);
+
+  const updated = existing
+    ? current.map((item) =>
+        item.productId === product.id ? { ...item, quantity: item.quantity + quantity } : item,
+      )
+    : [...current, { productId: product.id, product, quantity }];
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  emitChange();
+}
+
+export function updateGuestCartItemQuantity(productId: string, quantity: number) {
+  const current = getGuestCartSnapshot();
+  const updated = current.map((item) =>
+    item.productId === productId ? { ...item, quantity } : item,
+  );
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  emitChange();
+}
+
+export function removeFromGuestCart(productId: string) {
+  const current = getGuestCartSnapshot();
+  const updated = current.filter((item) => item.productId !== productId);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  emitChange();
+}
+
+export function clearGuestCart() {
+  localStorage.removeItem(STORAGE_KEY);
+  emitChange();
+}
+
+export function setGuestCart(items: ICartItem[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  cachedRaw = localStorage.getItem(STORAGE_KEY);
+  cachedSnapshot = items;
+  emitChange();
+}

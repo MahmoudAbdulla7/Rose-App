@@ -21,6 +21,7 @@ declare interface IDBFields {
   id: string;
   createdAt: Date;
   updatedAt: Date;
+  productId?: string;
 }
 
 declare interface IPaginatedData<T> {
