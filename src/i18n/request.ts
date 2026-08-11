@@ -7,7 +7,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale;
   const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
 
-  const [common, auth, product, home, hero, features, header, footer, review, address] =
+  const [common, auth, product, home, hero, features, header, footer, review, cart, address] =
     await Promise.all([
       import(`./messages/${locale}/common.json`),
       import(`./messages/${locale}/auth.json`),
@@ -19,6 +19,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       import(`./messages/${locale}/footer.json`),
       import(`./messages/${locale}/review.json`),
       import(`./messages/${locale}/address.json`),
+      import(`./messages/${locale}/cart.json`),
     ]);
 
   return {
@@ -36,6 +37,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       footer: footer.default,
       review: review.default,
       address: address.default,
+      cart: cart.default,
     },
   };
 });

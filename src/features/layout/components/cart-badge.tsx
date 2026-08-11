@@ -1,6 +1,6 @@
 'use client';
 
-import { useCart } from '@/shared/hooks/use-cart.hook';
+import { useCart } from '@/features/cart/hooks/use-cart';
 
 export function CartBadge() {
   const { cartItems, isLoading } = useCart();
