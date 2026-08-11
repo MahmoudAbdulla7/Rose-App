@@ -30,10 +30,8 @@ export default function WishlistItemCard({ item, onRemoved }: WishlistItemCardPr
 
   const removeItem = () => {
     removeFromWishlist(
-      { productId: product.id },
-      {
-        onSuccess: () => onRemoved?.(product.id),
-      },
+      { id: item.id, productId: product.id },
+      { onSuccess: () => onRemoved?.(product.id) },
     );
   };
 

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-
-import { addWishlistItem, getWishlistItems } from '@/shared/lib/apis/wishlist/wishlist.api';
+import { removeWishlistItem } from '@/shared/lib/apis/wishlist/wishlist.api';
 
 function handleError(error: unknown) {
   const message = error instanceof Error ? error.message : 'Internal Server Error';
@@ -10,19 +9,10 @@ function handleError(error: unknown) {
   return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
 }
 
-export async function GET() {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const data = await getWishlistItems();
-    return NextResponse.json(data);
-  } catch (error) {
-    return handleError(error);
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    const { productId } = await request.json();
-    const data = await addWishlistItem(productId);
+    const { id } = await params;
+    const data = await removeWishlistItem(id);
     return NextResponse.json(data);
   } catch (error) {
     return handleError(error);
