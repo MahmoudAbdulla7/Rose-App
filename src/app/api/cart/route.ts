@@ -1,10 +1,5 @@
+import { addCartItem, getCartItems } from '@/shared/lib/apis/cart/cart.api';
 import { NextResponse } from 'next/server';
-
-import {
-  addWishlistItem,
-  clearWishlistItems,
-  getWishlistItems,
-} from '@/shared/lib/apis/wishlist/wishlist.api';
 
 function handleError(error: unknown) {
   const message = error instanceof Error ? error.message : 'Internal Server Error';
@@ -16,7 +11,7 @@ function handleError(error: unknown) {
 
 export async function GET() {
   try {
-    const data = await getWishlistItems();
+    const data = await getCartItems();
     return NextResponse.json(data);
   } catch (error) {
     return handleError(error);
@@ -25,17 +20,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { productId } = await request.json();
-    const data = await addWishlistItem(productId);
-    return NextResponse.json(data);
-  } catch (error) {
-    return handleError(error);
-  }
-}
-
-export async function DELETE() {
-  try {
-    const data = await clearWishlistItems();
+    const { productId, quantity } = await request.json();
+    const data = await addCartItem(productId, quantity);
     return NextResponse.json(data);
   } catch (error) {
     return handleError(error);

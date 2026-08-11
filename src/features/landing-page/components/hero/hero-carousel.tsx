@@ -97,18 +97,18 @@ export default function HeroCarousel() {
             </Link>
 
             {/* Carousel Nav Buttons */}
-            <div className="bg-maroon-50 *:text-maroon-700 rounded-full *:bg-transparent *:px-3 *:hover:bg-transparent *:disabled:bg-transparent rtl:*:rotate-180">
+            <div className="bg-maroon-50 *:text-maroon-700 rounded-full *:bg-transparent *:px-2 *:hover:bg-transparent *:disabled:bg-transparent rtl:*:rotate-180">
               <Button
                 onClick={() => api?.scrollPrev()}
                 disabled={!canScrollPrev || CAROUSEL_SLIDES.length <= 1}
               >
-                <ChevronLeft strokeWidth={2} className="size-4.75" />
+                <ChevronLeft strokeWidth={2} className="size-4.5" />
               </Button>
               <Button
                 onClick={() => api?.scrollNext()}
                 disabled={!canScrollNext || CAROUSEL_SLIDES.length <= 1}
               >
-                <ChevronRight strokeWidth={2} className="size-4.75" />
+                <ChevronRight strokeWidth={2} className="size-4.5" />
               </Button>
             </div>
           </div>

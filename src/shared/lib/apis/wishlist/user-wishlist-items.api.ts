@@ -1,36 +1,39 @@
-import type { WishlistSuccessResponse } from '../../types/wishlist';
+import type { IWishlistResponse } from '../../types/wishlist';
 
-type FetchWishlistItemsOptions = {
-  origin?: string;
-  cookie?: string;
-  cache?: RequestCache;
-};
-
-export async function fetchWishlistItems(
-  options: FetchWishlistItemsOptions = {},
-): Promise<WishlistSuccessResponse> {
-  const endpoint = options.origin
-    ? new URL('/api/wishlist', options.origin).toString()
-    : '/api/wishlist';
-
+async function request(endpoint: string, init?: RequestInit): Promise<IWishlistResponse> {
   const response = await fetch(endpoint, {
-    cache: options.cache,
-    headers: options.cookie
-      ? {
-          cookie: options.cookie,
-        }
-      : undefined,
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    ...init,
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch wishlist');
+    throw new Error(`Wishlist request failed: ${response.status}`);
   }
 
-  const data = (await response.json()) as WishlistSuccessResponse;
-
+  const data = (await response.json()) as IWishlistResponse;
   if (!data.status) {
-    throw new Error(data.message || 'Failed to fetch wishlist');
+    throw new Error(data.message || 'Wishlist request failed');
   }
 
   return data;
+}
+
+export function fetchWishlistItems(): Promise<IWishlistResponse> {
+  return request('/api/wishlist');
+}
+
+export function addWishlistItem(productId: string): Promise<IWishlistResponse> {
+  return request('/api/wishlist', {
+    method: 'POST',
+    body: JSON.stringify({ productId }),
+  });
+}
+
+export function clearWishlistItems(): Promise<IWishlistResponse> {
+  return request('/api/wishlist', { method: 'DELETE' });
+}
+
+export function removeWishlistItem(id: string): Promise<IWishlistResponse> {
+  return request(`/api/wishlist/${id}`, { method: 'DELETE' });
 }

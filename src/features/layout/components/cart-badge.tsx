@@ -3,9 +3,8 @@
 import { useCart } from '@/shared/hooks/use-cart.hook';
 
 export function CartBadge() {
-  const { data, isLoading } = useCart();
-  const count =
-    data && 'payload' in data && data.payload?.cartItems ? data.payload.cartItems.length : 0;
+  const { cartItems, isLoading } = useCart();
+  const count = cartItems !== undefined ? cartItems.length : 0;
 
   if (isLoading || count === 0) return null;
 

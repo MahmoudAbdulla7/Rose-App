@@ -1,42 +1,47 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { guestCart } from '@/shared/lib/services/guest-cart.service';
-import type { IAddToCart, AddToCartResponse } from '@/shared/lib/types/cart';
-import type { IProduct } from '@/shared/lib/types/product';
-import { CART_OPTIONS } from '../lib/apis/cart/cart.options';
-import { addToCart as serverAdd } from '@/shared/lib/actions/cart.actions';
+'use client';
 
-type AddToCartVariables = IAddToCart & { product: IProduct };
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { IProduct } from '@/shared/lib/types/product';
+import { useCart } from './use-cart.hook';
+import { addCartItem, updateCartItemQuantity } from '../lib/apis/cart/user-cart-items.api';
+import { addToGuestCart } from '../lib/services/guest-cart.service';
+
+type AddToCartInput = {
+  productId: string;
+  product: IProduct;
+  quantity: number;
+};
 
 export function useAddToCart() {
-  const { status } = useSession();
-  const isAuthenticated = status === 'authenticated';
+  const { isAuthenticated, cartItems } = useCart();
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: async ({
-      productId,
-      quantity = 1,
-      product,
-    }: AddToCartVariables): Promise<AddToCartResponse> => {
-      if (isAuthenticated) {
-        return await serverAdd({ productId, quantity });
-      } else {
-        await guestCart.add(productId, product, quantity);
-        return {
-          status: true,
-          code: 200,
-          message: 'Added locally',
-          payload: {
-            productId,
-            quantity,
-            product,
-          },
-        } as AddToCartResponse;
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
-    },
+  const { mutate: addMutate, isPending: isAdding } = useMutation({
+    mutationFn: ({ productId, quantity }: AddToCartInput) => addCartItem(productId, quantity),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart'] }),
   });
+
+  const { mutate: updateMutate, isPending: isUpdating } = useMutation({
+    mutationFn: ({ cartItemId, quantity }: { cartItemId: string; quantity: number }) =>
+      updateCartItemQuantity(cartItemId, quantity),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart'] }),
+  });
+
+  function mutate({ productId, product, quantity }: AddToCartInput) {
+    if (isAuthenticated) {
+      const matchingCartItem = cartItems.find((item) => item.productId === productId);
+      if (matchingCartItem) {
+        updateMutate({
+          cartItemId: matchingCartItem.id,
+          quantity: matchingCartItem.quantity + quantity,
+        });
+      } else {
+        addMutate({ productId, product, quantity });
+      }
+    } else {
+      addToGuestCart(product, quantity);
+    }
+  }
+
+  return { mutate, isPending: isAdding || isUpdating };
 }
