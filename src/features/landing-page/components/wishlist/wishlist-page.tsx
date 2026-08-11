@@ -28,7 +28,9 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
 
   const clearWishlist = async () => {
     await Promise.all(
-      wishlistItems.map((item) => removeMutation.mutateAsync({ productId: item.productId })),
+      wishlistItems.map((item) =>
+        removeMutation.mutateAsync({ id: item.id, productId: item.productId }),
+      ),
     );
     setWishlistItems([]);
     setConfirmOpen(false);
