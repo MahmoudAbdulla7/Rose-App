@@ -3,7 +3,6 @@
 import { ShoppingCart, Star, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
 
 import HoveredLink from '@/shared/components/hovered-link';
 import { useAddToCart } from '@/shared/hooks/use-add-to-cart.hook';
@@ -32,26 +31,11 @@ export default function WishlistItemCard({ item }: WishlistItemCardProps) {
   const hasSalePrice = originalPrice != null && originalPrice > price;
 
   const removeItem = () => {
-    removeFromWishlist({ productId });
+    removeFromWishlist({ id: item.id, productId });
   };
 
   const addWishlistItemToCart = () => {
-    addToCart(
-      { productId, product, quantity: 1 },
-      {
-        onSuccess: (response) => {
-          if (response.status) {
-            toast.success(tWishlist('addToCartSuccess', { name: product.title }));
-            return;
-          }
-
-          toast.error(tWishlist('addToCartError', { name: product.title }));
-        },
-        onError: () => {
-          toast.error(tWishlist('addToCartError', { name: product.title }));
-        },
-      },
-    );
+    addToCart({ productId, product, quantity: 1 });
   };
 
   return (
