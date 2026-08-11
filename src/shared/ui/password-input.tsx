@@ -20,14 +20,20 @@ const toggleButtonClassName = cn(
   'disabled:opacity-50',
 );
 
-const toggleIconClassName = cn(
-  // Size
-  'size-5',
-);
+type PasswordInputProps = Omit<InputProps, 'type' | 'leftIcon' | 'rightIcon'> & {
+  /** Larger eye icon / end padding for spacious layouts (e.g. hover popup). */
+  controlSize?: 'default' | 'lg';
+};
 
-function PasswordInput({ ...props }: Omit<InputProps, 'type' | 'leftIcon' | 'rightIcon'>) {
+function PasswordInput({
+  controlSize = 'default',
+  className,
+  rightIconWrapperClassName,
+  ...props
+}: PasswordInputProps) {
   const t = useTranslations('common');
   const [visible, setVisible] = React.useState(false);
+  const isLarge = controlSize === 'lg';
 
   return (
     <Input
@@ -41,12 +47,14 @@ function PasswordInput({ ...props }: Omit<InputProps, 'type' | 'leftIcon' | 'rig
           disabled={props.disabled}
         >
           {visible ? (
-            <Eye className={toggleIconClassName} />
+            <Eye className={cn(isLarge ? 'size-7' : 'size-5')} />
           ) : (
-            <EyeOff className={toggleIconClassName} />
+            <EyeOff className={cn(isLarge ? 'size-7' : 'size-5')} />
           )}
         </button>
       }
+      rightIconWrapperClassName={cn(isLarge && 'end-5', rightIconWrapperClassName)}
+      className={cn(isLarge && 'pe-14', className)}
       {...props}
     />
   );

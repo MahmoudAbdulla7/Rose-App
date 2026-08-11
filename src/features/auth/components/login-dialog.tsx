@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 
 import LoginForm from '@/features/auth/components/login-form';
-import { usePathname } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import AuthHeadline from '@/shared/components/auth-headline';
 import {
   Dialog,
@@ -21,6 +21,7 @@ type LoginDialogProps = {
 
 export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
   const t = useTranslations('auth');
+  const tLogin = useTranslations('auth.login');
   const pathname = usePathname();
 
   const onSuccess = useCallback(() => {
@@ -40,7 +41,17 @@ export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
 
         <div className="flex w-full flex-col pt-2">
           <AuthHeadline text={t('welcome')} className="mb-5 ltr:text-4xl rtl:text-3xl" />
-          <LoginForm callbackUrl={pathname} onSuccess={onSuccess} />
+          <LoginForm callbackUrl={pathname} onSuccess={onSuccess}>
+            <p className="font-primary text-ds-text-plain text-center text-sm leading-none">
+              {tLogin('footer.noAccount')}{' '}
+              <Link
+                href="/register"
+                className="text-ds-primary-saturated hover:text-ds-primary font-bold"
+              >
+                {tLogin('actions.createAccount')}
+              </Link>
+            </p>
+          </LoginForm>
         </div>
       </DialogContent>
     </Dialog>

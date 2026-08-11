@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -11,6 +12,7 @@ import { useRememberMe } from '@/features/auth/hooks/useRememberMe';
 import { createLoginSchema, type LoginFormValues } from '@/features/auth/lib/schemas/login.schema';
 import { Link, useRouter } from '@/i18n/navigation';
 import { parseSignInError } from '@/lib/auth/parseSignInError';
+import { cn } from '@/shared/lib/utils';
 import { safeCallbackUrl } from '@/shared/lib/utils/callback-url.utils';
 import { Button } from '@/shared/ui/button';
 import { Checkbox } from '@/shared/ui/checkbox';
@@ -23,9 +25,12 @@ type LoginFormProps = {
   callbackUrl?: string | null;
   /** Called after a successful sign-in, before navigating to `callbackUrl`. */
   onSuccess?: () => void;
+  /** Optional UI composed after the submit button (e.g. create-account footer). */
+  children?: ReactNode;
+  className?: string;
 };
 
-export default function LoginForm({ callbackUrl, onSuccess }: LoginFormProps) {
+export default function LoginForm({ callbackUrl, onSuccess, children, className }: LoginFormProps) {
   // Translations
   const t = useTranslations('auth.login');
   const tShared = useTranslations('auth.shared');
@@ -117,7 +122,7 @@ export default function LoginForm({ callbackUrl, onSuccess }: LoginFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5">
+    <form onSubmit={handleSubmit(onSubmit)} className={cn('flex w-full flex-col gap-5', className)}>
       <Input
         type="text"
         label={tShared('fields.username')}
@@ -170,15 +175,7 @@ export default function LoginForm({ callbackUrl, onSuccess }: LoginFormProps) {
         {t('actions.submit')}
       </Button>
 
-      <p className="font-primary text-ds-text-plain text-center text-sm leading-none">
-        {t('footer.noAccount')}{' '}
-        <Link
-          href="/register"
-          className="text-ds-primary-saturated hover:text-ds-primary font-bold"
-        >
-          {t('actions.createAccount')}
-        </Link>
-      </p>
+      {children}
     </form>
   );
 }
