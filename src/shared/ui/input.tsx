@@ -43,6 +43,8 @@ interface InputProps extends React.ComponentProps<'input'> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   wrapperClassName?: string;
+  labelClassName?: string;
+  rightIconWrapperClassName?: string;
 }
 
 function Input({
@@ -54,6 +56,8 @@ function Input({
   leftIcon,
   rightIcon,
   wrapperClassName,
+  labelClassName,
+  rightIconWrapperClassName,
   id,
   ...props
 }: InputProps) {
@@ -68,6 +72,7 @@ function Input({
           required={props.required}
           error={error}
           disabled={props.disabled}
+          className={labelClassName}
         >
           {label}
         </FieldLabel>
@@ -113,7 +118,14 @@ function Input({
         />
 
         {rightIcon && (
-          <span className="text-ds-text-muted absolute end-3 flex items-center">{rightIcon}</span>
+          <span
+            className={cn(
+              'text-ds-text-muted absolute end-3 flex items-center',
+              rightIconWrapperClassName,
+            )}
+          >
+            {rightIcon}
+          </span>
         )}
       </div>
 

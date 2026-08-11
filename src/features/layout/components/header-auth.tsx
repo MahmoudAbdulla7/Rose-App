@@ -1,10 +1,7 @@
 'use client';
 
-import { Link } from '@/i18n/navigation';
+import LoginHoverPopup from '@/features/auth/components/login-hover-popup';
 import { useAuth } from '@/shared/hooks';
-import { cn } from '@/shared/lib/utils';
-import { User } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import UserDropdown from './user-dropdown';
 
 type HeaderAuthProps = {
@@ -14,7 +11,6 @@ type HeaderAuthProps = {
 };
 
 export default function HeaderAuth({ className, alwaysShowLabel = false }: HeaderAuthProps) {
-  const t = useTranslations('header');
   const { user, isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
@@ -25,16 +21,5 @@ export default function HeaderAuth({ className, alwaysShowLabel = false }: Heade
     return <UserDropdown />;
   }
 
-  return (
-    <Link
-      href="/login"
-      className={cn(
-        'text-ds-text-default flex items-center gap-1.5 px-2 py-1.5 text-sm',
-        className,
-      )}
-    >
-      <User className="size-4" />
-      <span className={cn(!alwaysShowLabel && 'hidden sm:inline')}>{t('login')}</span>
-    </Link>
-  );
+  return <LoginHoverPopup className={className} alwaysShowLabel={alwaysShowLabel} />;
 }
