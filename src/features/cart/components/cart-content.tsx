@@ -63,7 +63,6 @@ export default function CartContent() {
 
   const hasLoadError = !showSkeleton && (isError || (data != null && data.status === false));
   const cartItems = hasResolvedCart ? data.payload.cartItems.map(mapCartItem) : [];
-  const subtotal = cartItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
 
   // Handlers — always pass cartItems[].id (not productId)
   const handleQuantityChange = (id: string, quantity: number) => {
@@ -117,11 +116,7 @@ export default function CartContent() {
       </section>
 
       {/* order summary */}
-      <OrderSummary
-        subtotal={subtotal}
-        checkoutDisabled={showSkeleton || hasLoadError}
-        className="lg:sticky lg:top-36 lg:self-start"
-      />
+      <OrderSummary className="lg:sticky lg:top-36 lg:self-start" />
     </div>
   );
 }
