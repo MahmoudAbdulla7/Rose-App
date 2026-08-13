@@ -11,35 +11,28 @@ import {
   removeCartItemRequest,
   updateCartItemRequest,
 } from '@/shared/lib/apis/cart/user-cart-items.api';
-import { guestCart } from '@/shared/lib/services/guest-cart.service';
+import { getGuestCartSnapshot } from '@/shared/lib/services/guest-cart.service';
 import type { ICartItem, ICartResponse } from '@/shared/lib/types/cart';
 
 export function useCart() {
-  // Auth
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
   const previousStatusRef = useRef(status);
 
-  // Separate cache per auth scope so guest empty cart never masks the server cart
   const scope = isAuthenticated ? (session?.user?.id ?? 'user') : 'guest';
 
-  // Reset / refresh cart cache when auth status changes
   useEffect(() => {
     const previousStatus = previousStatusRef.current;
-
     if (previousStatus === 'authenticated' && status === 'unauthenticated') {
       queryClient.removeQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     }
-
     if (previousStatus !== 'authenticated' && status === 'authenticated') {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     }
-
     previousStatusRef.current = status;
   }, [status, queryClient]);
 
-  // Query
   return useQuery({
     queryKey: [...CART_OPTIONS.QUERY_KEY, scope],
     queryFn: async (): Promise<ICartResponse> => {
@@ -47,16 +40,15 @@ export function useCart() {
         return await fetchCartItems();
       }
 
-      // Guest fallback — IndexedDB cart while logged out
-      const items = await guestCart.getAll();
+      const items = getGuestCartSnapshot();
       const mappedItems: ICartItem[] = items.map((item) => ({
-        id: String(item.id),
+        id: item.id || `guest-${item.productId}`,
         productId: item.productId,
         product: item.product,
         quantity: item.quantity,
         userId: 'guest',
-        createdAt: item.addedAt,
-        updatedAt: item.addedAt,
+        createdAt: item.createdAt || new Date(),
+        updatedAt: item.updatedAt || new Date(),
       }));
 
       return {
@@ -72,10 +64,7 @@ export function useCart() {
 }
 
 export function useUpdateCartItem() {
-  // Query
   const queryClient = useQueryClient();
-
-  // Mutation — PATCH /api/cart/{cartItemId}
   return useMutation({
     mutationFn: async ({ id, quantity }: { id: string; quantity: number }) => {
       return await updateCartItemRequest(id, quantity);
@@ -87,10 +76,7 @@ export function useUpdateCartItem() {
 }
 
 export function useRemoveCartItem() {
-  // Query
   const queryClient = useQueryClient();
-
-  // Mutation — DELETE /api/cart/{cartItemId}
   return useMutation({
     mutationFn: async (id: string) => {
       return await removeCartItemRequest(id);
@@ -102,10 +88,7 @@ export function useRemoveCartItem() {
 }
 
 export function useClearCart() {
-  // Query
   const queryClient = useQueryClient();
-
-  // Mutation — DELETE /api/cart
   return useMutation({
     mutationFn: async () => {
       return await clearCartRequest();

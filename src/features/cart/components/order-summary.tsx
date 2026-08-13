@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, type SubmitEvent } from 'react';
 import { MoveRight, TicketPercent, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useState, type SubmitEvent } from 'react';
 
 import { useCart } from '@/features/cart/hooks/use-cart';
 import { useApplyCoupon } from '@/features/cart/hooks/use-coupon';
@@ -18,6 +17,7 @@ import type { ICoupon } from '@/shared/lib/types/coupon';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
+import { useTranslations } from 'next-intl';
 
 type OrderSummaryProps = {
   /** Replaces the default checkout button — e.g. a "place order" submit on checkout. */

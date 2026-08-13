@@ -1,0 +1,9 @@
+{
+  "title": "Checkout",
+  "step1Title": "Shipping Address",
+  "addAddress": "Add a new address",
+  "next": "Next",
+  "noAddresses": "Add your first address to continue",
+  "step": "Step {current} of {total}",
+  "error": "Failed to load addresses."
+}
