@@ -8,7 +8,7 @@ export default async function AuthLayout({ children }: Props) {
   return (
     <section className="max-h-screen overflow-hidden">
       <div className="grid h-screen grid-cols-1 items-center justify-center md:grid-cols-2">
-        <div className="max-h-screen w-full max-w-3/5 place-self-center">
+        <div className="max-h-screen w-full max-w-4/5 place-self-center md:max-w-3/5">
           {/* Switch Language */}
           <div className="flex justify-end">
             <LanguageSwitcherComponent />
