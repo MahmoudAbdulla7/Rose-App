@@ -47,19 +47,19 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
   };
 
   return (
-    <main className="container flex min-h-[calc(100dvh-12rem)] flex-col gap-6 pt-14 pb-10">
-      <header className="border-ds-border-subtle flex flex-wrap items-center justify-between gap-4 border-b pb-5">
-        <div className="flex min-w-0 items-end gap-3">
+    <main className="container flex min-h-[calc(100dvh-12rem)] flex-col gap-4 pt-8 pb-8 md:gap-5 md:pt-10">
+      <header className="border-ds-border-subtle flex flex-col items-stretch justify-between gap-3 border-b pb-4 md:flex-row md:items-center md:gap-4 md:pb-5">
+        <div className="flex min-w-0 items-end gap-2 md:gap-3">
           <FolderHeart
-            className="text-ds-primary mb-1 size-12 shrink-0 sm:size-14"
+            className="text-ds-primary mb-1 size-10 shrink-0 sm:size-12"
             strokeWidth={1.2}
             aria-hidden="true"
           />
-          <div className="flex min-w-0 flex-wrap items-end gap-x-3 gap-y-1">
-            <h1 className="text-ds-text-plain text-[2.625rem] leading-none font-bold sm:text-5xl">
+          <div className="flex min-w-0 flex-wrap items-end gap-x-2 gap-y-1 md:gap-x-3">
+            <h1 className="text-ds-text-plain text-3xl leading-none font-bold sm:text-4xl">
               {t('title')}
             </h1>
-            <span className="text-ds-text-default pb-1.5 text-base leading-none">
+            <span className="text-ds-text-default pb-1 text-sm leading-none">
               {t('itemCount', { count: wishlistItems.length })}
             </span>
           </div>
@@ -70,8 +70,8 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
           variant="destructive"
           disabled={!hasItems}
           onClick={() => setConfirmOpen(true)}
-          leftIcon={<BrushCleaning className="size-5" strokeWidth={1.8} aria-hidden="true" />}
-          className="h-11 min-w-45 text-base"
+          leftIcon={<BrushCleaning className="size-4" strokeWidth={1.8} aria-hidden="true" />}
+          className="h-10! w-full text-sm md:w-auto md:min-w-40"
         >
           {t('clear')}
         </Button>
@@ -99,12 +99,12 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
             ))}
           </div>
 
-          <div className="flex justify-start">
+          <div className="flex w-full justify-start md:w-auto">
             <HoveredLink
               href="/products"
               className={cn(
                 buttonVariants({ variant: 'primary' }),
-                'h-12 min-w-58 gap-3 text-base',
+                'h-11! w-full gap-2 text-sm sm:w-auto sm:min-w-52',
               )}
             >
               <ArrowLeft className="size-5 rtl:rotate-180" aria-hidden="true" />
@@ -116,7 +116,10 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
         <EmptyState title={t('emptyTitle')} subtitle={t('emptyDescription')}>
           <HoveredLink
             href="/products"
-            className={cn(buttonVariants({ variant: 'primary' }), 'h-12 min-w-58 gap-3 text-base')}
+            className={cn(
+              buttonVariants({ variant: 'primary' }),
+              'h-11! min-w-0 gap-2 px-4 text-sm sm:min-w-52',
+            )}
           >
             <ArrowLeft className="size-5 rtl:rotate-180" aria-hidden="true" />
             {t('continueShopping')}

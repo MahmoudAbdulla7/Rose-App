@@ -39,10 +39,10 @@ export default function WishlistItemCard({ item }: WishlistItemCardProps) {
   };
 
   return (
-    <article className="grid min-h-45 grid-cols-[7.25rem_minmax(0,1fr)] gap-4 p-4 first:rounded-t-lg last:rounded-b-lg sm:grid-cols-[7.25rem_minmax(0,1fr)_minmax(12rem,14rem)] sm:gap-5 lg:grid-cols-[7.25rem_minmax(0,1fr)_minmax(16rem,22rem)]">
+    <article className="flex flex-wrap gap-3 p-3 first:rounded-t-lg last:rounded-b-lg sm:gap-4 sm:p-4 md:grid md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-4">
       <HoveredLink
         href={`/products/${product.id}`}
-        className="bg-ds-soft relative block size-29 overflow-hidden rounded-md"
+        className="bg-ds-soft relative block size-24 shrink-0 overflow-hidden rounded-md lg:size-28"
       >
         {product.cover ? (
           <Image
@@ -57,7 +57,7 @@ export default function WishlistItemCard({ item }: WishlistItemCardProps) {
         )}
       </HoveredLink>
 
-      <div className="flex min-w-0 flex-col justify-between gap-5 py-0.5">
+      <div className="flex min-w-0 flex-1 flex-col justify-between gap-3 py-0.5 md:gap-4">
         <div className="flex min-w-0 flex-col gap-1.5">
           <span
             className={cn(
@@ -70,33 +70,36 @@ export default function WishlistItemCard({ item }: WishlistItemCardProps) {
             {outOfStock ? tWishlist('outOfStock') : tWishlist('inStock')}
           </span>
           <HoveredLink href={`/products/${product.id}`} className="min-w-0">
-            <h2 className="text-ds-text-plain truncate text-xl leading-6 font-semibold">
+            <h2 className="text-ds-text-plain truncate text-base leading-5 font-semibold sm:text-lg md:leading-6">
               {product.title}
             </h2>
           </HoveredLink>
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="bg-ds-warning-fade text-ds-text-plain inline-flex h-6 items-center gap-1 rounded-md px-1.5 text-sm font-semibold">
-              <Star className="fill-ds-warning text-ds-warning size-4" aria-hidden="true" />
+            <span className="bg-ds-warning-fade text-ds-text-plain inline-flex h-6 items-center gap-1 rounded-md px-1.5 text-xs font-semibold md:text-sm">
+              <Star
+                className="fill-ds-warning text-ds-warning size-3.5 md:size-4"
+                aria-hidden="true"
+              />
               {tWishlist('ratingValue', { rating: product.rating })}
             </span>
-            <span className="text-ds-primary text-sm font-medium">
+            <span className="text-ds-primary text-xs font-medium md:text-sm">
               {tWishlist('ratingsCount', { count: product.ratings })}
             </span>
           </div>
         </div>
 
         <p className="text-ds-text-plain flex flex-wrap items-baseline gap-2">
-          <span className="text-2xl leading-none font-bold">{price.toFixed(2)}</span>
-          <span className="text-sm font-medium">EGP</span>
+          <span className="text-xl leading-none font-bold">{price.toFixed(2)}</span>
+          <span className="text-xs font-medium md:text-sm">EGP</span>
           {hasSalePrice ? (
-            <span className="text-ds-text-muted text-base font-medium line-through">
+            <span className="text-ds-text-muted text-sm font-medium line-through">
               {originalPrice.toFixed(2)} EGP
             </span>
           ) : null}
         </p>
       </div>
 
-      <div className="col-span-2 flex flex-col items-end justify-between gap-5 sm:col-span-1">
+      <div className="flex w-full items-stretch justify-end gap-2 md:w-auto md:flex-col md:items-end md:justify-between md:gap-4">
         <Button
           type="button"
           variant="ghost"
@@ -104,7 +107,7 @@ export default function WishlistItemCard({ item }: WishlistItemCardProps) {
           disabled={isRemoving}
           onClick={removeItem}
           aria-label={tWishlist('remove')}
-          className="bg-ds-danger-fade text-ds-danger hover:bg-ds-danger-faint"
+          className="bg-ds-danger-fade text-ds-danger hover:bg-ds-danger-faint h-10 w-10 md:h-9 md:w-9"
         >
           <Trash2 className="size-5" strokeWidth={1.8} aria-hidden="true" />
         </Button>
@@ -112,7 +115,10 @@ export default function WishlistItemCard({ item }: WishlistItemCardProps) {
         {outOfStock ? (
           <HoveredLink
             href={`/products?categoryId=${product.categoryId}`}
-            className={cn(buttonVariants({ variant: 'secondary' }), 'h-11 min-w-55 px-6 text-base')}
+            className={cn(
+              buttonVariants({ variant: 'secondary' }),
+              'h-10! min-w-0 flex-1 px-3 text-sm md:min-w-48 md:flex-none md:px-4',
+            )}
           >
             {tWishlist('exploreSimilar')}
           </HoveredLink>
@@ -123,8 +129,8 @@ export default function WishlistItemCard({ item }: WishlistItemCardProps) {
             disabled={isAddingToCart}
             loading={isAddingToCart}
             onClick={addWishlistItemToCart}
-            leftIcon={<ShoppingCart className="size-5" strokeWidth={1.8} aria-hidden="true" />}
-            className="h-11 min-w-40 px-5 text-base"
+            leftIcon={<ShoppingCart className="size-4" strokeWidth={1.8} aria-hidden="true" />}
+            className="h-10! min-w-0 flex-1 px-3 text-sm md:min-w-36 md:flex-none md:px-4"
           >
             {tWishlist('addToCart')}
           </Button>
