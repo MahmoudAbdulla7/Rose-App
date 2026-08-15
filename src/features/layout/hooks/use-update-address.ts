@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import { updateAddressAction } from '../lib/actions/addresses.action';
 import type { AddressPayload } from '../lib/types/address';
@@ -21,5 +22,7 @@ export function useUpdateAddress() {
         queryKey: ['addresses'],
       });
     },
+
+    onError: (error) => toast.error(error.message),
   });
 }

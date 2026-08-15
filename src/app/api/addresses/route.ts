@@ -8,10 +8,8 @@ export async function GET() {
 
     return NextResponse.json(data);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Internal Server Error';
-
-    if (message === 'Unauthorized' || message === 'No token found') {
-      return NextResponse.json({ message }, { status: 401 });
+    if (error instanceof Error && 'status' in error && error.status === 401) {
+      return NextResponse.json({ message: error.message }, { status: 401 });
     }
 
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });

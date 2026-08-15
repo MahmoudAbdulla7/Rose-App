@@ -10,7 +10,9 @@ export async function getAddresses() {
   const token = jwt?.accessToken;
 
   if (!token) {
-    throw new Error('Authentication required');
+    const error = new Error('Authentication required');
+    Object.assign(error, { status: 401 });
+    throw error;
   }
 
   const endpoint = buildApiEndpoint(`addresses`);

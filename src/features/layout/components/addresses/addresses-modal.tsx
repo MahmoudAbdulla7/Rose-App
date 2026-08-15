@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/shared/ui/button';
+import { cn } from '@/shared/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
 import { useAddresses } from '../../hooks/use-addresses';
 import type { Address } from '../../lib/types/address';
@@ -38,7 +39,10 @@ export function AddressesModal({ open, onOpenChange }: AddressBookModalProps) {
     >
       <DialogContent
         showCloseButton={false}
-        className="max-h-147.75 overflow-visible p-6 md:min-w-3xl"
+        className={cn(
+          'max-h-147.75 p-6 md:min-w-3xl',
+          view === 'list' ? 'overflow-visible' : 'overflow-y-auto',
+        )}
       >
         <DialogHeader>
           <div className="flex justify-between">
