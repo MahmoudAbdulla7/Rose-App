@@ -34,15 +34,18 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
   const [coupon, setCoupon] = useState<ICoupon | null>(null);
   const [error, setError] = useState<TCouponError | null>(null);
 
-  // Query & mutation — reads the cart itself so any page can drop it in
+  // Query
   const { data, isPending: isCartPending, isError } = useCart();
+
+  // Mutation
   const { mutate: applyCoupon, isPending } = useApplyCoupon();
 
-  // Derived State — the cart check re-runs every render, so editing the cart
-  // can't leave a stale discount applied.
+  // Variables
   const cartReady = !isCartPending && !isError && data?.status === true;
   const subtotal = cartReady ? getCartSubtotal(data.payload?.cartItems ?? []) : 0;
-  const couponError = getCouponCartError(coupon, subtotal) ?? error;
+
+  const couponError = getCouponCartError(coupon, subtotal);
+  const formError = couponError ?? error;
   const discount = coupon && !couponError ? getCouponDiscount(coupon, subtotal) : 0;
   const total = subtotal - discount;
   const canCheckout = cartReady && subtotal > 0;
@@ -62,9 +65,9 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
         const statusError = getCouponStatusError(found);
 
         setError(statusError);
-        setCoupon(statusError ? null : found);
 
         if (!statusError) {
+          setCoupon(found);
           setCode('');
         }
       },
@@ -91,7 +94,7 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
             onChange={(event) => setCode(event.target.value)}
             placeholder={t('couponPlaceholder')}
             aria-label={t('couponPlaceholder')}
-            error={couponError ? t(`couponErrors.${couponError}`) : undefined}
+            error={formError ? t(`couponErrors.${formError}`) : undefined}
             wrapperClassName="flex-1"
             disabled={isPending}
           />
