@@ -68,7 +68,7 @@ export default function RelatedProductsCarousel({
   }
 
   return (
-    <section className={cn('w-full', className)}>
+    <section className={cn('container', className)}>
       <SectionHeading>{title}</SectionHeading>
 
       <div className="relative mx-auto w-full max-w-7xl px-4.75">

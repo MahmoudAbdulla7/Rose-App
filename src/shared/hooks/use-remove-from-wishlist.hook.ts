@@ -1,9 +1,14 @@
-import { removeFromWishlist as serverRemove } from '@/shared/lib/actions/wishlist.actions';
-import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
-import { guestWishlist } from '@/shared/lib/services/guest-wishlist.service';
-import type { IRemoveFromWishlist, RemoveFromWishlistResponse } from '@/shared/lib/types/wishlist';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { removeWishlistItem } from '@/shared/lib/apis/wishlist/user-wishlist-items.api';
+import { removeFromGuestWishlist } from '@/shared/lib/services/guest-wishlist.service';
+import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
+import type { RemoveFromWishlistResponse } from '@/shared/lib/types/wishlist';
+
+type RemoveWishlistVariables = {
+  id: string; // wishlist item ID (UUID) – for authenticated removal
+  productId: string; // product ID – for guest removal
+};
 
 export function useRemoveFromWishlist() {
   const { status } = useSession();
@@ -11,19 +16,20 @@ export function useRemoveFromWishlist() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ productId }: IRemoveFromWishlist): Promise<RemoveFromWishlistResponse> => {
+    mutationFn: async ({
+      id,
+      productId,
+    }: RemoveWishlistVariables): Promise<RemoveFromWishlistResponse> => {
       if (isAuthenticated) {
-        const response = await serverRemove({ productId });
-
+        await removeWishlistItem(id);
         return {
-          status: response.status,
-          code: response.code,
-          message: response.message,
+          status: true,
+          code: 200,
+          message: 'Removed from server',
           payload: null,
         };
       } else {
-        await guestWishlist.remove(productId);
-
+        await removeFromGuestWishlist(productId);
         return {
           status: true,
           code: 200,
