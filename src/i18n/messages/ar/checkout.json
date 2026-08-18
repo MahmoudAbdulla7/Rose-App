@@ -1,4 +1,12 @@
 {
+  "title": "الدفع",
+  "step1Title": "عنوان الشحن",
+  "addAddress": "أضف عنوانًا جديدًا",
+  "next": "التالي",
+  "noAddresses": "أضف عنوانك الأول للمتابعة",
+  "step": "الخطوة {current} من {total}",
+  "error": "فشل تحميل العناوين",
+  "empty": "أضف عنوانك الأول للمتابعة",
   "paymentMethod": {
     "fieldsetLabel": "طريقة الدفع",
     "cash": {

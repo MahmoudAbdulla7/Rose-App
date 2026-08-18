@@ -1,11 +1,11 @@
-import ComingSoonPage from '@/features/landing-page/components/coming-soon-page';
-import type { Locale } from 'next-intl';
+import CartContent from '@/features/cart/components/cart-content';
+import ProductsYouMayLike from '@/features/cart/components/products-you-may-like';
 
-type Props = {
-  params: Promise<{ locale: string }>;
-};
-
-export default async function CartPage({ params }: Props) {
-  const { locale } = await params;
-  return <ComingSoonPage locale={locale as Locale} titleKey="cart" />;
+export default function CartPage() {
+  return (
+    <div className="container flex flex-col gap-12 py-6 sm:py-8">
+      <CartContent />
+      <ProductsYouMayLike />
+    </div>
+  );
 }

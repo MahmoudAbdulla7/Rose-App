@@ -1,27 +1,60 @@
-import { db } from '../db/wishlist.db';
 import type { IProduct } from '@/shared/lib/types/product';
 
-export const guestWishlist = {
-  async add(productId: string, product: IProduct): Promise<void> {
-    const existing = await db.items.where('productId').equals(productId).first();
-    if (existing) return; // already in wishlist
-    await db.items.add({ productId, product, addedAt: new Date() });
-  },
+const STORAGE_KEY = 'guestWishlist';
+const listeners = new Set<() => void>();
 
-  async remove(productId: string): Promise<void> {
-    await db.items.where('productId').equals(productId).delete();
-  },
+let cachedRaw: string | null = null;
+let cachedSnapshot: IProduct[] = [];
 
-  async getAll(): Promise<{ productId: string; product: IProduct }[]> {
-    const items = await db.items.toArray();
-    return items.map((item) => ({ productId: item.productId, product: item.product }));
-  },
+function emitChange() {
+  listeners.forEach((listener) => listener());
+}
 
-  async clear(): Promise<void> {
-    await db.items.clear();
-  },
+export function subscribeToGuestWishlist(callback: () => void) {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+}
 
-  async count(): Promise<number> {
-    return await db.items.count();
-  },
-};
+export function getGuestWishlistSnapshot(): IProduct[] {
+  if (typeof window === 'undefined') return cachedSnapshot;
+
+  const raw = localStorage.getItem(STORAGE_KEY);
+
+  if (raw !== cachedRaw) {
+    cachedRaw = raw;
+    cachedSnapshot = raw ? JSON.parse(raw) : [];
+  }
+
+  return cachedSnapshot;
+}
+
+const EMPTY: IProduct[] = [];
+export function getGuestWishlistServerSnapshot(): IProduct[] {
+  return EMPTY;
+}
+
+export function addToGuestWishlist(product: IProduct) {
+  const current = getGuestWishlistSnapshot();
+  if (current.some((item) => item.id === product.id)) return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...current, product]));
+  emitChange();
+}
+
+export function removeFromGuestWishlist(productId: string) {
+  const current = getGuestWishlistSnapshot();
+  const updated = current.filter((item) => item.id !== productId);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  emitChange();
+}
+
+export function clearGuestWishlist() {
+  localStorage.removeItem(STORAGE_KEY);
+  emitChange();
+}
+
+export function setGuestWishlist(items: IProduct[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  cachedRaw = localStorage.getItem(STORAGE_KEY);
+  cachedSnapshot = items;
+  emitChange();
+}

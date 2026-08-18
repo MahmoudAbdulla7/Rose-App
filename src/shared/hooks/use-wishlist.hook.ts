@@ -1,37 +1,35 @@
+'use client';
+
+import { useSyncExternalStore } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { fetchWishlistItems } from '@/shared/lib/apis/wishlist/user-wishlist-items.api';
-import { guestWishlist } from '@/shared/lib/services/guest-wishlist.service';
-import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
-import type { IWishlistResponse } from '@/shared/lib/types/wishlist';
+import {
+  subscribeToGuestWishlist,
+  getGuestWishlistSnapshot,
+  getGuestWishlistServerSnapshot,
+} from '@/shared/lib/services/guest-wishlist.service';
+import type { IWishlistItem } from '@/shared/lib/types/wishlist';
 
 export function useWishlist() {
   const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
 
-  return useQuery({
-    queryKey: WISHLIST_OPTIONS.QUERY_KEY,
-    queryFn: async (): Promise<IWishlistResponse> => {
-      if (isAuthenticated) {
-        return await fetchWishlistItems();
-      } else {
-        const guestItems = await guestWishlist.getAll();
-        const wishlistItems = guestItems.map(({ productId, product }) => ({
-          id: `guest-${productId}`,
-          createdAt: new Date(),
-          userId: 'guest',
-          productId,
-          product,
-        }));
-        return {
-          status: true,
-          code: 200,
-          message: 'Guest wishlist',
-          payload: { wishlistItems },
-        };
-      }
-    },
-    enabled: status !== 'loading',
-    staleTime: 5 * 60 * 1000,
+  const guestWishlist = useSyncExternalStore(
+    subscribeToGuestWishlist,
+    getGuestWishlistSnapshot,
+    getGuestWishlistServerSnapshot,
+  );
+
+  const { data: wishlistData, ...queryState } = useQuery({
+    queryKey: ['wishlist'],
+    queryFn: fetchWishlistItems,
+    enabled: isAuthenticated,
   });
+
+  const wishlistItems: IWishlistItem[] = wishlistData?.status
+    ? wishlistData.payload.wishlistItems
+    : [];
+
+  return { isAuthenticated, guestWishlist, wishlistItems, ...queryState };
 }

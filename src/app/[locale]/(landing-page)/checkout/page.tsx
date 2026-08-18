@@ -1,19 +1,27 @@
-import PaymentMethodSection from '@/features/checkout/components/payment-method-section';
-import { Button } from '@/shared/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import ProductsYouMayLike from '@/features/cart/components/products-you-may-like';
+import CheckoutStep1 from '@/features/checkout/components/step-1';
+import type { Metadata } from 'next';
+import type { Locale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+
+type Props = LayoutProps<'/[locale]'>;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+
+  const checkoutT = await getTranslations({ locale: locale as Locale, namespace: 'checkout' });
+  const commonT = await getTranslations({ locale: locale as Locale, namespace: 'common' });
+
+  return {
+    title: `${checkoutT('title')} | ${commonT('app.title')}`,
+  };
+}
 
 export default function CheckoutPage() {
   return (
-    <section className="container flex flex-col gap-6 py-10 lg:py-16">
-      <header className="flex gap-4">
-        <Button className="flex h-10 gap-1 border-none p-2.5" variant="subtle" size="lg">
-          <ArrowLeft className="size-4" />
-          Back
-        </Button>
-        <h1 className="text-3xl font-semibold">Payment Method</h1>
-      </header>
-
-      <PaymentMethodSection />
-    </section>
+    <>
+      <CheckoutStep1 />
+      <ProductsYouMayLike />
+    </>
   );
 }

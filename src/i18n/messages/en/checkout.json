@@ -1,14 +1,21 @@
 {
+  "title": "Checkout",
+  "step1Title": "Shipping Address",
+  "addAddress": "Add a new address",
+  "next": "Next",
+  "noAddresses": "Add your first address to continue",
+  "step": "Step {current} of {total}",
+  "error": "Failed to load addresses.",
   "paymentMethod": {
     "fieldsetLabel": "Payment method",
     "cash": {
       "title": "Cash on Delivery",
-      "description": "You’ll pay in cash when your order is delivered.",
+      "description": "You'll pay in cash when your order is delivered.",
       "iconAlt": "Cash on delivery"
     },
     "credit": {
       "title": "Credit Card",
-      "description": "You’ll be securely redirected to Stripe to complete your payment.",
+      "description": "You'll be securely redirected to Stripe to complete your payment.",
       "iconAlt": "Credit card"
     },
     "checkout": "Checkout"

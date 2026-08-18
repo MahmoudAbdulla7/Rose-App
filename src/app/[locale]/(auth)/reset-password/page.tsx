@@ -1,4 +1,4 @@
-import ResetPassword from '@/features/auth/components/reset-password';
+import ResetPassword from '@/features/auth/components/forgot-password/reset-password';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
