@@ -1,15 +1,22 @@
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 import SectionHeading from '@/features/landing-page/components/home/section-heading';
-import { TestimonialsCarousel } from '@/features/landing-page/components/home/testimonials-carousel';
 import { getTestimonials } from '@/features/landing-page/lib/api/testimonials.api';
 import { TESTIMONIALS_OPTIONS } from '@/features/landing-page/lib/api/testimonials.options';
 import EmptyState from '@/shared/components/empty-state';
 import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 import { cn } from '@/shared/lib/utils';
 import { CarouselItem } from '@/shared/ui/carousel';
+
+const TestimonialsCarousel = dynamic(
+  () =>
+    import('@/features/landing-page/components/home/testimonials-carousel').then(
+      (m) => m.TestimonialsCarousel,
+    ),
+);
 
 export default function Testimonials() {
   return (

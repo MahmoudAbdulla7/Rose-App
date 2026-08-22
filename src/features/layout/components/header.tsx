@@ -25,7 +25,7 @@ export default async function Header() {
           <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
             <Link href="/" className="shrink-0" aria-label={t('homeAria')}>
               <Image
-                src="/assets/images/logo.png"
+                src="/assets/images/logo.webp"
                 alt={t('logoAlt')}
                 width={180}
                 height={72}
