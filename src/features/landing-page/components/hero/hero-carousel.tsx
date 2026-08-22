@@ -66,7 +66,7 @@ export default function HeroCarousel() {
             <button
               key={index}
               onClick={() => api?.scrollTo(index)}
-              className={cn`h-2.5 rounded-full transition-all ${current === index ? 'bg-maroon-600 w-10' : 'bg-maroon-50 size-2.5'}`}
+              className={cn`h-2.5 rounded-full transition-all ${current === index ? 'bg-maroon-600 dark:bg-maroon-500 w-10' : 'bg-maroon-50 dark:bg-white/40 size-2.5'}`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
@@ -102,31 +102,31 @@ export default function HeroCarousel() {
         {/* Carousel Title */}
         <div className="absolute bottom-0 w-full p-4 sm:p-9">
           <div className="space-y-1.5">
-            <h3 className="text-2xl font-semibold sm:text-4xl">{t('carousel.title')}</h3>
-            <p className="text-sm sm:text-base">{t('carousel.description')}</p>
+            <h3 className="text-2xl font-semibold text-white sm:text-4xl">{t('carousel.title')}</h3>
+            <p className="text-sm text-white/90 sm:text-base">{t('carousel.description')}</p>
           </div>
 
           <div className="mt-4 flex items-center justify-between gap-3 sm:mt-6 sm:gap-4">
             <Link
               href="/products"
-              className="text-maroon-700 bg-maroon-50 w-fit rounded-xl px-4 py-2 text-sm sm:px-6 sm:text-base"
+              className="text-maroon-700 bg-maroon-50 dark:bg-soft-pink-300 dark:text-zinc-800 w-fit rounded-xl px-4 py-2 text-sm sm:px-6 sm:text-base"
             >
               {t('carousel.cta')}
             </Link>
 
             {/* Carousel Nav Buttons */}
-            <div className="bg-maroon-50 *:text-maroon-700 rounded-full *:bg-transparent *:px-3 *:hover:bg-transparent *:disabled:bg-transparent rtl:*:rotate-180">
+            <div className="bg-maroon-50 h-10! flex items-center justify-between dark:bg-zinc-800/80 *:text-maroon-700 dark:*:text-zinc-50 rounded-full *:bg-transparent *:px-3 *:hover:bg-transparent *:disabled:bg-transparent rtl:*:rotate-180">
               <Button
                 onClick={() => api?.scrollPrev()}
                 disabled={!canScrollPrev || CAROUSEL_SLIDES.length <= 1}
               >
-                <ChevronLeft strokeWidth={2} className="size-4.75" />
+                <ChevronLeft strokeWidth={2} />
               </Button>
               <Button
                 onClick={() => api?.scrollNext()}
                 disabled={!canScrollNext || CAROUSEL_SLIDES.length <= 1}
               >
-                <ChevronRight strokeWidth={2} className="size-4.75" />
+                <ChevronRight strokeWidth={2} />
               </Button>
             </div>
           </div>

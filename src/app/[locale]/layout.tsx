@@ -39,7 +39,7 @@ type Props = LayoutProps<'/[locale]'>;
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);

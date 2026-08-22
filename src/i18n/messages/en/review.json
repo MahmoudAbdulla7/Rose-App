@@ -16,5 +16,16 @@
       "title": "Title is required",
       "content": "Review is required"
     }
+  },
+  "summary": {
+    "title": "Product Reviews",
+    "generalRating": "General rating:",
+    "customerReviews": "Customer reviews",
+    "ratingsCount": "({count, number, decimal} ratings)",
+    "rating": "{rating} out of {maxRating} stars"
+  },
+  "emptyState": {
+    "title": "No reviews yet",
+    "description": "No reviews available for this product currently. Be the first to review it!"
   }
 }

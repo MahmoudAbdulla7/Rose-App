@@ -25,7 +25,7 @@ export default async function Footer() {
         {/* Brand */}
         <div className="flex flex-col items-center justify-center gap-1.5">
           <Image
-            src="/assets/images/logo.webp"
+            src="/assets/images/logo.png"
             alt={t('brand')}
             width={240}
             height={225}

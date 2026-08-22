@@ -1,114 +1,74 @@
 import 'server-only';
 
-import type { ICartItem, ICartResponse } from '../../types/cart';
-import { getNextAuthToken } from '../../utils/auth.utils';
 import { buildApiEndpoint } from '../../utils/api-endpoint-builder.utils';
+import { getNextAuthToken } from '../../utils/auth.utils';
 import { API_HEADERS } from '../headers.options';
-
-// Shared auth headers for every backend cart call
-async function getAuthHeaders() {
-  const token = await getNextAuthToken();
-
-  if (!token) {
-    throw new Error('Unauthorized');
-  }
-
-  return {
-    ...API_HEADERS.JSON,
-    ...API_HEADERS.AUTHORIZATION(token.accessToken),
-  };
-}
+import type { ICartResponse } from '../../types/cart';
 
 export async function getCartItems(): Promise<ICartResponse> {
-  const headers = await getAuthHeaders();
-  const endpoint = buildApiEndpoint('/cart', {});
+  const token = await getNextAuthToken();
+  if (!token) throw new Error('Unauthorized');
 
-  const response = await fetch(endpoint.toString(), { headers });
+  const endpoint = buildApiEndpoint('/cart', {});
+  const response = await fetch(endpoint.toString(), {
+    headers: {
+      ...API_HEADERS.JSON,
+      ...API_HEADERS.AUTHORIZATION(token.accessToken),
+    },
+  });
 
   return (await response.json()) as ICartResponse;
 }
 
-export async function clearCartItems(): Promise<IAPIResponse<null>> {
-  const headers = await getAuthHeaders();
-  const cart = await getCartItems();
+export async function addCartItem(productId: string, quantity: number): Promise<ICartResponse> {
+  const token = await getNextAuthToken();
+  if (!token) throw new Error('Unauthorized');
 
-  if (!cart.status || !cart.payload?.cartItems?.length) {
-    return {
-      status: true,
-      code: 200,
-      message: 'Cart already empty',
-      payload: null,
-    };
-  }
+  const endpoint = buildApiEndpoint('/cart', {});
+  const response = await fetch(endpoint.toString(), {
+    method: 'POST',
+    headers: {
+      ...API_HEADERS.JSON,
+      ...API_HEADERS.AUTHORIZATION(token.accessToken),
+    },
+    body: JSON.stringify({ productId, quantity }),
+  });
 
-  // Backend has no bulk-clear endpoint — delete each cart line by its id
-  await Promise.all(
-    cart.payload.cartItems.map(async (item) => {
-      const endpoint = buildApiEndpoint(`/cart/${item.id}`, {});
-      await fetch(endpoint.toString(), {
-        method: 'DELETE',
-        headers,
-      });
-    }),
-  );
-
-  return {
-    status: true,
-    code: 200,
-    message: 'Cart cleared',
-    payload: null,
-  };
+  if (!response.ok) throw new Error('Failed to add cart item');
+  return (await response.json()) as ICartResponse;
 }
 
-export async function updateCartItemById(
-  id: string,
-  quantity: number,
-): Promise<IAPIResponse<ICartItem>> {
-  if (!id) {
-    return {
-      status: false,
-      code: 400,
-      message: 'Missing cart item id',
-    };
-  }
+export async function updateCartItemQuantity(id: string, quantity: number): Promise<ICartResponse> {
+  const token = await getNextAuthToken();
+  if (!token) throw new Error('Unauthorized');
 
-  const headers = await getAuthHeaders();
-  // `id` is the cart line id from cartItems[].id
   const endpoint = buildApiEndpoint(`/cart/${id}`, {});
-
   const response = await fetch(endpoint.toString(), {
     method: 'PATCH',
+    headers: {
+      ...API_HEADERS.JSON,
+      ...API_HEADERS.AUTHORIZATION(token.accessToken),
+    },
     body: JSON.stringify({ quantity }),
-    headers,
   });
 
-  return (await response.json()) as IAPIResponse<ICartItem>;
+  if (!response.ok) throw new Error('Failed to update cart item');
+  return (await response.json()) as ICartResponse;
 }
 
-export async function removeCartItemById(id: string): Promise<IAPIResponse<null>> {
-  if (!id) {
-    return {
-      status: false,
-      code: 400,
-      message: 'Missing cart item id',
-    };
-  }
+export async function removeCartItem(id: string): Promise<ICartResponse> {
+  const token = await getNextAuthToken();
+  if (!token) throw new Error('Unauthorized');
 
-  const headers = await getAuthHeaders();
-  // `id` is the cart line id from cartItems[].id
   const endpoint = buildApiEndpoint(`/cart/${id}`, {});
-
   const response = await fetch(endpoint.toString(), {
     method: 'DELETE',
-    headers,
+    headers: {
+      ...API_HEADERS.JSON,
+      ...API_HEADERS.AUTHORIZATION(token.accessToken),
+    },
   });
 
-  const data = (await response.json()) as IAPIResponse<ICartItem | null>;
-
-  return {
-    status: data.status,
-    code: data.code,
-    message: data.message,
-    payload: null,
-  };
+  if (!response.ok) throw new Error('Failed to remove item from cart');
+  return (await response.json()) as ICartResponse;
 }

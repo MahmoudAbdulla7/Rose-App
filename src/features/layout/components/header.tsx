@@ -11,7 +11,8 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import HeaderCartLink from './header-cart-link';
 import HeaderWishlistLink from './header-wishlist-link';
-import NotificationsDropdown from './notifications-dropdown';
+import NotificationsDropdown from './notifications/notifications-dropdown';
+import CurrentDeliveryLocation from './addresses/current-delivery-location';
 
 export default async function Header() {
   const t = await getTranslations('header');
@@ -25,7 +26,7 @@ export default async function Header() {
           <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
             <Link href="/" className="shrink-0" aria-label={t('homeAria')}>
               <Image
-                src="/assets/images/logo.webp"
+                src="/assets/images/logo.png"
                 alt={t('logoAlt')}
                 width={180}
                 height={72}
@@ -33,6 +34,8 @@ export default async function Header() {
                 priority
               />
             </Link>
+
+            <CurrentDeliveryLocation />
 
             <HeaderSearch
               suggestions={suggestions}
