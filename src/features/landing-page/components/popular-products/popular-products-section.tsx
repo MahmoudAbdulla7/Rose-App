@@ -8,18 +8,15 @@ import { getLandingPageOccasions } from '@/features/landing-page/lib/services/oc
 import PopularProductsGridSkeleton from '@/features/landing-page/skeletons/popular-products/popular-products-grid.skeleton';
 import { Link } from '@/i18n/navigation';
 import LoadErrorBoundary from '@/shared/components/load-error-boundary';
-import { PRODUCTS_OPTIONS } from '@/shared/lib/apis/products/products.options';
-import { isMobileDevice } from '@/shared/lib/utils/device.utils';
+import { PRODUCT_SORT_BY } from '@/shared/lib/apis/products/products.options';
 import SectionHeading from '../home/section-heading';
 import { PRODUCT_FILTER_KEYS } from '@/features/products/lib/utils/filter.utils';
 
 export interface IPopularProductsSectionProps {
-  searchParams?: ISearchParams;
+  searchParams: Promise<ISearchParams>;
 }
 
-export default function PopularProductsSection({
-  searchParams = {},
-}: IPopularProductsSectionProps) {
+export default function PopularProductsSection({ searchParams }: IPopularProductsSectionProps) {
   return (
     <LoadErrorBoundary entity="occasions">
       <PopularProductsSectionContent searchParams={searchParams} />
@@ -27,23 +24,22 @@ export default function PopularProductsSection({
   );
 }
 
-async function PopularProductsSectionContent({ searchParams = {} }: IPopularProductsSectionProps) {
+async function PopularProductsSectionContent({ searchParams }: IPopularProductsSectionProps) {
+  const resolvedSearchParams = await searchParams;
   const t = await getTranslations('product.popularProducts');
   const locale = await getLocale();
-  const isMobile = await isMobileDevice();
 
   const occasions = await getLandingPageOccasions({ locale });
 
-  const rawOccasion = searchParams.occasion;
+  const rawOccasion = resolvedSearchParams.occasion;
   const activeOccasionId = Array.isArray(rawOccasion) ? rawOccasion[0] : rawOccasion;
   const occasionId = activeOccasionId ?? occasions[0]?.id;
 
   const effectiveSearchParams: ISearchParams = {
-    ...searchParams,
+    ...resolvedSearchParams,
+    sortBy: PRODUCT_SORT_BY.MOST_POPULAR,
     ...(occasionId ? { occasion: occasionId } : {}),
   };
-
-  const skeletonLimit = isMobile ? PRODUCTS_OPTIONS.MOBILE_LIMIT : PRODUCTS_OPTIONS.DESKTOP_LIMIT;
 
   return (
     <section className="flex w-full flex-col gap-10">
@@ -56,7 +52,7 @@ async function PopularProductsSectionContent({ searchParams = {} }: IPopularProd
         />
       </div>
 
-      <Suspense fallback={<PopularProductsGridSkeleton limit={skeletonLimit} />}>
+      <Suspense fallback={<PopularProductsGridSkeleton />}>
         <LoadErrorBoundary entity="products">
           <PopularProductsGrid searchParams={effectiveSearchParams} />
         </LoadErrorBoundary>
