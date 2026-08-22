@@ -22,7 +22,7 @@ interface NotificationItemProps {
 
 export default function NotificationItem({ notification }: NotificationItemProps) {
   // Translation
-  const tNotifications = useTranslations('header.notifications');
+  const t = useTranslations('header.notifications');
 
   // Query
   const queryClient = useQueryClient();
@@ -71,7 +71,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
             className="cursor-pointer"
           >
             <Check size={18} strokeWidth={1.5} />
-            <span>{tNotifications('markRead')}</span>
+            <span>{t('markRead')}</span>
           </DropdownMenuItem>
 
           {/* Delete */}
@@ -81,7 +81,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
             className="cursor-pointer"
           >
             <Trash2 size={18} strokeWidth={1.5} className="[&_path]:stroke-ds-danger" />
-            <span>{tNotifications('delete')}</span>
+            <span>{t('delete')}</span>
           </DropdownMenuItem>
         </DropdownMenuSubContent>
       </DropdownMenuPortal>

@@ -15,6 +15,30 @@
     "about": "من نحن",
     "orders": "طلباتي"
   },
+  "wishlist": {
+    "metadataDescription": "راجع وأدر الزهور والهدايا المحفوظة في المفضلة.",
+    "eyebrow": "اختيارات محفوظة",
+    "title": "المفضلة",
+    "itemCount": "{count, number} {count, plural, one {عنصر} other {عناصر}}",
+    "clear": "مسح المفضلة",
+    "itemsLabel": "عناصر المفضلة",
+    "emptyTitle": "المفضلة فارغة",
+    "emptyDescription": "احفظ الزهور والهدايا التي تحبها، ثم عد عندما تكون جاهزا للطلب.",
+    "addToCart": "أضف إلى السلة",
+    "continueShopping": "متابعة التسوق",
+    "exploreSimilar": "استكشف منتجات مشابهة",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "ratingValue": "{rating, number, decimal}/5",
+    "ratingsCount": "({count, number} {count, plural, one {تقييم} other {تقييمات}})",
+    "remove": "إزالة",
+    "clearConfirmation": {
+      "title": "هل أنت متأكد أنك تريد مسح المفضلة؟",
+      "description": "سيؤدي ذلك إلى إزالة كل العناصر المحفوظة في المفضلة.",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد"
+    }
+  },
   "toast": {
     "error": "خطأ"
   },

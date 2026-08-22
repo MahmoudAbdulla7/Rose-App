@@ -1,22 +1,18 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import { useCart } from '@/features/cart/hooks/use-cart';
+import { useCart } from '@/shared/hooks';
 import { ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export default function HeaderCartLink() {
   const t = useTranslations('header');
-  const { data, isLoading, isPending, isFetching } = useCart();
+  const { isAuthenticated, guestCartList, cartItems, isLoading } = useCart();
 
-  const hasResolvedCart =
-    data != null && data.status === true && Array.isArray(data.payload?.cartItems);
-  const isCartLoading = isLoading || isPending || (isFetching && !hasResolvedCart);
-
-  // Item count (not quantity sum) keeps the badge in sync with cart query cache
-  const cartCount = hasResolvedCart ? data.payload.cartItems.length : 0;
+  const cartCount = isAuthenticated ? cartItems.length : guestCartList.length;
 
   const badgeLabel = cartCount > 99 ? '99+' : String(cartCount);
+  const isCountLoading = isAuthenticated && isLoading;
 
   return (
     <Link
@@ -25,7 +21,7 @@ export default function HeaderCartLink() {
       aria-label={cartCount > 0 ? t('cartWithCount', { count: cartCount }) : t('cart')}
     >
       <ShoppingCart className="size-5" />
-      {!isCartLoading && cartCount > 0 && (
+      {!isCountLoading && cartCount > 0 && (
         <span
           className="bg-ds-primary text-ds-text-inverse absolute -inset-e-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] leading-none font-medium tabular-nums"
           aria-hidden="true"

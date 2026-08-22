@@ -2,7 +2,7 @@ import { Button as ButtonPrimitive } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { Loader2 } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'shared/lib/utils';
 import { useTranslations } from 'next-intl';
 
 const buttonVariants = cva(
@@ -40,6 +40,11 @@ const buttonVariants = cva(
           hover:bg-ds-danger-saturated cursor-pointer 
           disabled:bg-ds-soft disabled:text-ds-text-muted
         `,
+        soft: `
+          bg-ds-subtle text-ds-text-plain border border-ds-border-default 
+          hover:bg-ds-soft cursor-pointer dark:hover:border-ds-primary 
+          disabled:bg-ds-soft disabled:border-transparent disabled:text-ds-text-muted
+        `,
       },
       size: {
         default:
@@ -47,12 +52,14 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3.5",
         lg: 'h-9 gap-1.5 px-4 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2',
+        xl: 'h-11 gap-1.5 px-6 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2',
         icon: 'size-8',
         'icon-xs':
           "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
         'icon-sm':
           'size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg',
         'icon-lg': 'size-9',
+        'icon-rounded': 'size-9 rounded-full',
       },
     },
     defaultVariants: {

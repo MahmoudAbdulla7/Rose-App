@@ -1,12 +1,13 @@
 'use client';
 
-import { Button } from '@/shared/ui/button';
-import { Separator } from '@/shared/ui/separator';
 import { ChevronLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import type { Step } from '../lib/constants/forgot-password.constant';
-import { STEP } from '../lib/constants/forgot-password.constant';
-import AuthFooter from './auth-footer';
+
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
+import type { Step } from '../../lib/constants/forgot-password.constant';
+import { STEP } from '../../lib/constants/forgot-password.constant';
+import AuthFooter from '../auth-footer';
 
 type PasswordResetSentProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;
