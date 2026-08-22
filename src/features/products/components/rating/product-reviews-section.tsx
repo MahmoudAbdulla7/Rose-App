@@ -22,12 +22,15 @@ export default async function ProductReviewsSection({
 
   return (
     <section
-      className={cn('max-h-125 scrollbar-none overflow-y-auto', className)}
+      className={cn(
+        'max-h-91.75 scrollbar-none overflow-y-auto px-1.75 py-2',
+        className,
+      )}
       aria-label={t('customerReviews')}
     >
-      <div className="divide-ds-border-subtle flex flex-col divide-y">
+      <div className="flex flex-col gap-2.5">
         {reviews.map((review) => (
-          <ReviewItem key={review.id} review={review} className="py-8 first:pt-7 last:pb-0" />
+          <ReviewItem key={review.id} review={review} />
         ))}
       </div>
     </section>

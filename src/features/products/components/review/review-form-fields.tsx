@@ -20,32 +20,29 @@ export default function ReviewFormFields({ register, errors }: ReviewFormFieldsP
 
   return (
     <>
-      {/* Title */}
-      <div>
-        <Input
-          label={t('title')}
-          placeholder={t('titlePlaceholder')}
-          error={errors.headline?.message}
-          {...register('headline', {
-            required: tValidation('required.title'),
-          })}
-        />
-      </div>
+      <Input
+        label={t('title')}
+        placeholder={t('titlePlaceholder')}
+        error={errors.headline?.message}
+        className="rounded-[10px] px-4 py-4 text-sm"
+        {...register('headline', {
+          required: tValidation('required.title'),
+        })}
+      />
 
-      {/* Content */}
-      <label htmlFor="content" className="text-sm">
-        {t('content')}
-      </label>
-      <div>
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="content" className="text-ds-text-plain text-sm font-medium">
+          {t('content')}
+        </label>
         <Textarea
           id="content"
           placeholder={t('contentPlaceholder')}
           {...register('content', {
             required: tValidation('required.content'),
           })}
-          className="mt-1.5"
+          className="min-h-0 rounded-[10px] px-4 py-4 text-sm"
         />
-        {errors.content && <p className="text-ds-danger mt-2 text-xs">{errors.content.message}</p>}
+        {errors.content && <p className="text-ds-danger text-xs">{errors.content.message}</p>}
       </div>
     </>
   );
