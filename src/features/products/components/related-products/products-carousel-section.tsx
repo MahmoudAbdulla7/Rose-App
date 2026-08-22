@@ -12,6 +12,15 @@ export interface ProductsCarouselSectionProps {
   className?: string;
 }
 
+/** Server-renders one carousel slide — reusable by callers that filter slides on the client. */
+export function renderProductCarouselItem(product: IProduct) {
+  return (
+    <CarouselItem key={product.id} className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+      <ProductCard product={product} className="mx-auto max-w-80" />
+    </CarouselItem>
+  );
+}
+
 export default async function ProductsCarouselSection({
   title,
   products,
@@ -22,11 +31,7 @@ export default async function ProductsCarouselSection({
     return emptyState ? <div className="w-full">{emptyState}</div> : null;
   }
 
-  const items = products.map((product) => (
-    <CarouselItem key={product.id} className="basis-full md:basis-1/2 lg:basis-1/4">
-      <ProductCard product={product} className="mx-auto max-w-80" />
-    </CarouselItem>
-  ));
+  const items = products.map(renderProductCarouselItem);
 
   return (
     <RelatedProductsCarousel title={title} emptyState={emptyState} className={className}>

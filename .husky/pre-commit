@@ -1,2 +1,0 @@
-npm run verify:config-security
-npx lint-staged

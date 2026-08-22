@@ -40,7 +40,7 @@ export function getProductDisplayPrice(args: ProductPriceInput): {
 
   // Calculate sale price
   const salePrice =
-    discountType === COUPONS_TYPES.PERCENTAGE
+    discountType === COUPONS_TYPES.PERCENT
       ? basePrice * (1 - discount / 100)
       : basePrice - discount;
 
