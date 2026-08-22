@@ -1,9 +1,17 @@
-import { removeFromWishlist as serverRemove } from '@/shared/lib/actions/wishlist.actions';
-import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
-import { guestWishlist } from '@/shared/lib/services/guest-wishlist.service';
-import type { IRemoveFromWishlist, RemoveFromWishlistResponse } from '@/shared/lib/types/wishlist';
+'use client';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+
+import { removeWishlistItem } from '@/shared/lib/apis/wishlist/user-wishlist-items.api';
+import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
+import { removeFromGuestWishlist } from '@/shared/lib/services/guest-wishlist.service';
+import type { RemoveFromWishlistResponse } from '@/shared/lib/types/wishlist';
+
+type RemoveWishlistVariables = {
+  id: string;
+  productId: string;
+};
 
 export function useRemoveFromWishlist() {
   const { status } = useSession();
@@ -11,29 +19,26 @@ export function useRemoveFromWishlist() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ productId }: IRemoveFromWishlist): Promise<RemoveFromWishlistResponse> => {
+    mutationFn: async ({ id, productId }: RemoveWishlistVariables) => {
+      if (status === 'loading') throw new Error('Session is still loading');
+
       if (isAuthenticated) {
-        const response = await serverRemove({ productId });
-
-        return {
-          status: response.status,
-          code: response.code,
-          message: response.message,
-          payload: null,
-        };
+        await removeWishlistItem(id);
       } else {
-        await guestWishlist.remove(productId);
-
-        return {
-          status: true,
-          code: 200,
-          message: 'Removed locally',
-          payload: null,
-        };
+        removeFromGuestWishlist(productId);
       }
+
+      return {
+        status: true,
+        code: 200,
+        message: isAuthenticated ? 'Removed from server' : 'Removed locally',
+        payload: null,
+      } satisfies RemoveFromWishlistResponse;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: WISHLIST_OPTIONS.QUERY_KEY });
+      if (isAuthenticated) {
+        void queryClient.invalidateQueries({ queryKey: WISHLIST_OPTIONS.QUERY_KEY });
+      }
     },
   });
 }

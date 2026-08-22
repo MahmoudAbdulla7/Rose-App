@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { getCurrentAddress } from '@/shared/lib/apis/addresses/address.api';
+import { getAddresses } from '@/features/layout/lib/apis/addresses.api';
 
 export async function GET() {
   try {
-    const data = await getCurrentAddress();
+    const data = await getAddresses();
 
     return NextResponse.json(data);
   } catch (error) {

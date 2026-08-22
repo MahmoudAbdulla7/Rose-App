@@ -2,6 +2,12 @@ import type { NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { login } from './features/auth/lib/apis/login.api';
 
+if (!process.env.NEXTAUTH_URL) {
+  process.env.NEXTAUTH_URL =
+    process.env.NEXT_PUBLIC_APP_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
