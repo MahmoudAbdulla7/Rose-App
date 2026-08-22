@@ -1,5 +1,7 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/shared/lib/utils';
@@ -10,6 +12,16 @@ type LanguageSwitcherProps = {
 };
 
 export default function LanguageSwitcherComponent({ className }: LanguageSwitcherProps) {
+  return (
+    <Suspense
+      fallback={<span className={cn('inline-block h-5 w-16', className)} aria-hidden="true" />}
+    >
+      <LanguageSwitcherLink className={className} />
+    </Suspense>
+  );
+}
+
+function LanguageSwitcherLink({ className }: LanguageSwitcherProps) {
   const currentLocale = useLocale();
   const pathname = usePathname();
   const t = useTranslations('auth');

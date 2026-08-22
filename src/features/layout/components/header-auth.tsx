@@ -8,20 +8,16 @@ import { useTranslations } from 'next-intl';
 import UserDropdown from './user-dropdown';
 
 type HeaderAuthProps = {
+  isAuthenticated: boolean;
   className?: string;
   /** Show username / login label even on the smallest screens */
   alwaysShowLabel?: boolean;
 };
 
-export default function HeaderAuth({ className, alwaysShowLabel = false }: HeaderAuthProps) {
+export default function HeaderAuth({ isAuthenticated, className, alwaysShowLabel = false }: HeaderAuthProps) {
   const t = useTranslations('header');
-  const { user, isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading) {
-    return <div className="bg-ds-muted h-8 w-24 animate-pulse rounded-lg" />;
-  }
-
-  if (isAuthenticated && user) {
+  if (isAuthenticated) {
     return <UserDropdown />;
   }
 

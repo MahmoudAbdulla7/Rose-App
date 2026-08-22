@@ -1,10 +1,9 @@
 import { getTranslations } from 'next-intl/server';
 
 import { buildOccasionHref } from '@/features/landing-page/lib/utils/occasion.utils';
-import HoveredLink from '@/shared/components/hovered-link';
+import { Link } from '@/i18n/navigation';
 import type { IOccasion } from '@/shared/lib/types/occasions';
 import { cn } from '@/shared/lib/utils';
-import { Link } from '@/i18n/navigation';
 
 export interface IPopularProductsOccasionsFilterProps {
   searchParams?: ISearchParams;

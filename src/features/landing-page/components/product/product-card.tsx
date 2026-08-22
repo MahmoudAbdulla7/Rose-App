@@ -9,6 +9,7 @@ import { PRODUCT_BADGE_VARIANT_CLASSES } from '@/shared/lib/constants/product-ba
 import type { IProduct } from '@/shared/lib/types/product';
 import { cn } from '@/shared/lib/utils';
 import { getProductDisplayPrice } from '@/shared/lib/utils/product-price.utils';
+import BlurredImagePlaceholder from '@/shared/components/blurred-image-placeholder';
 
 export interface IProductCardProps {
   product: IProduct;
@@ -63,7 +64,7 @@ export default async function ProductCard({
                 sizes="20rem"
               />
             ) : (
-              <div className="bg-maroon-50 size-full" aria-hidden="true" />
+              <BlurredImagePlaceholder />
             )}
           </HoveredLink>
         </div>
