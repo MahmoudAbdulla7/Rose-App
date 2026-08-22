@@ -4,7 +4,7 @@ export interface ICategory extends IDBFields {
   image: string;
   immutable: boolean;
   subCategories: IRelatedData[] | null;
-  count: {
+  _count: {
     products: number;
   };
 }
