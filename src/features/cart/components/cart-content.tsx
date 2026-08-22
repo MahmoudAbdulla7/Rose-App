@@ -80,7 +80,7 @@ export default function CartContent() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-10">
+    <div className="container grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-10">
       {/* Left column — cart items */}
       <section className="flex min-w-0 flex-col gap-6">
         <CartHeader itemCount={cartItems.length} onClearCart={handleClearCart} />
@@ -96,7 +96,7 @@ export default function CartContent() {
         ) : (
           <>
             <ul className="border-ds-border-muted divide-ds-border-muted flex list-none flex-col divide-y rounded-2xl border px-4">
-              {cartItems.map((item) => (
+              {cartItems.map((item: CartItem) => (
                 <li key={item.id}>
                   <CartItemCard
                     item={item}

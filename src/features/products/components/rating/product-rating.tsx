@@ -12,7 +12,7 @@ type ProductRatingProps = {
   productId: string;
   rating: number;
   ratingsCount: number;
-  reviews: IReview[];
+  reviews?: IReview[];
 };
 
 export default async function ProductRating({

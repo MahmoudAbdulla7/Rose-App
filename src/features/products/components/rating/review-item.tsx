@@ -11,7 +11,7 @@ type ReviewItemProps = {
 };
 
 export default async function ReviewItem({ review, className }: ReviewItemProps) {
-  const [format, t] = await Promise.all([getFormatter(), getTranslations('product')]);
+  const [format, t] = await Promise.all([getFormatter(), getTranslations('review.summary')]);
   const createdAt =
     review.createdAt instanceof Date ? review.createdAt : new Date(String(review.createdAt));
   const authorName =

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "prebuild": "node scripts/verify-config-security.js",
     "build": "next build",
     "verify:config-security": "node scripts/verify-config-security.js",

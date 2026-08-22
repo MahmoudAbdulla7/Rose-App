@@ -15,12 +15,12 @@ export default async function GeneralRatingSection({
   ratingsCount,
   className,
 }: GeneralRatingSectionProps) {
-  const t = await getTranslations('product');
+  const t = await getTranslations('review.summary');
 
   return (
     <section className={cn('flex flex-col gap-2.5', className)}>
       <p className="text-ds-text-plain text-xl leading-none font-semibold">
-        {t('productDetails.reviews.generalRating')}
+        {t('generalRating')}
       </p>
 
       <div className="flex flex-col gap-1">
@@ -29,7 +29,7 @@ export default async function GeneralRatingSection({
             {rating.toFixed(1)}
           </span>
           <span className="text-ds-text-muted text-lg leading-none font-medium">
-            {t('productDetails.ratingsCount', { count: ratingsCount })}
+            {t('ratingsCount', { count: ratingsCount })}
           </span>
         </div>
 
