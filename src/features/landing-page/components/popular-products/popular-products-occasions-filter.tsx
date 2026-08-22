@@ -4,6 +4,7 @@ import { buildOccasionHref } from '@/features/landing-page/lib/utils/occasion.ut
 import HoveredLink from '@/shared/components/hovered-link';
 import type { IOccasion } from '@/shared/lib/types/occasions';
 import { cn } from '@/shared/lib/utils';
+import { Link } from '@/i18n/navigation';
 
 export interface IPopularProductsOccasionsFilterProps {
   searchParams?: ISearchParams;
@@ -38,7 +39,8 @@ export default async function PopularProductsOccasionsFilter({
         const isActive = activeOccasionId === occasion.id;
 
         return (
-          <HoveredLink
+          <Link
+            prefetch={true}
             key={occasion.id}
             href={buildOccasionHref(searchParams, occasion.id)}
             aria-current={isActive ? 'page' : undefined}
@@ -51,7 +53,7 @@ export default async function PopularProductsOccasionsFilter({
             )}
           >
             {occasion.title}
-          </HoveredLink>
+          </Link>
         );
       })}
     </nav>
