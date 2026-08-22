@@ -37,8 +37,8 @@ export async function getHeaderSearchSuggestions({
   if (!bestSellingResponse?.status && !topRatedResponse?.status) {
     throw new Error(
       bestSellingResponse?.message ??
-        topRatedResponse?.message ??
-        'Failed to load product suggestions',
+      topRatedResponse?.message ??
+      'Failed to load product suggestions',
     );
   }
 
