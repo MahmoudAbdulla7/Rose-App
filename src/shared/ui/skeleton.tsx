@@ -9,7 +9,7 @@ type SkeletonProps = {
 export default function Skeleton({ className, ...props }: SkeletonProps) {
   return (
     <div
-      className={cn('animate-pulse rounded-xl bg-zinc-200 dark:bg-zinc-800', className)}
+      className={cn('animate-pulse rounded-xl bg-ds-muted dark:bg-ds-soft', className)}
       {...props}
     />
   );

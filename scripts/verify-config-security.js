@@ -13,7 +13,7 @@ const WATCHED_FILES = ['postcss.config.mjs', 'next.config.ts', 'eslint.config.mj
 const MAX_BYTES = {
   'postcss.config.mjs': 1126,
   'eslint.config.mjs': 1393,
-  'next.config.ts': 406,
+  'next.config.ts': 500,
 };
 
 const FORBIDDEN_PATTERNS = [

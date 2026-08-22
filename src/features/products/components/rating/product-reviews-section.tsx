@@ -15,16 +15,18 @@ export default async function ProductReviewsSection({
   reviews,
   className,
 }: ProductReviewsSectionProps) {
-  const t = await getTranslations('review');
-  const normalizedReviews = reviews ?? [];
+  const t = await getTranslations('product');
 
-  if (normalizedReviews.length === 0) {
+  if (reviews && reviews.length === 0) {
     return (
-      <section className={className} aria-label={t('summary.customerReviews')}>
+      <section
+        className={cn('min-w-0 flex-1', className)}
+        aria-label={t('productDetails.reviews.customerReviews')}
+      >
         <EmptyState
-          title={t('emptyState.title')}
-          subtitle={t('emptyState.description')}
-          className="min-h-64 rounded-lg py-12"
+          title={t('productDetails.reviews.emptyState.title')}
+          subtitle={t('productDetails.reviews.emptyState.description')}
+          className="min-h-91.75 py-8"
         />
       </section>
     );
@@ -32,12 +34,15 @@ export default async function ProductReviewsSection({
 
   return (
     <section
-      className={cn('max-h-125 scrollbar-none overflow-y-auto', className)}
-      aria-label={t('summary.customerReviews')}
+      className={cn(
+        'max-h-91.75 scrollbar-none overflow-y-auto px-1.75 py-2',
+        className,
+      )}
+      aria-label={t('productDetails.reviews.customerReviews')}
     >
-      <div className="divide-ds-border-subtle flex flex-col divide-y">
-        {normalizedReviews.map((review) => (
-          <ReviewItem key={review.id} review={review} className="py-8 first:pt-7 last:pb-0" />
+      <div className="flex flex-col gap-2.5">
+        {reviews?.map((review) => (
+          <ReviewItem key={review.id} review={review} />
         ))}
       </div>
     </section>

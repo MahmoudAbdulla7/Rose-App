@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/shared/ui/button';
+import { cn } from '@/shared/lib/utils';
 import { useCreateReview } from '../../hooks/use-reviews';
 import type { Review, ReviewInput } from '../../lib/types/review';
 import ReviewRating from './review-rating';
@@ -14,17 +15,14 @@ type ReviewFormValues = Omit<ReviewInput, 'productId'>;
 
 type ReviewFormProps = {
   productId: string;
+  className?: string;
   onSubmitted?: (review: Review) => void;
 };
 
-export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) {
-  // Translation
+export default function ReviewForm({ productId, className, onSubmitted }: ReviewFormProps) {
   const t = useTranslations('review.form');
-
-  // Custom hooks
   const createReview = useCreateReview(productId);
 
-  // Form
   const {
     register,
     handleSubmit,
@@ -35,7 +33,6 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
     defaultValues: { rating: 0, headline: '', content: '' },
   });
 
-  // Functions
   const onSubmit = (values: ReviewFormValues) => {
     createReview.reset();
 
@@ -55,13 +52,10 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
   };
 
   return (
-    <section className="relative overflow-hidden p-5 lg:m-2">
-      {/* Auth layer */}
+    <section className={cn('flex flex-col justify-between', className)}>
       <ReviewAuthGuard>
-        {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <fieldset disabled={createReview.isPending} className="space-y-4">
-            {/* Rating */}
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <fieldset disabled={createReview.isPending} className="flex flex-col gap-4">
             <Controller
               name="rating"
               control={control}
@@ -77,15 +71,17 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
               )}
             />
 
-            {/* Fields */}
             <ReviewFormFields register={register} errors={errors} />
 
             {createReview.error && (
               <p className="text-ds-danger text-xs">{createReview.error.message}</p>
             )}
 
-            {/* Button */}
-            <Button type="submit" loading={createReview.isPending} className="w-full">
+            <Button
+              type="submit"
+              loading={createReview.isPending}
+              className="h-auto w-full rounded-[10px] px-4 py-3.5 text-base font-medium"
+            >
               {t('submit')}
             </Button>
           </fieldset>

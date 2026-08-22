@@ -2,7 +2,7 @@ import { Button as ButtonPrimitive } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { Loader2 } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'shared/lib/utils';
 import { useTranslations } from 'next-intl';
 
 const buttonVariants = cva(
@@ -84,6 +84,8 @@ function Button({
   loading = false,
   leftIcon,
   rightIcon,
+  render,
+  nativeButton,
   ...props
 }: ButtonProps) {
   const t = useTranslations('common');
@@ -93,6 +95,8 @@ function Button({
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       disabled={disabled || loading}
+      nativeButton={nativeButton ?? !render}
+      render={render}
       {...props}
     >
       {(loading || leftIcon) && (

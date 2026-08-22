@@ -11,7 +11,7 @@ import { NotificationsContent } from './notifications-content';
 
 export default function NotificationsDropdown() {
   // Translation
-  const tNotifications = useTranslations('header.notifications');
+  const t = useTranslations('header.notifications');
 
   // Custom hooks
   const { user, isAuthenticated } = useAuth();
@@ -63,7 +63,7 @@ export default function NotificationsDropdown() {
       <DropdownMenuContent className="w-96" align="start">
         {/* Header */}
         <div className="bg-ds-primary-saturated text-ds-text-inverse p-4 text-xl font-bold">
-          {tNotifications('title')}
+          {t('title')}
           {!error && ` (${unreadCount})`}
         </div>
 

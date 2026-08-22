@@ -1,7 +1,11 @@
-import BestSellingCarousel from '@/features/landing-page/components/best-selling/best-selling-carousel';
+import dynamic from 'next/dynamic';
 import { isBestSellingCarouselImagePriority } from '@/features/landing-page/lib/constants/best-selling-constant';
 import ProductCard from '@/features/landing-page/components/product/product-card';
 import type { IProduct } from '@/shared/lib/types/product';
+
+const BestSellingCarousel = dynamic(
+  () => import('@/features/landing-page/components/best-selling/best-selling-carousel'),
+);
 
 export interface IBestSellingProductsProps {
   products: IProduct[];
