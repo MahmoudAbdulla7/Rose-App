@@ -26,7 +26,7 @@ export default async function RelatedProductsSection({
       title={t('relatedProducts.title')}
       products={relatedProducts}
       emptyState={null}
-      className="my-12 lg:mt-16"
+      className="my-12.5 lg:mb-42!"
     />
   );
 }

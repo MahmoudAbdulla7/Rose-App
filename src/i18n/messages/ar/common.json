@@ -25,6 +25,8 @@
     "emptyTitle": "المفضلة فارغة",
     "emptyDescription": "احفظ الزهور والهدايا التي تحبها، ثم عد عندما تكون جاهزا للطلب.",
     "addToCart": "أضف إلى السلة",
+    "addToCartSuccess": "تمت إضافة {name} إلى السلة.",
+    "addToCartError": "تعذرت إضافة {name} إلى السلة. يرجى المحاولة مرة أخرى.",
     "continueShopping": "متابعة التسوق",
     "exploreSimilar": "استكشف منتجات مشابهة",
     "inStock": "متوفر",

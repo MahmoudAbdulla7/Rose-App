@@ -2,6 +2,7 @@ import WishlistPageContent from '@/features/landing-page/components/wishlist/wis
 import { getWishlistItems } from '@/shared/lib/apis/wishlist/wishlist.api';
 import type { IWishlistItem } from '@/shared/lib/types/wishlist';
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
@@ -21,12 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function getServerWishlistItems(): Promise<IWishlistItem[]> {
-  try {
-    const data = await getWishlistItems();
-    return data.status === true ? data.payload.wishlistItems : [];
-  } catch {
+  const cookieStore = await cookies();
+  const sessionCookieName = process.env.NEXT_AUTH_SESSION_COOKIE;
+
+  if (!sessionCookieName || !cookieStore.has(sessionCookieName)) {
     return [];
   }
+
+  const data = await getWishlistItems();
+  return data.payload.wishlistItems;
 }
 
 export default async function WishlistPage() {

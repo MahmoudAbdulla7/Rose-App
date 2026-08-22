@@ -1,16 +1,18 @@
 'use client';
 
-import { ArrowLeft, BrushCleaning, FolderHeart, Heart } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { ArrowLeft, BrushCleaning, FolderHeart, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 import ClearWishlistDialog from '@/features/landing-page/components/wishlist/clear-wishlist-dialog';
 import WishlistItemCard from '@/features/landing-page/components/wishlist/wishlist-item-card';
 import EmptyState from '@/shared/components/empty-state';
 import HoveredLink from '@/shared/components/hovered-link';
-import { useRemoveFromWishlist } from '@/shared/hooks';
+import { useClearWishlist, useWishlist } from '@/shared/hooks';
 import type { IWishlistItem } from '@/shared/lib/types/wishlist';
+import { cn } from '@/shared/lib/utils';
+import { Button, buttonVariants } from '@/shared/ui/button';
 
 type WishlistPageContentProps = {
   initialItems: IWishlistItem[];
@@ -18,41 +20,43 @@ type WishlistPageContentProps = {
 
 export default function WishlistPageContent({ initialItems }: WishlistPageContentProps) {
   const t = useTranslations('common.wishlist');
-  const router = useRouter();
-  const [wishlistItems, setWishlistItems] = useState(initialItems);
+  const commonT = useTranslations('common');
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const removeMutation = useRemoveFromWishlist();
+  const {
+    data: wishlistData,
+    isError: isWishlistError,
+    isPending: isWishlistPending,
+    refetch: refetchWishlist,
+  } = useWishlist();
+  const clearMutation = useClearWishlist();
+
+  const wishlistItems = wishlistData?.payload.wishlistItems ?? initialItems;
+  const isInitialLoading = isWishlistPending && !wishlistData && initialItems.length === 0;
+  const showLoadError = isWishlistError && !wishlistData && initialItems.length === 0;
 
   const hasItems = wishlistItems.length > 0;
-  const isClearing = removeMutation.isPending;
+  const isClearing = clearMutation.isPending;
 
   const clearWishlist = async () => {
-    await Promise.all(
-      wishlistItems.map((item) =>
-        removeMutation.mutateAsync({ id: item.id, productId: item.productId }),
-      ),
-    );
-    setWishlistItems([]);
-    setConfirmOpen(false);
-    router.refresh();
-  };
-
-  const removeItem = (productId: string) => {
-    setWishlistItems((items) => items.filter((item) => item.productId !== productId));
-    router.refresh();
+    try {
+      await clearMutation.mutateAsync();
+      setConfirmOpen(false);
+    } catch {
+      toast.error(commonT('error.networkError'));
+    }
   };
 
   return (
-    <main className="container flex min-h-[calc(100dvh-12rem)] flex-col pt-14 pb-10">
-      <header className="border-ds-border-subtle flex flex-wrap items-center justify-between gap-4 border-b pb-4">
+    <main className="container flex min-h-[calc(100dvh-12rem)] flex-col gap-6 pt-14 pb-10">
+      <header className="border-ds-border-subtle flex flex-wrap items-center justify-between gap-4 border-b pb-5">
         <div className="flex min-w-0 items-end gap-3">
           <FolderHeart
-            className="mb-1 size-12 shrink-0 text-zinc-800 sm:size-14 dark:text-zinc-100"
-            strokeWidth={1.8}
+            className="text-ds-primary mb-1 size-12 shrink-0 sm:size-14"
+            strokeWidth={1.2}
             aria-hidden="true"
           />
           <div className="flex min-w-0 flex-wrap items-end gap-x-3 gap-y-1">
-            <h1 className="text-[2.625rem] leading-none font-bold text-zinc-800 sm:text-5xl dark:text-zinc-100">
+            <h1 className="text-ds-text-plain text-[2.625rem] leading-none font-bold sm:text-5xl">
               {t('title')}
             </h1>
             <span className="text-ds-text-default pb-1.5 text-base leading-none">
@@ -61,27 +65,47 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
           </div>
         </div>
 
-        <button
+        <Button
           type="button"
+          variant="destructive"
           disabled={!hasItems}
           onClick={() => setConfirmOpen(true)}
-          className="inline-flex h-11 min-w-45 cursor-pointer items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+          leftIcon={<BrushCleaning className="size-5" strokeWidth={1.8} aria-hidden="true" />}
+          className="h-11 min-w-45 text-base"
         >
-          <BrushCleaning className="size-5" strokeWidth={1.8} aria-hidden="true" />
           {t('clear')}
-        </button>
+        </Button>
       </header>
 
-      {hasItems ? (
-        <section className="flex flex-col" aria-label={t('itemsLabel')}>
-          {wishlistItems.map((item) => (
-            <WishlistItemCard key={item.id} item={item} onRemoved={removeItem} />
-          ))}
+      {isInitialLoading ? (
+        <section className="flex min-h-72 items-center justify-center" role="status">
+          <Loader2 className="text-ds-primary size-8 animate-spin" aria-hidden="true" />
+          <span className="sr-only">{commonT('button.loading')}</span>
+        </section>
+      ) : showLoadError ? (
+        <EmptyState
+          title={commonT('loadError.title', { entity: commonT('pages.wishlist') })}
+          subtitle={commonT('loadError.subtitle', { entity: commonT('pages.wishlist') })}
+        >
+          <Button type="button" variant="primary" onClick={() => void refetchWishlist()}>
+            {commonT('loadError.retry')}
+          </Button>
+        </EmptyState>
+      ) : hasItems ? (
+        <section className="flex flex-col gap-5" aria-label={t('itemsLabel')}>
+          <div className="border-ds-border-subtle divide-ds-border-subtle bg-ds-plain divide-y rounded-lg border">
+            {wishlistItems.map((item) => (
+              <WishlistItemCard key={item.id} item={item} />
+            ))}
+          </div>
 
-          <div className="border-ds-border-subtle border-t pt-4">
+          <div className="flex justify-start">
             <HoveredLink
               href="/products"
-              className="inline-flex h-12 min-w-58 items-center justify-center gap-3 rounded-lg bg-[#64151d] px-6 text-base font-medium text-white transition-colors hover:bg-[#511017]"
+              className={cn(
+                buttonVariants({ variant: 'primary' }),
+                'h-12 min-w-58 gap-3 text-base',
+              )}
             >
               <ArrowLeft className="size-5 rtl:rotate-180" aria-hidden="true" />
               {t('continueShopping')}
@@ -90,7 +114,13 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
         </section>
       ) : (
         <EmptyState title={t('emptyTitle')} subtitle={t('emptyDescription')}>
-          <Heart className="text-maroon-600 dark:text-soft-pink-300 size-6" aria-hidden="true" />
+          <HoveredLink
+            href="/products"
+            className={cn(buttonVariants({ variant: 'primary' }), 'h-12 min-w-58 gap-3 text-base')}
+          >
+            <ArrowLeft className="size-5 rtl:rotate-180" aria-hidden="true" />
+            {t('continueShopping')}
+          </HoveredLink>
         </EmptyState>
       )}
 

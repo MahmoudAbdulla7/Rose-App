@@ -7,7 +7,7 @@ import { cn } from '@/shared/lib/utils';
 import ReviewItem from './review-item';
 
 type ProductReviewsSectionProps = {
-  reviews: IReview[];
+  reviews?: IReview[] | null;
   className?: string;
 };
 
@@ -17,7 +17,7 @@ export default async function ProductReviewsSection({
 }: ProductReviewsSectionProps) {
   const t = await getTranslations('product');
 
-  if (reviews.length === 0) {
+  if (reviews && reviews.length === 0) {
     return (
       <section
         className={cn('min-w-0 flex-1', className)}
@@ -41,7 +41,7 @@ export default async function ProductReviewsSection({
       aria-label={t('productDetails.reviews.customerReviews')}
     >
       <div className="flex flex-col gap-2.5">
-        {reviews.map((review) => (
+        {reviews?.map((review) => (
           <ReviewItem key={review.id} review={review} />
         ))}
       </div>
