@@ -4,8 +4,8 @@ import { useCart } from '@/features/cart/hooks/use-cart';
 
 export function CartBadge() {
   const { data, isLoading } = useCart();
-  const count =
-    data && 'payload' in data && data.payload?.cartItems ? data.payload.cartItems.length : 0;
+  const cartItems = data && data.status === true ? data.payload.cartItems : [];
+  const count = cartItems.length;
 
   if (isLoading || count === 0) return null;
 

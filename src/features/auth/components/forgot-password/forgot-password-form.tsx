@@ -1,19 +1,20 @@
 'use client';
 
+import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type z from 'zod';
+
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import AuthFooter from './auth-footer';
-import { forgotPasswordAction } from '../lib/actions/forgot-password.action';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { createForgotPasswordSchema } from '../lib/schemas/forgot-password.schema';
-import type z from 'zod';
-import type { Step } from '../lib/constants/forgot-password.constant';
-import { STEP } from '../lib/constants/forgot-password.constant';
-import AuthHeader from './auth-header';
+import { STEP } from '../../lib/constants/forgot-password.constant';
+import { createForgotPasswordSchema } from '../../lib/schemas/forgot-password.schema';
+import { forgotPasswordAction } from '../../lib/actions/forgot-password.action';
+import type { Step } from '../../lib/constants/forgot-password.constant';
+import AuthHeader from '../auth-header';
+import AuthFooter from '../auth-footer';
 
 type ForgotPasswordFormProps = {
   goToStep: React.Dispatch<React.SetStateAction<Step>>;

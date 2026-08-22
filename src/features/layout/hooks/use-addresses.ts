@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
+import type { Address } from '../lib/types/address';
+
 interface UseCurrentAddressOptions {
   enabled?: boolean;
 }
 
-export function useAddress({ enabled = true }: UseCurrentAddressOptions = {}) {
-  return useQuery({
-    queryKey: ['current-address'],
+export function useAddresses({ enabled = true }: UseCurrentAddressOptions = {}) {
+  return useQuery<Address[]>({
+    queryKey: ['addresses'],
 
     queryFn: async () => {
       const response = await fetch('/api/addresses');
@@ -19,7 +21,5 @@ export function useAddress({ enabled = true }: UseCurrentAddressOptions = {}) {
     },
 
     enabled,
-
-    select: (addresses) => addresses[0]?.city,
   });
 }
