@@ -1,20 +1,21 @@
 'use client';
 
+import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type z from 'zod';
+
+import { toast } from 'sonner';
 import { Button } from '@/shared/ui/button';
 import { PasswordInput } from '@/shared/ui/password-input';
-import { useMutation } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { useSearchParams } from 'next/navigation';
-import AuthFooter from './auth-footer';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { createResetPasswordSchema } from '../lib/schemas/forgot-password.schema';
-import { useRouter } from '@/i18n/navigation';
-import { resetPasswordAction } from '../lib/actions/forgot-password.action';
-import type z from 'zod';
-import AuthHeader from './auth-header';
+import { createResetPasswordSchema } from '../../lib/schemas/forgot-password.schema';
+import { resetPasswordAction } from '../../lib/actions/forgot-password.action';
+import AuthHeader from '../auth-header';
+import AuthFooter from '../auth-footer';
 
 export default function ResetPassword() {
   // Translation

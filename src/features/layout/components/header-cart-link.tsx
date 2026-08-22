@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import { useCart } from '@/shared/hooks/use-cart.hook';
+import { useCart } from '@/shared/hooks';
 import { ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 

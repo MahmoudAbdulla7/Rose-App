@@ -7,17 +7,16 @@
   "rating": "{rating} out of {maxRating} stars",
   "addToCart": "Add {name} to cart",
   "addToWishlist": "Add {name} to wishlist",
-  "addToWishlistLabel": "Add to wishlist",
   "removeFromWishlist": "Remove {name} from wishlist",
   "removeFromWishlistLabel": "Remove from wishlist",
   "metadata": {
     "title": "Products",
-    "description": "Browse our collection of flowers and gifts. Filter by category, occasion, price, and rating to find the perfect pick."
+    "description": "Browse our collection of flowers and gifts. Filter by category, occasion, price, and rating to find the perfect choice."
   },
   "bestSelling": {
-    "label": "Best Selling",
-    "headline": "<accent>Check Out</accent> What Everyone's <accent>Buying</accent> Right Now",
-    "description": "Not sure what to choose? Start with our best sellers, these are the gifts our customers keep coming back for. Whether you're celebrating a birthday, anniversary or wedding, our top picks are guaranteed to leave a lasting impression.",
+    "label": "Best Sellers",
+    "headline": "<accent>See what</accent> everyone is buying <accent>now</accent>",
+    "description": "Not sure what to choose? Start with our best sellers—the gifts our customers keep coming back for. Whether you're celebrating a birthday, anniversary, or wedding, our top picks are sure to make a lasting impression.",
     "exploreButton": "Explore gifts",
     "previousSlide": "Previous products",
     "nextSlide": "Next products"
@@ -25,32 +24,36 @@
   "productDetails": {
     "emptyState": {
       "title": "Product not found",
-      "description": "This product may have been removed or is unavailable."
+      "description": "This product may have been removed or is currently unavailable."
     },
     "leftInStock": "{count, number, decimal} left in stock",
     "ratingLabel": "Rating:",
     "ratingValue": "{rating, number, decimal}/{maxRating, number, decimal}",
     "ratingsCount": "({count, number, decimal} ratings)",
-    "addToCart": "Add to Cart",
+    "addToCart": "Add to cart",
     "reviews": {
-      "title": "Product Reviews",
-      "generalRating": "General rating:",
-      "customerReviews": "Customer reviews"
+      "title": "Product reviews",
+      "generalRating": "Overall rating:",
+      "customerReviews": "Customer reviews",
+      "emptyState": {
+        "title": "No reviews yet",
+        "description": "Be the first to share your experience with this product."
+      }
     },
     "gallery": {
       "thumbnail": "View image {number}"
     }
   },
   "relatedProducts": {
-    "title": "Related Products"
+    "title": "Related products"
   },
   "popularProducts": {
-    "sectionTitle": "Most Popular",
-    "viewMore": "View More",
+    "sectionTitle": "Popular products",
+    "viewMore": "View more",
     "filterLabel": "Filter by occasion",
     "emptyState": {
       "title": "No popular picks yet",
-      "description": "We don't have products for this occasion right now. Try another occasion or explore our full collection."
+      "description": "There are currently no products for this occasion. Try another occasion or explore our full collection."
     }
   }
 }

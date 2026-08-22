@@ -1,9 +1,17 @@
+export type AddressFormInput = z.infer<typeof addressSchema>;
+
 export interface AddressesPayload {
   addresses: Address[];
 }
 
 export interface AddressPayload {
-  address: Address;
+  title: string;
+  isPrimary: boolean;
+  city: string;
+  street: string;
+  phone: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface Address {

@@ -106,7 +106,7 @@ export default async function ProductDetails({ id }: { id: string }) {
         </div>
       </div>
       <ProductRating
-        productId={product.id}
+        productId={id}
         rating={Number(product.rating)}
         ratingsCount={Number(product.ratings)}
         reviews={product.reviews}

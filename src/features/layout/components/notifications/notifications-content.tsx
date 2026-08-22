@@ -24,12 +24,12 @@ export function NotificationsContent({
   isLoading,
   handleScroll,
 }: NotificationsContentProps) {
-  const tNotifications = useTranslations('header.notifications');
+  const t = useTranslations('header.notifications');
 
   if (error) {
     return (
       <div className="flex justify-center p-8">
-        <p className="text-center text-sm">{tNotifications('error')}</p>
+        <p className="text-center text-sm">{t('error')}</p>
       </div>
     );
   }
@@ -48,7 +48,7 @@ export function NotificationsContent({
         // Empty state
         <div className="dark:bg-ds-default text-ds-text-muted flex flex-col items-center gap-2.5 py-20">
           <BellOff size={50} strokeWidth={1} />
-          <span>{tNotifications('empty')}</span>
+          <span>{t('empty')}</span>
         </div>
       ) : (
         // Notifications list

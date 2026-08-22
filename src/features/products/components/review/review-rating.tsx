@@ -15,15 +15,12 @@ type RatingInputProps = {
 
 export default function ReviewRating({ rating, error, onChange }: RatingInputProps) {
   const t = useTranslations('review.form');
-
   const [hoveredRating, setHoveredRating] = useState(0);
 
   return (
-    <div className="mt-1 space-y-1">
+    <div className="space-y-1 py-2.5">
       <div className="flex items-center gap-2.5">
-        {/* Label */}
-        <span className="font-medium">{t('rating')}</span>
-        {/* Stars */}
+        <span className="text-ds-text-plain text-base font-medium">{t('rating')}</span>
         <div className="flex gap-1" role="radiogroup" aria-label="Rating">
           {Array.from({ length: 5 }, (_, index) => {
             const value = index + 1;
