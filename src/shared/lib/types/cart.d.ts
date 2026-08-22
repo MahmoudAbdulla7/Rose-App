@@ -6,7 +6,7 @@ export interface IAddToCart {
 export type IRemoveFromCart = IAddToCart;
 
 export interface ICartItem extends IDBFields {
-  userId: string;
+  userId?: string;
   productId: string;
   product: IProduct;
   quantity: number;
