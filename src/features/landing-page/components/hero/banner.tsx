@@ -7,6 +7,7 @@ import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { BANNER_IMAGE } from '../../lib/constants/home/hero.constant';
+import { HERO_IMAGE_OPTIONS } from '../../lib/constants/home/hero.options';
 
 export default function Banner() {
   const t = useTranslations('hero');
@@ -18,7 +19,9 @@ export default function Banner() {
           src={BANNER_IMAGE.image}
           alt={t('banner.card.title')}
           fill
+          sizes={HERO_IMAGE_OPTIONS.BANNER_CARD.SIZES}
           className="z-0 object-cover"
+          {...HERO_IMAGE_OPTIONS.BANNER_CARD.IMAGE}
         />
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute bottom-0 left-0 space-y-2.5 p-4 sm:p-6">
