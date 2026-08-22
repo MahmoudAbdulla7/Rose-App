@@ -8,6 +8,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { CAROUSEL_SLIDES } from '../../lib/constants/home/carousel.constant';
+import { HERO_IMAGE_OPTIONS } from '../../lib/constants/home/hero.options';
 
 export default function HeroCarousel() {
   // Translation
@@ -73,12 +74,29 @@ export default function HeroCarousel() {
 
         {/* Main Slides */}
         <CarouselContent className="aspect-4/3 object-cover sm:aspect-video">
-          {CAROUSEL_SLIDES.map((slide, index) => (
-            <CarouselItem key={index} className="relative">
-              <Image src={slide.image} alt={slide.alt + (index + 1)} fill placeholder="empty" />
-              <div className="absolute inset-0 from-black/80 from-0% via-10% to-transparent p-4 sm:p-9 ltr:bg-linear-to-r rtl:bg-linear-to-l" />
-            </CarouselItem>
-          ))}
+          {CAROUSEL_SLIDES.map((slide, index) => {
+            const { LCP_SLIDE_INDEX, NEIGHBOR_DISTANCE, IMAGE, SIZES } =
+              HERO_IMAGE_OPTIONS.CAROUSEL;
+            const isLcpSlide = index === LCP_SLIDE_INDEX && current === LCP_SLIDE_INDEX;
+            const shouldRenderSlide =
+              Math.abs(index - current) <= NEIGHBOR_DISTANCE;
+
+            return (
+              <CarouselItem key={index} className="relative">
+                {shouldRenderSlide ? (
+                  <Image
+                    src={slide.image}
+                    alt={slide.alt + (index + 1)}
+                    fill
+                    sizes={SIZES}
+                    className="object-cover"
+                    {...(isLcpSlide ? IMAGE.LCP : IMAGE.DEFAULT)}
+                  />
+                ) : null}
+                <div className="absolute inset-0 from-black/80 from-0% via-10% to-transparent p-4 sm:p-9 ltr:bg-linear-to-r rtl:bg-linear-to-l" />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
 
         {/* Carousel Title */}
