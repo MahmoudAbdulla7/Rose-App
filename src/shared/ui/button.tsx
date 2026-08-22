@@ -84,6 +84,8 @@ function Button({
   loading = false,
   leftIcon,
   rightIcon,
+  render,
+  nativeButton,
   ...props
 }: ButtonProps) {
   const t = useTranslations('common');
@@ -93,6 +95,8 @@ function Button({
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       disabled={disabled || loading}
+      nativeButton={nativeButton ?? !render}
+      render={render}
       {...props}
     >
       {(loading || leftIcon) && (

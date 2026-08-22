@@ -34,7 +34,11 @@
     "reviews": {
       "title": "تقييمات المنتج",
       "generalRating": "التقييم العام:",
-      "customerReviews": "تقييمات العملاء"
+      "customerReviews": "تقييمات العملاء",
+      "emptyState": {
+        "title": "لم تُضف أي تقييمات بعد",
+        "description": "كن أول من يشارك تجربته مع هذا المنتج."
+      }
     },
     "gallery": {
       "thumbnail": "عرض الصورة {number}"

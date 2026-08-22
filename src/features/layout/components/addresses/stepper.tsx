@@ -1,12 +1,12 @@
 interface AddressFormStepperProps {
-  step: 1 | 2;
+  step: number;
 }
 
 export default function Stepper({ step }: AddressFormStepperProps) {
   return (
     <div className="flex items-center">
       {/* Before Step 1 */}
-      <div className="bg-ds-primary h-0.5 flex-1" />
+      <div className="bg-ds-primary h-1.5 flex-1" />
 
       {/* Step 1 */}
       <div
@@ -22,8 +22,8 @@ export default function Stepper({ step }: AddressFormStepperProps) {
 
       {/* Step 2 */}
       <div
-        className={`flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white ${
-          step >= 2 ? 'bg-ds-primary' : 'bg-ds-border-muted'
+        className={`flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
+          step >= 2 ? 'bg-ds-primary text-white' : 'bg-ds-border-muted text-ds-text-soft'
         }`}
       >
         2

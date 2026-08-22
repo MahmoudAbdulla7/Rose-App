@@ -1,37 +1,70 @@
+'use client';
+
+import { useMemo, useSyncExternalStore } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+
 import { fetchWishlistItems } from '@/shared/lib/apis/wishlist/user-wishlist-items.api';
-import { guestWishlist } from '@/shared/lib/services/guest-wishlist.service';
 import { WISHLIST_OPTIONS } from '@/shared/lib/apis/wishlist/wishlist.options';
-import type { IWishlistResponse } from '@/shared/lib/types/wishlist';
+import {
+  getGuestWishlistServerSnapshot,
+  getGuestWishlistSnapshot,
+  subscribeToGuestWishlist,
+} from '@/shared/lib/services/guest-wishlist.service';
+import type { WishlistSuccessResponse } from '@/shared/lib/types/wishlist';
 
 export function useWishlist() {
   const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
+  const isSessionLoading = status === 'loading';
 
-  return useQuery({
-    queryKey: WISHLIST_OPTIONS.QUERY_KEY,
-    queryFn: async (): Promise<IWishlistResponse> => {
-      if (isAuthenticated) {
-        return await fetchWishlistItems();
-      } else {
-        const guestItems = await guestWishlist.getAll();
-        const wishlistItems = guestItems.map(({ productId, product }) => ({
-          id: `guest-${productId}`,
-          createdAt: new Date(),
+  const guestWishlist = useSyncExternalStore(
+    subscribeToGuestWishlist,
+    getGuestWishlistSnapshot,
+    getGuestWishlistServerSnapshot,
+  );
+
+  const guestWishlistData = useMemo<WishlistSuccessResponse>(
+    () => ({
+      status: true,
+      code: 200,
+      message: 'Guest wishlist',
+      payload: {
+        wishlistItems: guestWishlist.map((product) => ({
+          id: `guest-${product.id}`,
+          createdAt: product.createdAt,
           userId: 'guest',
-          productId,
+          productId: product.id,
           product,
-        }));
-        return {
-          status: true,
-          code: 200,
-          message: 'Guest wishlist',
-          payload: { wishlistItems },
-        };
-      }
-    },
-    enabled: status !== 'loading',
-    staleTime: 5 * 60 * 1000,
+        })),
+      },
+    }),
+    [guestWishlist],
+  );
+
+  const { data: serverData, ...queryState } = useQuery({
+    queryKey: WISHLIST_OPTIONS.getQueryKey('user'),
+    queryFn: fetchWishlistItems,
+    enabled: isAuthenticated,
   });
+
+  const authenticatedData = serverData?.status ? serverData : undefined;
+  const data = isSessionLoading
+    ? undefined
+    : isAuthenticated
+      ? authenticatedData
+      : guestWishlistData;
+  const wishlistItems = data?.payload.wishlistItems ?? [];
+  const isPending = isSessionLoading || (isAuthenticated && queryState.isPending);
+
+  return {
+    ...queryState,
+    data,
+    isAuthenticated,
+    guestWishlist,
+    wishlistItems,
+    isPending,
+    isLoading: isPending,
+    isError: isAuthenticated && queryState.isError,
+  };
 }
