@@ -5,21 +5,14 @@ import {
   clearWishlistItems,
   getWishlistItems,
 } from '@/shared/lib/apis/wishlist/wishlist.api';
-
-function handleError(error: unknown) {
-  const message = error instanceof Error ? error.message : 'Internal Server Error';
-  if (message === 'Unauthorized' || message === 'No token found') {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-  }
-  return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
-}
+import { handleApiRouteError } from '@/shared/lib/utils/api-route-error.utils';
 
 export async function GET() {
   try {
     const data = await getWishlistItems();
     return NextResponse.json(data);
   } catch (error) {
-    return handleError(error);
+    return handleApiRouteError(error);
   }
 }
 
@@ -29,7 +22,7 @@ export async function POST(request: Request) {
     const data = await addWishlistItem(productId);
     return NextResponse.json(data);
   } catch (error) {
-    return handleError(error);
+    return handleApiRouteError(error);
   }
 }
 
@@ -38,6 +31,6 @@ export async function DELETE() {
     const data = await clearWishlistItems();
     return NextResponse.json(data);
   } catch (error) {
-    return handleError(error);
+    return handleApiRouteError(error);
   }
 }

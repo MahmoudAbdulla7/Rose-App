@@ -15,6 +15,8 @@ type QuantityStepperProps = {
   disabled?: boolean;
   isLoading?: boolean;
   className?: string;
+  size?: 'default' | 'compact';
+  fullWidth?: boolean;
 };
 
 export default function QuantityStepper({
@@ -24,14 +26,14 @@ export default function QuantityStepper({
   disabled = false,
   isLoading = false,
   className,
+  size = 'default',
+  fullWidth = false,
 }: QuantityStepperProps) {
-  // Translation
   const t = useTranslations('cart');
 
-  // Variables
+  const isCompact = size === 'compact';
   const isInteractiveDisabled = disabled || isLoading;
 
-  // Functions
   const handleDecrease = () => {
     if (isInteractiveDisabled || quantity <= 1) return;
     onQuantityChange(quantity - 1);
@@ -48,7 +50,6 @@ export default function QuantityStepper({
     const nextValue = Number(event.target.value);
     if (Number.isNaN(nextValue)) return;
 
-    // Clamp between 1 and available stock
     const clamped = Math.min(maxStock, Math.max(1, Math.floor(nextValue)));
     if (clamped !== quantity) {
       onQuantityChange(clamped);
@@ -57,21 +58,28 @@ export default function QuantityStepper({
 
   return (
     <div
-      className={cn('inline-flex items-center gap-2.5', disabled && 'opacity-50', className)}
+      className={cn(
+        'inline-flex items-center',
+        isCompact ? 'gap-2' : 'gap-2.5',
+        fullWidth && 'w-full justify-between',
+        disabled && 'opacity-50',
+        className,
+      )}
       aria-busy={isLoading}
     >
       <Button
         type="button"
         variant="secondary"
-        size="icon-lg"
+        size={isCompact ? 'icon-sm' : 'icon-lg'}
         onClick={handleDecrease}
         disabled={isInteractiveDisabled || quantity <= 1}
         aria-label={t('decreaseQuantity')}
+        className={isCompact ? 'size-8 shrink-0' : undefined}
       >
-        <Minus />
+        <Minus className={isCompact ? 'size-3.5' : undefined} />
       </Button>
 
-      <div className="relative w-28">
+      <div className={cn('relative', isCompact ? 'w-16 min-[480px]:w-20' : 'w-28')}>
         <Input
           type="number"
           inputMode="numeric"
@@ -84,15 +92,18 @@ export default function QuantityStepper({
           wrapperClassName="w-full"
           className={cn(
             'text-center font-medium tabular-nums',
+            isCompact && 'h-8 px-2 text-sm',
             '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
             isLoading && 'text-transparent',
           )}
         />
 
-        {/* Centered loader while PATCH is in flight */}
         {isLoading ? (
           <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-            <Loader2 className="text-ds-primary size-4 animate-spin" aria-hidden="true" />
+            <Loader2
+              className={cn('text-ds-primary animate-spin', isCompact ? 'size-3.5' : 'size-4')}
+              aria-hidden="true"
+            />
             <span className="sr-only">{t('updatingQuantity')}</span>
           </span>
         ) : null}
@@ -101,12 +112,13 @@ export default function QuantityStepper({
       <Button
         type="button"
         variant="secondary"
-        size="icon-lg"
+        size={isCompact ? 'icon-sm' : 'icon-lg'}
         onClick={handleIncrease}
         disabled={isInteractiveDisabled || quantity >= maxStock}
         aria-label={t('increaseQuantity')}
+        className={isCompact ? 'size-8 shrink-0' : undefined}
       >
-        <Plus />
+        <Plus className={isCompact ? 'size-3.5' : undefined} />
       </Button>
     </div>
   );

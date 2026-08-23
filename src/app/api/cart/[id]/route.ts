@@ -1,13 +1,6 @@
 import { NextResponse } from 'next/server';
 import { updateCartItemQuantity, removeCartItem } from '@/shared/lib/apis/cart/cart.api';
-
-function handleError(error: unknown) {
-  const message = error instanceof Error ? error.message : 'Internal Server Error';
-  if (message === 'Unauthorized' || message === 'No token found') {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-  }
-  return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
-}
+import { handleApiRouteError } from '@/shared/lib/utils/api-route-error.utils';
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -16,7 +9,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const data = await updateCartItemQuantity(id, quantity);
     return NextResponse.json(data);
   } catch (error) {
-    return handleError(error);
+    return handleApiRouteError(error);
   }
 }
 
@@ -26,6 +19,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     const data = await removeCartItem(id);
     return NextResponse.json(data);
   } catch (error) {
-    return handleError(error);
+    return handleApiRouteError(error);
   }
 }

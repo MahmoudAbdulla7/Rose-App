@@ -4,33 +4,30 @@ interface AddressFormStepperProps {
 
 export default function Stepper({ step }: AddressFormStepperProps) {
   return (
-    <div className="flex items-center">
-      {/* Before Step 1 */}
-      <div className="bg-ds-primary h-1.5 flex-1" />
-
-      {/* Step 1 */}
+    <div className="flex w-full items-center">
       <div
-        className={`flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white ${
-          step >= 1 ? 'bg-ds-primary' : 'bg-ds-border-muted'
+        className={`h-1.5 flex-[250] ${step >= 1 ? 'bg-maroon-600' : 'bg-zinc-200'}`}
+      />
+
+      <div
+        className={`flex size-[25px] shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
+          step >= 1 ? 'bg-maroon-600 text-white' : 'bg-zinc-200 text-zinc-500'
         }`}
       >
         1
       </div>
 
-      {/* Between Steps */}
-      <div className={`h-0.5 flex-1 ${step >= 2 ? 'bg-ds-primary' : 'bg-ds-border-muted'}`} />
-
-      {/* Step 2 */}
       <div
-        className={`flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
-          step >= 2 ? 'bg-ds-primary text-white' : 'bg-ds-border-muted text-ds-text-soft'
+        className={`h-1.5 flex-[350] ${step >= 2 ? 'bg-maroon-600' : 'bg-zinc-200'}`}
+      />
+
+      <div
+        className={`flex size-[25px] shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
+          step >= 2 ? 'bg-maroon-600 text-white' : 'bg-zinc-200 text-zinc-500'
         }`}
       >
         2
       </div>
-
-      {/* After Step 2 */}
-      <div className="bg-ds-border-muted h-0.5 flex-1" />
     </div>
   );
 }

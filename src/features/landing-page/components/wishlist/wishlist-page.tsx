@@ -1,12 +1,13 @@
 'use client';
 
-import { ArrowLeft, BrushCleaning, FolderHeart, Loader2 } from 'lucide-react';
+import { ArrowLeft, BrushCleaning, FolderHeart } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import ClearWishlistDialog from '@/features/landing-page/components/wishlist/clear-wishlist-dialog';
 import WishlistItemCard from '@/features/landing-page/components/wishlist/wishlist-item-card';
+import { WishlistItemsSkeleton } from '@/features/landing-page/skeletons/wishlist/wishlist-page.skeleton';
 import EmptyState from '@/shared/components/empty-state';
 import HoveredLink from '@/shared/components/hovered-link';
 import { useClearWishlist, useWishlist } from '@/shared/hooks';
@@ -78,10 +79,10 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
       </header>
 
       {isInitialLoading ? (
-        <section className="flex min-h-72 items-center justify-center" role="status">
-          <Loader2 className="text-ds-primary size-8 animate-spin" aria-hidden="true" />
+        <div role="status">
+          <WishlistItemsSkeleton />
           <span className="sr-only">{commonT('button.loading')}</span>
-        </section>
+        </div>
       ) : showLoadError ? (
         <EmptyState
           title={commonT('loadError.title', { entity: commonT('pages.wishlist') })}
@@ -94,7 +95,7 @@ export default function WishlistPageContent({ initialItems }: WishlistPageConten
       ) : hasItems ? (
         <section className="flex flex-col gap-5" aria-label={t('itemsLabel')}>
           <div className="border-ds-border-subtle divide-ds-border-subtle bg-ds-plain divide-y rounded-lg border">
-            {wishlistItems.map((item) => (
+            {wishlistItems.map((item: IWishlistItem) => (
               <WishlistItemCard key={item.id} item={item} />
             ))}
           </div>
