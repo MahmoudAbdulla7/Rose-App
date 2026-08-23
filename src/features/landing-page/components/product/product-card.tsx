@@ -126,7 +126,14 @@ export default async function ProductCard({
             <ProductRating rating={rating} />
 
             {/* Price */}
-            <p className="text-maroon-700 dark:text-soft-pink-200 text-sm leading-none font-medium lg:text-base">
+            <p
+              className="text-maroon-700 dark:text-soft-pink-200 text-sm leading-none font-medium lg:text-base"
+              aria-label={
+                hasSalePrice
+                  ? `${t('currentPrice')}: ${t('price', { price })}. ${t('originalPrice')}: ${t('price', { price: originalPrice })}`
+                  : `${t('currentPrice')}: ${t('price', { price })}`
+              }
+            >
               <span className="sr-only">{t('currentPrice')}: </span>
               <span>{t('price', { price })}</span>
               {hasSalePrice && (

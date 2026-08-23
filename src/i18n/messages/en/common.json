@@ -80,7 +80,8 @@
   "filters": {
     "category": "Category",
     "occasion": "Occasion",
-    "rating": "Rating",
+  "rating": "Rating",
+  "productsGridLabel": "Product results",
     "price": "Price",
     "from": "from",
     "to": "to",
