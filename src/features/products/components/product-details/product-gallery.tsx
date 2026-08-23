@@ -20,9 +20,9 @@ export default function ProductGallery({ cover, gallery, alt }: ProductGalleryPr
   const current = sources[active];
 
   return (
-    <div className="flex flex-col gap-2.5 max-lg:order-last">
+    <div className="flex flex-col gap-2 max-lg:order-last lg:gap-2.5">
       {/* Main image */}
-      <div className="bg-ds-muted relative aspect-605/402 w-full overflow-hidden rounded-2xl">
+      <div className="bg-ds-muted relative aspect-605/402 w-full overflow-hidden rounded-xl lg:rounded-2xl">
         {current && (
           <Image
             src={current}
@@ -36,7 +36,7 @@ export default function ProductGallery({ cover, gallery, alt }: ProductGalleryPr
       </div>
 
       {/* Thumbnails */}
-      <ul className="grid grid-cols-4 gap-2.5 lg:grid-cols-6">
+      <ul className="grid grid-cols-4 gap-2 lg:grid-cols-6 lg:gap-2.5">
         {sources.map((src, index) => {
           const isActive = index === active;
 

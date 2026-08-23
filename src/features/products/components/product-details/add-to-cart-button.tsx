@@ -26,10 +26,10 @@ export default function AddToCartButton({ product, disabled = false }: AddToCart
   return (
     <Button
       variant="primary"
-      className="h-11.5 flex-1"
+      className="h-10 flex-1 lg:h-11.5"
       onClick={handleAdd}
       disabled={disabled || isPending}
-      leftIcon={<ShoppingCart className="size-6" />}
+      leftIcon={<ShoppingCart className="size-5 lg:size-6" />}
     >
       {t('productDetails.addToCart')}
     </Button>
