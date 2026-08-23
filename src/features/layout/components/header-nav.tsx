@@ -28,6 +28,7 @@ export default function HeaderNav() {
           <Link
             key={link.href}
             href={link.href}
+            prefetch={link.prefetch}
             className={cn(
               'inline-flex shrink-0 items-center gap-2 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap',
               isActive ? 'border-ds-text-inverse' : 'border-transparent',
