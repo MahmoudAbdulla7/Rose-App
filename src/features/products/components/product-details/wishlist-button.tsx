@@ -25,7 +25,7 @@ export default function WishlistButton({ product }: WishlistButtonProps) {
       onClick={toggle}
       disabled={isPending}
       className={cn(
-        'size-11.5 shrink-0',
+        'size-10 shrink-0 lg:size-11.5',
         isWishlisted
           ? 'dark:text-soft-pink-300 bg-zinc-800 text-white hover:bg-zinc-600 dark:bg-zinc-700'
           : 'text-ds-text-plain bg-zinc-100 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700',
@@ -36,7 +36,7 @@ export default function WishlistButton({ product }: WishlistButtonProps) {
           : t('addToWishlist', { name: product.title })
       }
     >
-      <Icon className="size-6" />
+      <Icon className="size-5 lg:size-6" />
     </Button>
   );
 }

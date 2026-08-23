@@ -41,36 +41,38 @@ export default async function ProductDetails({ id }: { id: string }) {
   });
 
   return (
-    <div className="container space-y-12">
-      <div className="grid gap-10 lg:grid-cols-2 lg:gap-17.5">
+    <div className="container space-y-8 lg:space-y-12">
+      <div className="grid gap-6 lg:grid-cols-2 lg:gap-17.5">
         <ProductGallery cover={product.cover} gallery={product.gallery} alt={product.title} />
 
-        <div className="flex flex-col gap-4 lg:h-130.75">
+        <div className="flex flex-col gap-3 lg:h-130.75 lg:gap-4">
           <div className="flex flex-col gap-2">
-            <h2 className="text-ds-text-plain text-3xl font-semibold">{product.title}</h2>
+            <h2 className="text-ds-text-plain text-2xl font-semibold lg:text-3xl">
+              {product.title}
+            </h2>
 
-            <div className="flex flex-wrap items-center gap-3.5">
+            <div className="flex flex-wrap items-center gap-2.5 lg:gap-3.5">
               <div className="flex items-center gap-1.5">
                 {hasDiscount && (
-                  <del className="text-ds-text-subtle text-3xl font-bold">
+                  <del className="text-ds-text-subtle text-2xl font-bold lg:text-3xl">
                     {t('price', { price: originalPrice! })}
                   </del>
                 )}
-                <span className="text-ds-text-plain text-3xl font-bold">
+                <span className="text-ds-text-plain text-2xl font-bold lg:text-3xl">
                   {t('price', { price: finalPrice })}
                 </span>
               </div>
 
               {availableStock > 0 ? (
                 <div className="flex items-center gap-1.5 rounded-4xl bg-zinc-100 px-3 py-1.5 dark:bg-zinc-700">
-                  <Package size={20} className="text-ds-text-plain" />
+                  <Package className="text-ds-text-plain size-4 lg:size-5" />
                   <span className="text-ds-text-plain text-sm font-medium">
                     {t('productDetails.leftInStock', { count: Number(availableStock) })}
                   </span>
                 </div>
               ) : (
                 <div className="bg-ds-danger-fade flex items-center gap-1.5 rounded-4xl px-3 py-1.5">
-                  <Package size={20} className="text-ds-danger" />
+                  <Package className="text-ds-danger size-4 lg:size-5" />
                   <span className="text-ds-danger text-sm font-medium">{t('outOfStock')}</span>
                 </div>
               )}
@@ -80,26 +82,26 @@ export default async function ProductDetails({ id }: { id: string }) {
           <Separator className="bg-zinc-100 dark:bg-zinc-700" />
 
           <div className="flex items-center gap-1.5">
-            <Star size={20} className="fill-ds-warning text-ds-warning" />
-            <span className="text-ds-text-plain text-base">
+            <Star className="fill-ds-warning text-ds-warning size-4 lg:size-5" />
+            <span className="text-ds-text-plain text-sm lg:text-base">
               {t('productDetails.ratingLabel')}{' '}
               <span className="font-medium">
                 {t('productDetails.ratingValue', { rating: Number(product.rating), maxRating: 5 })}
               </span>
             </span>
-            <span className="text-base font-medium text-blue-600 dark:text-blue-400">
+            <span className="text-sm font-medium text-blue-600 lg:text-base dark:text-blue-400">
               {t('productDetails.ratingsCount', { count: Number(product.ratings) })}
             </span>
           </div>
 
           <Separator className="bg-zinc-100 dark:bg-zinc-700" />
 
-          <p className="scrollbar-none text-base leading-relaxed text-zinc-600 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:mask-[linear-gradient(to_bottom,black_calc(100%-2rem),transparent)] dark:text-zinc-400">
+          <p className="scrollbar-none text-sm leading-relaxed text-zinc-600 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:mask-[linear-gradient(to_bottom,black_calc(100%-2rem),transparent)] lg:text-base dark:text-zinc-400">
             {product.description}
           </p>
 
           {/* Actions */}
-          <div className="flex items-stretch gap-2.5">
+          <div className="flex items-stretch gap-2 lg:gap-2.5">
             <WishlistButton product={productForActions} />
             <AddToCartButton product={productForActions} disabled={availableStock <= 0} />
           </div>

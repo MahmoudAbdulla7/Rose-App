@@ -40,7 +40,7 @@ export default function ProductWishlistButton({
         className,
       )}
     >
-      <Icon className="text-maroon-700 size-4.5 shrink-0" aria-hidden="true" />
+      <Icon className="text-maroon-700 size-4 shrink-0 lg:size-4.5" aria-hidden="true" />
       {showLabel && isWishlisted ? (
         <span
           className={cn(
