@@ -19,7 +19,7 @@ export default function HeaderWishlistLink() {
     <Link
       href="/wishlist"
       className="text-ds-text-default relative min-h-11 min-w-11 p-2"
-      aria-label={t('wishlist')}
+      aria-label={count > 0 ? `${t('wishlist')}, ${count}` : t('wishlist')}
     >
       <Heart className="size-5" aria-hidden="true" />
       {!isCountLoading && count > 0 && (
