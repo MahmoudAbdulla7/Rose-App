@@ -1,0 +1,17 @@
+{
+  "title": "Dashboard",
+  "logoAlt": "Rose",
+  "previewWebsite": "Preview website",
+  "nav": {
+    "label": "Dashboard navigation",
+    "overview": "Overview",
+    "categories": "Categories",
+    "occasions": "Occasions",
+    "products": "Products"
+  },
+  "userMenu": {
+    "label": "User menu",
+    "account": "Account",
+    "logout": "Log out"
+  }
+}

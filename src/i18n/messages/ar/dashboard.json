@@ -1,0 +1,17 @@
+{
+  "title": "لوحة التحكم",
+  "logoAlt": "روز",
+  "previewWebsite": "معاينة الموقع",
+  "nav": {
+    "label": "تنقل لوحة التحكم",
+    "overview": "نظرة عامة",
+    "categories": "التصنيفات",
+    "occasions": "المناسبات",
+    "products": "المنتجات"
+  },
+  "userMenu": {
+    "label": "قائمة المستخدم",
+    "account": "الحساب",
+    "logout": "تسجيل الخروج"
+  }
+}

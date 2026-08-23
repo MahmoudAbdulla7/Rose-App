@@ -1,24 +1,27 @@
-import Header from '@/features/layout/components/header';
-import HeaderSkeleton from '@/features/layout/skeletons/header.skeleton';
 import type { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import { Suspense, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
+import DashboardBottomNav from '@/features/dashboard/components/dashboard-bottom-nav';
+import DashboardHeader from '@/features/dashboard/components/dashboard-header';
+import DashboardSidebar from '@/features/dashboard/components/dashboard-sidebar';
 
 type Props = LayoutProps<'/[locale]'>;
 
-export default function DashboardLayout({ children, params }: Props): ReactNode {
-  return (
-    <>
-      <Suspense fallback={<HeaderSkeleton />}>
-        <DashboardHeader params={params} />
-      </Suspense>
-      <main className="flex-1">{children}</main>
-    </>
-  );
-}
-
-async function DashboardHeader({ params }: Pick<Props, 'params'>) {
+export default async function DashboardLayout({ children, params }: Props): Promise<ReactNode> {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-  return <Header />;
+
+  return (
+    <div className="bg-ds-subtle flex flex-1">
+      <DashboardSidebar />
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <DashboardHeader />
+        <main className="flex-1 p-6 pb-24 lg:pb-6">{children}</main>
+      </div>
+
+      <DashboardBottomNav />
+    </div>
+  );
 }
