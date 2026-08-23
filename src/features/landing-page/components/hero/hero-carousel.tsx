@@ -14,6 +14,7 @@ export default function HeroCarousel() {
   // Translation
   const locale = useLocale();
   const t = useTranslations('hero.banner');
+  const tProduct = useTranslations('product.bestSelling');
   const isRtl = locale === 'ar';
 
   // Current slide index state
@@ -119,14 +120,16 @@ export default function HeroCarousel() {
               <Button
                 onClick={() => api?.scrollPrev()}
                 disabled={!canScrollPrev || CAROUSEL_SLIDES.length <= 1}
+                aria-label={tProduct('previousSlide')}
               >
-                <ChevronLeft strokeWidth={2} />
+                <ChevronLeft strokeWidth={2} aria-hidden="true" />
               </Button>
               <Button
                 onClick={() => api?.scrollNext()}
                 disabled={!canScrollNext || CAROUSEL_SLIDES.length <= 1}
+                aria-label={tProduct('nextSlide')}
               >
-                <ChevronRight strokeWidth={2} />
+                <ChevronRight strokeWidth={2} aria-hidden="true" />
               </Button>
             </div>
           </div>

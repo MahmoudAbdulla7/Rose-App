@@ -80,7 +80,8 @@
   "filters": {
     "category": "الفئة",
     "occasion": "المناسبة",
-    "rating": "التقييم",
+  "rating": "التقييم",
+  "productsGridLabel": "نتائج المنتجات",
     "price": "السعر",
     "from": "من",
     "to": "إلى",

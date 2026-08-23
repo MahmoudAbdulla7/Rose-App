@@ -16,6 +16,7 @@ export default async function ProductRating({ rating = 0, maxRating = 4 }: Produ
       className="flex items-center gap-1"
       role="img"
       aria-label={t('rating', { rating, maxRating })}
+      aria-live="polite"
     >
       {Array.from({ length: maxRating }, (_, index) => {
         const isFilled = index < Math.round(rating);
