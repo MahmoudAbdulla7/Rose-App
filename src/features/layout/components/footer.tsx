@@ -20,30 +20,35 @@ export default async function Footer() {
   const t = await getTranslations('footer');
 
   return (
-    <footer className="bg-zinc-800 py-10 dark:bg-zinc-900">
+    <footer className="bg-zinc-800 py-6 lg:py-10 dark:bg-zinc-900">
       <div className="container grid w-full grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-[2fr_4fr_3fr]">
         {/* Brand */}
-        <div className="flex flex-col items-center justify-center gap-1.5">
+        <div className="flex flex-col items-center justify-center gap-1 lg:gap-1.5">
           <Image
             src="/assets/images/logo.png"
             alt={t('brand')}
             width={240}
             height={225}
-            className="h-auto max-w-60 object-contain"
+            className="h-auto max-w-40 object-contain lg:max-w-60"
           />
-          <p className="text-soft-pink-300 text-center text-lg font-semibold">{t('brand')}</p>
-          <p className="text-center text-sm text-zinc-100">{t('rights')}</p>
+          <p className="text-soft-pink-300 text-center text-base font-semibold lg:text-lg">
+            {t('brand')}
+          </p>
+          <p className="text-center text-xs text-zinc-100 lg:text-sm">{t('rights')}</p>
         </div>
 
         {/* Navigation */}
-        <nav className="flex flex-col items-start gap-1.5 md:ps-4" aria-label={t('nav.title')}>
-          <p className="text-soft-pink-300 text-lg font-semibold">{t('nav.title')}</p>
-          <ul className="flex flex-col items-start gap-1.5">
+        <nav
+          className="flex flex-col items-start gap-1 md:ps-4 lg:gap-1.5"
+          aria-label={t('nav.title')}
+        >
+          <p className="text-soft-pink-300 text-base font-semibold lg:text-lg">{t('nav.title')}</p>
+          <ul className="flex flex-col items-start gap-1 lg:gap-1.5">
             {NAV_LINKS.map((link) => (
               <li key={link.label}>
                 <HoveredLink
                   href={link.href}
-                  className="hover:text-soft-pink-300 text-base font-medium text-zinc-100"
+                  className="hover:text-soft-pink-300 text-sm font-medium text-zinc-100 lg:text-base"
                 >
                   {t(`nav.${link.label}`)}
                 </HoveredLink>
@@ -53,9 +58,9 @@ export default async function Footer() {
         </nav>
 
         {/* Discount / Subscribe */}
-        <div className="flex w-full flex-col gap-5 md:col-span-2 lg:col-span-1">
+        <div className="flex w-full flex-col gap-4 md:col-span-2 lg:col-span-1 lg:gap-5">
           <div className="">
-            <p className="text-soft-pink-300 text-xl font-semibold">
+            <p className="text-soft-pink-300 text-lg font-semibold lg:text-xl">
               {t.rich('discount.title', {
                 amount: (chunks) => <span className="text-maroon-50">{chunks}</span>,
               })}
