@@ -1,1 +1,1 @@
-export const PRIVATE_ROUTES = new Set(['/profile']);
+export const PRIVATE_ROUTES = new Set(['/profile', '/orders']);
