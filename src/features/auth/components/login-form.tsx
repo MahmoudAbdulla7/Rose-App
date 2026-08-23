@@ -135,7 +135,7 @@ export default function LoginForm({ callbackUrl, onSuccess }: LoginFormProps) {
         {...register('password')}
       />
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-center sm:justify-between gap-3">
         <label className="flex cursor-pointer items-center gap-2">
           <Controller
             name="rememberMe"
