@@ -81,13 +81,15 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
   };
 
   return (
-    <section className={cn('flex min-w-0 flex-col gap-6', className)}>
+    <section className={cn('flex min-w-0 flex-col gap-4 md:gap-5 lg:gap-6', className)}>
       {/* Title */}
-      <h2 className="text-ds-text-plain text-2xl font-semibold sm:text-3xl">{t('summary')}</h2>
+      <h2 className="text-ds-text-plain text-xl font-semibold md:text-2xl lg:text-3xl">
+        {t('summary')}
+      </h2>
 
-      <div className="bg-ds-subtle flex flex-col gap-2.5 rounded-xl p-4">
+      <div className="bg-ds-subtle flex flex-col gap-2.5 rounded-xl p-3 md:p-3.5 lg:p-4">
         {/* Coupon form */}
-        <form onSubmit={handleApply} className="flex items-start gap-2.5">
+        <form onSubmit={handleApply} className="flex items-start gap-2 md:gap-2.5">
           <Input
             type="text"
             value={code}
@@ -104,14 +106,15 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
             variant="primary"
             loading={isPending}
             disabled={!code.trim()}
-            leftIcon={<TicketPercent className="size-6" />}
+            className="px-3 text-xs md:text-sm lg:px-4"
+            leftIcon={<TicketPercent className="size-4 md:size-5 lg:size-6" />}
           >
             {t('applyCoupon')}
           </Button>
         </form>
 
         {/* Applied coupon */}
-        <div className="border-ds-border-soft flex min-h-32 flex-col items-center justify-center gap-2 rounded-md border p-2.5 text-center">
+        <div className="border-ds-border-soft flex min-h-24 flex-col items-center justify-center gap-2 rounded-md border p-2.5 text-center md:min-h-28 lg:min-h-32">
           {coupon && !couponError ? (
             <>
               <span className="bg-ds-primary-fade text-ds-primary inline-flex items-center gap-2 rounded-full py-1 ps-3 pe-1 text-sm font-medium">
@@ -137,16 +140,18 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
         </div>
 
         {/* Totals */}
-        <div className="flex flex-col gap-4 p-2.5">
+        <div className="flex flex-col gap-3 p-2 md:gap-3.5 md:p-2.5 lg:gap-4">
           <div className="text-ds-text-plain flex items-center justify-between gap-3">
-            <span className="text-lg font-medium">{t('subtotal')}</span>
-            <span className="text-xl font-semibold tabular-nums">{formatPrice(subtotal)}</span>
+            <span className="text-sm font-medium md:text-base lg:text-lg">{t('subtotal')}</span>
+            <span className="text-base font-semibold tabular-nums md:text-lg lg:text-xl">
+              {formatPrice(subtotal)}
+            </span>
           </div>
 
           {discount > 0 ? (
             <div className="text-ds-text-plain flex items-center justify-between gap-3">
-              <span className="text-lg font-medium">{t('discount')}</span>
-              <span className="text-ds-success text-xl font-semibold tabular-nums">
+              <span className="text-sm font-medium md:text-base lg:text-lg">{t('discount')}</span>
+              <span className="text-ds-success text-base font-semibold tabular-nums md:text-lg lg:text-xl">
                 -{formatPrice(discount)}
               </span>
             </div>
@@ -154,7 +159,7 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
 
           <hr className="border-ds-border-muted" />
 
-          <div className="text-ds-primary flex items-center justify-between gap-3 text-2xl font-bold">
+          <div className="text-ds-primary flex items-center justify-between gap-3 text-lg font-bold md:text-xl lg:text-2xl">
             <span>{t('total')}</span>
             <span className="tabular-nums">{formatPrice(total)}</span>
           </div>
@@ -164,10 +169,10 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
       {children ?? (
         <Button
           variant="primary"
-          className="h-17 w-full text-xl font-medium"
+          className="h-12 w-full text-base font-medium md:h-14 md:text-lg lg:h-17 lg:text-xl"
           disabled={!canCheckout}
           render={canCheckout ? <Link href="/checkout" /> : undefined}
-          rightIcon={<MoveRight className="size-6 rtl:rotate-180" />}
+          rightIcon={<MoveRight className="size-4 md:size-5 lg:size-6 rtl:rotate-180" />}
         >
           {t('checkout')}
         </Button>
