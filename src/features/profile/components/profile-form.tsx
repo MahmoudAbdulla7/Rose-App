@@ -10,7 +10,6 @@ import { Controller, useForm } from 'react-hook-form';
 import type { Value as PhoneValue } from 'react-phone-number-input';
 import { toast } from 'sonner';
 
-import ChangePasswordDialog from './change-password-dialog';
 import DeleteAccountDialog from './delete-account-dialog';
 import {
   updateProfileAction,
@@ -141,7 +140,12 @@ export default function ProfileForm({ user }: Props) {
           error={errors.lastName?.message}
           {...register('lastName')}
         />
-        <Input label={t('fields.email')} value={user.email} disabled wrapperClassName="md:col-span-2" />
+        <Input
+          label={t('fields.email')}
+          value={user.email}
+          disabled
+          wrapperClassName="md:col-span-2"
+        />
         <Controller
           name="phone"
           control={control}
@@ -176,7 +180,7 @@ export default function ProfileForm({ user }: Props) {
             {t('actions.changePassword')}
           </Link>
         </div>
-        <Button type="submit" loading={isSubmitting} className="w-full h-11! sm:w-64">
+        <Button type="submit" loading={isSubmitting} className="h-11! w-full sm:w-64">
           {t('actions.save')}
         </Button>
       </div>
