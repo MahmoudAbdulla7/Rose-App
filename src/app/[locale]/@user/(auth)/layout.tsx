@@ -1,8 +1,11 @@
 import LanguageSwitcherComponent from '@/shared/components/language-switcher';
 import Image from 'next/image';
 import Separator from './_components/separator';
+import type { ReactNode } from 'react';
 
-type Props = LayoutProps<'/[locale]'>;
+type Props = {
+  children: ReactNode;
+};
 
 export default async function AuthLayout({ children }: Props) {
   return (
