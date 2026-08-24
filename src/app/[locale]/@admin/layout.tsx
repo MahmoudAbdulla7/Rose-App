@@ -6,7 +6,10 @@ import DashboardBottomNav from '@/features/dashboard/components/dashboard-bottom
 import DashboardHeader from '@/features/dashboard/components/dashboard-header';
 import DashboardSidebar from '@/features/dashboard/components/dashboard-sidebar';
 
-type Props = LayoutProps<'/[locale]'>;
+type Props = {
+  children: ReactNode;
+  params: Promise<{ locale: string }>;
+};
 
 export default async function DashboardLayout({ children, params }: Props): Promise<ReactNode> {
   const { locale } = await params;

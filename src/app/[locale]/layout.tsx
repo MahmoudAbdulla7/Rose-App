@@ -1,11 +1,16 @@
 import { Inter, Sarabun, Tajawal } from 'next/font/google';
 import type { Locale } from 'next-intl';
 import { hasLocale } from 'next-intl';
-import { getMessages, getTimeZone, getTranslations, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTimeZone, getTranslations } from 'next-intl/server';
 
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import { getServerSession } from 'next-auth';
+import { Suspense } from 'react';
+
+import { authOptions } from '@/auth';
+import { ROLES } from '@/features/auth/lib/constants/roles.constant';
 import { routing } from '@/i18n/routing';
 import { getFormats } from '@/i18n/formats';
 import AppProvider from '@/shared/providers/app.provider';
@@ -36,14 +41,10 @@ const inter = Inter({
 
 type Props = LayoutProps<'/[locale]'>;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  'use cache';
   const { locale } = await params;
-  setRequestLocale(locale);
-  const t = await getTranslations('common');
+  const t = await getTranslations({ locale: locale as Locale, namespace: 'common' });
   return {
     title: t('app.title'),
     description: t('app.description'),
@@ -54,7 +55,13 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function RootLayout({ children, params }: Props): Promise<ReactNode> {
+// Admins see the dashboard slot, everyone else the storefront slot.
+async function RoleSlot({ admin, user }: { admin: ReactNode; user: ReactNode }): Promise<ReactNode> {
+  const session = await getServerSession(authOptions);
+  return session?.user?.role === ROLES.ADMIN ? admin : user;
+}
+
+export default async function RootLayout({ admin, user, params }: Props): Promise<ReactNode> {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
@@ -78,7 +85,11 @@ export default async function RootLayout({ children, params }: Props): Promise<R
       className={`${locale === 'ar' ? tajawal.variable : sarabun.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
-        <AppProvider nextIntlConfig={nextIntlConfig}>{children}</AppProvider>
+        <AppProvider nextIntlConfig={nextIntlConfig}>
+          <Suspense>
+            <RoleSlot admin={admin} user={user} />
+          </Suspense>
+        </AppProvider>
       </body>
     </html>
   );
