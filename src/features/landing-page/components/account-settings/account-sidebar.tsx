@@ -45,7 +45,7 @@ export default function AccountSidebar() {
       {/* Sidebar (lg and up) */}
       <aside
         aria-label={t('label')}
-        className="bg-ds-subtle border-ds-border-subtle hidden flex-col gap-2.5 rounded-4xl border p-4 lg:flex lg:min-h-100 lg:w-72 xl:min-h-180"
+        className="bg-ds-subtle border-ds-border-subtle hidden flex-col gap-2.5 rounded-4xl border p-4 lg:flex lg:min-h-100 lg:w-72 xl:max-h-180"
       >
         <AccountNav />
       </aside>
