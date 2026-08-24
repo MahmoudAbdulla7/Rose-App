@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
+import ProfileForm from '@/features/landing-page/components/account-settings/profile-form';
+
 type Props = {
   params: Promise<{ locale: string }>;
 };
@@ -14,9 +16,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${commonT('app.title')} | ${t('nav.profile')}`,
+    description: t('profile.metadataDescription'),
   };
 }
 
 export default function ProfilePage() {
-  return <div>Mahmoud</div>;
+  return <ProfileForm />;
 }
