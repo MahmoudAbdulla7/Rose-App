@@ -176,7 +176,7 @@ export default function ProfileForm({ user }: Props) {
       <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center justify-between gap-5 sm:justify-start">
           <DeleteAccountDialog />
-          <Link href="/profile/change-password" className="text-sm">
+          <Link href="/change-password" className="text-sm">
             {t('actions.changePassword')}
           </Link>
         </div>
