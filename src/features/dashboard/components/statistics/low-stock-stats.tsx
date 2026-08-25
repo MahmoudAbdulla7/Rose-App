@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Separator } from '@/shared/ui/separator';
-import { LowStockProduct } from '../lib/types/stats';
+import { LowStockProduct } from '../../lib/types/stats';
 
 type LowStockStatsProps = {
   products?: LowStockProduct[];

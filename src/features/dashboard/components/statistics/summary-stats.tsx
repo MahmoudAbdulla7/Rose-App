@@ -2,7 +2,7 @@ import { CircleDollarSign, ClipboardList, Package, ReceiptText } from 'lucide-re
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/shared/lib/utils';
-import { Summary } from '../lib/types/stats';
+import { Summary } from '../../lib/types/stats';
 
 type SummaryStatsProps = {
   summary?: Summary;

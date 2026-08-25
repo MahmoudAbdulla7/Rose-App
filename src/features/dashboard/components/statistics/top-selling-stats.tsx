@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { TopSellingProduct } from '../lib/types/stats';
+import { TopSellingProduct } from '../../lib/types/stats';
 
 type TopSellingStatsProps = {
   products?: TopSellingProduct[];
