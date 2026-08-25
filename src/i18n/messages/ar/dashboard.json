@@ -13,5 +13,20 @@
     "label": "قائمة المستخدم",
     "account": "الحساب",
     "logout": "تسجيل الخروج"
+  },
+  "stats": {
+    "totalProducts": "إجمالي المنتجات",
+    "totalOrders": "إجمالي الطلبات",
+    "totalCategories": "إجمالي الفئات",
+    "totalRevenue": "إجمالي الإيرادات"
+  },
+  "lists": {
+    "allCategories": "جميع الفئات",
+    "topSellingProducts": "المنتجات الأكثر مبيعًا",
+    "lowStockProducts": "المنتجات منخفضة المخزون",
+    "product": "منتج",
+    "products": "منتج",
+    "sale": "مبيعة",
+    "sales": "مبيعة"
   }
 }
