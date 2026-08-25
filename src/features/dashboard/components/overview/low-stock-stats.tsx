@@ -9,7 +9,7 @@ type LowStockStatsProps = {
 };
 
 export default function LowStockStats({ products = [] }: LowStockStatsProps) {
-  const t = useTranslations('dashboard.lists');
+  const t = useTranslations('dashboard.overview.lists');
 
   return (
     <div className="bg-ds-plain flex h-110.75 flex-col rounded-3xl p-6">

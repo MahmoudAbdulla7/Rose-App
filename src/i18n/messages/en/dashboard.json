@@ -14,20 +14,22 @@
     "profile": "Profile",
     "logout": "Log out"
   },
-  "stats": {
-    "totalProducts": "Total products",
-    "totalOrders": "Total orders",
-    "totalCategories": "Total categories",
-    "totalRevenue": "Total revenue"
-  },
-  "lists": {
-    "allCategories": "All Categories",
-    "topSellingProducts": "Top Selling Products",
-    "lowStockProducts": "Low Stock Products",
-    "product": "Product",
-    "products": "Products",
-    "sale": "Sale",
-    "sales": "Sales"
+  "overview": {
+    "stats": {
+      "totalProducts": "Total products",
+      "totalOrders": "Total orders",
+      "totalCategories": "Total categories",
+      "totalRevenue": "Total revenue"
+    },
+    "lists": {
+      "allCategories": "All Categories",
+      "topSellingProducts": "Top Selling Products",
+      "lowStockProducts": "Low Stock Products",
+      "product": "Product",
+      "products": "Products",
+      "sale": "Sale",
+      "sales": "Sales"
+    }
   },
   "profile": {
     "title": "Account Settings",

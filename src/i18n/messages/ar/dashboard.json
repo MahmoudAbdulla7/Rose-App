@@ -14,20 +14,22 @@
     "profile": "الملف الشخصي",
     "logout": "تسجيل الخروج"
   },
-  "stats": {
-    "totalProducts": "إجمالي المنتجات",
-    "totalOrders": "إجمالي الطلبات",
-    "totalCategories": "إجمالي الفئات",
-    "totalRevenue": "إجمالي الإيرادات"
-  },
-  "lists": {
-    "allCategories": "جميع الفئات",
-    "topSellingProducts": "المنتجات الأكثر مبيعًا",
-    "lowStockProducts": "المنتجات منخفضة المخزون",
-    "product": "منتج",
-    "products": "منتج",
-    "sale": "مبيعة",
-    "sales": "مبيعة"
+  "overview": {
+    "stats": {
+      "totalProducts": "إجمالي المنتجات",
+      "totalOrders": "إجمالي الطلبات",
+      "totalCategories": "إجمالي الفئات",
+      "totalRevenue": "إجمالي الإيرادات"
+    },
+    "lists": {
+      "allCategories": "جميع الفئات",
+      "topSellingProducts": "المنتجات الأكثر مبيعًا",
+      "lowStockProducts": "المنتجات منخفضة المخزون",
+      "product": "منتج",
+      "products": "منتج",
+      "sale": "مبيعة",
+      "sales": "مبيعة"
+    }
   },
   "profile": {
     "title": "إعدادات الحساب",
