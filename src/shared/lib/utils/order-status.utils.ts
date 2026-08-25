@@ -1,16 +1,16 @@
+import type { TOrderStatus, TPaymentMethod, TPaymentStatus } from '@/shared/lib/types/orders';
 import type { LucideIcon } from 'lucide-react';
 import {
-    Clock,
-    CheckCircle2,
-    PackageCheck,
-    Truck,
-    Ban,
-    RotateCcw,
-    Loader2,
-    Wallet,
+    AlertTriangle,
+    Check,
+    CheckCheck,
     CreditCard,
+    Loader2,
+    PackageCheck,
+    RotateCcw,
+    Truck,
+    Wallet
 } from 'lucide-react';
-import type { TOrderStatus, TPaymentMethod, TPaymentStatus } from '@/shared/lib/types/orders';
 
 export type TStatusVariant = 'success' | 'info' | 'danger' | 'warning' | 'neutral';
 
@@ -23,14 +23,19 @@ export interface IStatusDisplay {
 export function getOrderStatusSummary(status: TOrderStatus): IStatusDisplay {
     switch (status) {
         case 'DELIVERED':
-            return { label: 'Done', variant: 'success', icon: CheckCircle2 };
+            return { label: 'Done', variant: 'success', icon: CheckCheck };
         case 'CANCELLED':
+            return { label: 'Cancelled', variant: 'danger', icon: AlertTriangle };
         case 'REFUNDED':
-            return { label: 'Cancelled', variant: 'danger', icon: Ban };
+            return { label: 'Refunded', variant: 'neutral', icon: RotateCcw };
         case 'PENDING':
+            return { label: 'Pending', variant: 'warning', icon: Truck };
         case 'CONFIRMED':
+            return { label: 'Confirmed', variant: 'info', icon: Check };
         case 'PROCESSING':
+            return { label: 'Processing', variant: 'info', icon: Loader2 };
         case 'SHIPPED':
+            return { label: 'Shipped', variant: 'info', icon: PackageCheck };
         default:
             return { label: 'In Progress', variant: 'info', icon: Loader2 };
     }
@@ -39,17 +44,17 @@ export function getOrderStatusSummary(status: TOrderStatus): IStatusDisplay {
 export function getOrderStatusDetail(status: TOrderStatus): IStatusDisplay {
     switch (status) {
         case 'PENDING':
-            return { label: 'Pending', variant: 'warning', icon: Clock };
+            return { label: 'Pending', variant: 'warning', icon: Truck };
         case 'CONFIRMED':
-            return { label: 'Confirmed', variant: 'info', icon: CheckCircle2 };
+            return { label: 'Confirmed', variant: 'info', icon: Check };
         case 'PROCESSING':
             return { label: 'Processing', variant: 'info', icon: Loader2 };
         case 'SHIPPED':
-            return { label: 'Shipped', variant: 'info', icon: Truck };
+            return { label: 'Shipped', variant: 'info', icon: PackageCheck };
         case 'DELIVERED':
-            return { label: 'Delivered', variant: 'success', icon: PackageCheck };
+            return { label: 'Delivered', variant: 'success', icon: CheckCheck };
         case 'CANCELLED':
-            return { label: 'Cancelled', variant: 'danger', icon: Ban };
+            return { label: 'Cancelled', variant: 'danger', icon: AlertTriangle };
         case 'REFUNDED':
             return { label: 'Refunded', variant: 'neutral', icon: RotateCcw };
     }
@@ -73,11 +78,12 @@ export function formatOrderNumber(id: string): string {
 }
 
 export function formatOrderDate(isoDate: string): string {
-    return new Date(isoDate).toLocaleString(undefined, {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-    });
+    const date = new Date(isoDate);
+
+    const day = date.toLocaleString(undefined, { day: '2-digit' });
+    const month = date.toLocaleString(undefined, { month: 'long' });
+    const year = date.toLocaleString(undefined, { year: 'numeric' });
+    const time = date.toLocaleString(undefined, { hour: 'numeric', minute: '2-digit' });
+
+    return `${day} ${month}, ${year} at ${time}`;
 }

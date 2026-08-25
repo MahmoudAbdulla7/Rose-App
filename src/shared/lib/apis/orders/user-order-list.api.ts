@@ -20,9 +20,9 @@ async function request<T>(endpoint: string, init?: RequestInit): Promise<T> {
     return response.json();
 }
 
-export function fetchOrders(params: Partial<IOrderSearchParams> = {}): Promise<IOrderResponse> {
-    const query = new URLSearchParams(params as Record<string, string>).toString();
-    return request(`/api/orders${query ? `?${query}` : ''}`);
+export function fetchOrders(page: Partial<IOrderSearchParams> = {}): Promise<IOrderResponse> {
+    const query = new URLSearchParams(page as Record<string, string>).toString();
+    return request(`/api/orders?${query}&limit=10`);
 }
 
 export function fetchOrderById(id: string): Promise<ISingleOrderResponse> {

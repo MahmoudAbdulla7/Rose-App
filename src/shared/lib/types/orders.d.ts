@@ -138,7 +138,7 @@ export type ICreateOrderResponse = IAPIResponse<{ order: ICreatedOrder; checkout
 
 export interface IOrderSearchParams {
     page: string;
-    limit: string;
+    limit?: string;
     status?: TOrderStatus;
     paymentStatus?: TPaymentStatus;
     search?: string;
