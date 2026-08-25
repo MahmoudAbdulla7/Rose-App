@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 
-import ProfileSkeleton from '@/features/layout/skeletons/profile.skeleton';
 import ProfilePageContent from '@/features/profile/components/profile-page-content';
+import ProfileSkeleton from '@/features/layout/skeletons/profile.skeleton';
 
-export default function ProfilePage() {
+export default function AdminProfilePage() {
   return (
     <Suspense fallback={<ProfileSkeleton />}>
       <ProfilePageContent />
