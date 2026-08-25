@@ -9,7 +9,7 @@ type SummaryStatsProps = {
 };
 
 export default function SummaryStats({ summary }: SummaryStatsProps) {
-  const t = useTranslations('dashboard.stats');
+  const t = useTranslations('dashboard.overview.stats');
 
   const stats = [
     {

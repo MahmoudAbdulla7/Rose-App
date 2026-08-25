@@ -1,10 +1,10 @@
-import CategoriesStats from '@/features/dashboard/components/statistics/categories-stats';
-import LowStockStats from '@/features/dashboard/components/statistics/low-stock-stats';
-import SummaryStats from '@/features/dashboard/components/statistics/summary-stats';
-import TopSellingStats from '@/features/dashboard/components/statistics/top-selling-stats';
+import CategoriesStats from '@/features/dashboard/components/overview/categories-stats';
+import LowStockStats from '@/features/dashboard/components/overview/low-stock-stats';
+import SummaryStats from '@/features/dashboard/components/overview/summary-stats';
+import TopSellingStats from '@/features/dashboard/components/overview/top-selling-stats';
 import { getStats } from '@/features/dashboard/lib/apis/stats.api';
 
-export default async function DashboardStats() {
+export default async function DashboardOverview() {
   const stats = await getStats();
 
   return (

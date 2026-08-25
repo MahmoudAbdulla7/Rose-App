@@ -10,7 +10,7 @@ type CategoriesStatsProps = {
 };
 
 export default function CategoriesStats({ categories = [] }: CategoriesStatsProps) {
-  const t = useTranslations('dashboard.lists');
+  const t = useTranslations('dashboard.overview.lists');
 
   const sortedCategories = [...categories].sort((a, b) => b.productCount - a.productCount);
 

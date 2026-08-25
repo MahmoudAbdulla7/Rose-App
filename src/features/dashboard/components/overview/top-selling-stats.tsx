@@ -14,7 +14,7 @@ const rankBackgrounds = [
 ];
 
 export default function TopSellingStats({ products = [], currency }: TopSellingStatsProps) {
-  const t = useTranslations('dashboard.lists');
+  const t = useTranslations('dashboard.overview.lists');
 
   return (
     <div className="bg-ds-plain flex h-110.75 flex-col rounded-3xl p-6">
