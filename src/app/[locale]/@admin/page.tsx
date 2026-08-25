@@ -1,8 +1,5 @@
-import { useTranslations } from 'next-intl';
-
+import DashboardStats from '@/features/dashboard/components/statistics/dashboard-stats';
 
 export default function DashboardOverviewPage() {
-  const t = useTranslations('dashboard.nav');
-
-  return <h1 className="text-ds-text-plain text-2xl font-semibold">{t('overview')}</h1>;
+  return <DashboardStats />;
 }
