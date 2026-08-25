@@ -3,11 +3,11 @@ import { cn } from '@/shared/lib/utils';
 import type { TStatusVariant } from '@/shared/lib/utils/order-status.utils';
 
 const VARIANT_CLASSES: Record<TStatusVariant, string> = {
-    success: 'bg-green-100 text-green-700',
-    info: 'bg-blue-100 text-blue-700',
-    danger: 'bg-red-100 text-red-700',
-    warning: 'bg-amber-100 text-amber-700',
-    neutral: 'bg-gray-100 text-gray-700',
+    success: 'bg-emerald-500',
+    info: 'bg-blue-500',
+    danger: 'bg-red-600',
+    warning: 'bg-yellow-600',
+    neutral: 'bg-gray-500',
 };
 
 type OrderStatusBadgeProps = {
@@ -21,7 +21,7 @@ export default function OrderStatusBadge({ label, variant, icon: Icon, className
     return (
         <span
             className={cn(
-                'inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium',
+                'inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium text-white',
                 VARIANT_CLASSES[variant],
                 className,
             )}

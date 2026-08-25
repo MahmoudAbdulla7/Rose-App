@@ -1,16 +1,16 @@
 import type { IOrder } from '@/shared/lib/types/orders';
+import { cn } from '@/shared/lib/utils';
 import {
-    getOrderStatusSummary,
+    formatOrderDate,
+    formatOrderNumber,
     getOrderStatusDetail,
+    getOrderStatusSummary,
     getPaymentMethodDisplay,
     isOrderPaid,
-    formatOrderNumber,
-    formatOrderDate,
 } from '@/shared/lib/utils/order-status.utils';
-import OrderStatusBadge from './order-status-badge';
+import { Check } from 'lucide-react';
 import OrderItemsList from './order-items-list';
-import { CheckCircle2 } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
+import OrderStatusBadge from './order-status-badge';
 
 type OrderCardProps = {
     order: IOrder;
@@ -27,9 +27,9 @@ export default function OrderCard({ order }: OrderCardProps) {
 
     return (
         <div className="overflow-hidden rounded-xl border">
-            <div className="bg-maroon-700 flex items-center justify-between px-4 py-3 text-white">
+            <div className="bg-maroon-600 flex items-center justify-between px-4 py-3 text-white">
                 <span className="font-semibold">Order {formatOrderNumber(order.id)}</span>
-                <span className="text-sm opacity-90">Created on {formatOrderDate(new Date(order.createdAt).toISOString())}</span>
+                <span className="text-sm opacity-90">Created in: {formatOrderDate(new Date(order.createdAt).toISOString())}</span>
             </div>
 
             <div className="bg-ds-surface-muted space-y-3 p-4">
@@ -38,7 +38,7 @@ export default function OrderCard({ order }: OrderCardProps) {
                         <p className="text-lg font-semibold">
                             Total Price: <span>{order.total} EGP</span>
                         </p>
-                        {paid && <OrderStatusBadge label="Paid" variant="success" icon={CheckCircle2} />}
+                        {paid && <OrderStatusBadge label="Paid" variant="success" icon={Check} />}
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                         <span className="font-medium">Status:</span>
@@ -54,7 +54,16 @@ export default function OrderCard({ order }: OrderCardProps) {
                     </p>
                     <p className="flex items-center gap-1.5">
                         <span className="font-medium">Delivery Status:</span>
-                        <DeliveryIcon className={cn('size-4', deliveryDetail.variant === 'success' && 'text-green-600')} aria-hidden="true" />
+                        <DeliveryIcon
+                            className={cn('size-4',
+                                deliveryDetail.variant === 'success' && 'text-green-600',
+                                deliveryDetail.variant === 'danger' && 'text-red-600',
+                                deliveryDetail.variant === 'warning' && 'text-amber-600',
+                                deliveryDetail.variant === 'info' && 'text-blue-600',
+                                deliveryDetail.variant === 'neutral' && 'text-gray-600',
+                            )}
+                            aria-hidden="true"
+                        />
                         <span
                             className={cn(
                                 deliveryDetail.variant === 'success' && 'text-green-600',
