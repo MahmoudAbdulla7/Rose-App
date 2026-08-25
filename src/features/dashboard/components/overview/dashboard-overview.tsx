@@ -8,7 +8,7 @@ export default async function DashboardOverview() {
   const stats = await getStats();
 
   return (
-    <div className="bg-ds-subtle grid grid-cols-1 gap-6 p-4 lg:grid-cols-2">
+    <div className="bg-ds-subtle grid grid-cols-1 gap-6 lg:grid-cols-2">
       <SummaryStats summary={stats?.payload.summary} />
 
       <CategoriesStats categories={stats?.payload.categories} />
