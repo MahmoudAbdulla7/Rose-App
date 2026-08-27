@@ -18,30 +18,43 @@ type UseStep2CheckoutParams = {
 };
 
 export function useStep2Checkout({ selectedAddressId, couponCode }: UseStep2CheckoutParams) {
+  // Translation
   const t = useTranslations('checkout');
+
+  // Navigation
   const router = useRouter();
+
+  // State
   const [paymentMethod, setPaymentMethod] = useState<IPaymentMethod>(
     PAYMENT_METHODS.CREDIT_CARD,
   );
   const [checkoutPhase, setCheckoutPhase] = useState<CheckoutPhase>({ phase: 'idle' });
 
+  // Mutations
   const { mutateAsync: createOrder, isPending: isCreatingOrder } = useCreateOrder();
   const { mutateAsync: createPaymentIntent, isPending: isCreatingIntent } =
     useCreatePaymentIntent();
 
+  // Variables
   const isLoading = isCreatingOrder || isCreatingIntent;
   const stripePromise = getStripePromise();
   const useStripeElements = isStripeElementsEnabled();
 
   const stripeForm =
     checkoutPhase.phase === 'stripe-form' &&
-    paymentMethod === PAYMENT_METHODS.CREDIT_CARD &&
-    stripePromise
+      paymentMethod === PAYMENT_METHODS.CREDIT_CARD &&
+      stripePromise
       ? {
-          clientSecret: checkoutPhase.clientSecret,
-          paymentIntentId: checkoutPhase.paymentIntentId,
-        }
+        clientSecret: checkoutPhase.clientSecret,
+        paymentIntentId: checkoutPhase.paymentIntentId,
+      }
       : null;
+
+  // Handlers
+  const redirectToCancel = () => {
+    toast.error(t('paymentError'));
+    router.push('/checkout/cancel');
+  };
 
   const handlePaymentMethodSelect = (method: IPaymentMethod) => {
     setPaymentMethod(method);
@@ -57,7 +70,7 @@ export function useStep2Checkout({ selectedAddressId, couponCode }: UseStep2Chec
       return;
     }
 
-    toast.error(t('paymentError'));
+    redirectToCancel();
   };
 
   const handleCreditCardFlow = async (orderId: string, checkoutUrl?: string) => {
@@ -67,45 +80,48 @@ export function useStep2Checkout({ selectedAddressId, couponCode }: UseStep2Chec
     }
 
     if (!stripePromise) {
-      toast.error(t('paymentError'));
+      redirectToCancel();
       return;
     }
 
     const stripe = await stripePromise;
     if (!stripe) {
-      toast.error(t('paymentError'));
+      redirectToCancel();
       return;
     }
 
     try {
       const intentResponse = await createPaymentIntent(orderId);
       if (!intentResponse.status) {
-        toast.error(t('paymentError'));
+        redirectToCancel();
         return;
       }
 
       const { clientSecret, paymentIntentId } = intentResponse.payload;
       setCheckoutPhase({ phase: 'stripe-form', clientSecret, paymentIntentId });
     } catch {
-      toast.error(t('paymentError'));
+      redirectToCancel();
     }
   };
 
   const handleCheckout = async () => {
     if (!selectedAddressId) {
-      toast.error(t('paymentError'));
+      redirectToCancel();
       return;
     }
 
     try {
+      const origin = window.location.origin;
       const orderResponse = await createOrder({
         addressId: selectedAddressId,
         paymentMethod,
+        successUrl: `${origin}/orders`,
+        cancelUrl: `${origin}/checkout/cancel`,
         ...(couponCode ? { couponCode } : {}),
       });
 
       if (!orderResponse.status) {
-        toast.error(t('paymentError'));
+        redirectToCancel();
         return;
       }
 
@@ -113,13 +129,13 @@ export function useStep2Checkout({ selectedAddressId, couponCode }: UseStep2Chec
 
       if (paymentMethod === PAYMENT_METHODS.CASH_ON_DELIVERY) {
         toast.success(t('orderSuccess'));
-        router.push('/checkout/success');
+        router.push('/orders');
         return;
       }
 
       await handleCreditCardFlow(order.id, checkout?.checkoutUrl);
     } catch {
-      toast.error(t('paymentError'));
+      redirectToCancel();
     }
   };
 

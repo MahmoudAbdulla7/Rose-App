@@ -5,6 +5,8 @@ export type ICreateOrderPayload = {
   paymentMethod: IPaymentMethod;
   couponCode?: string;
   notes?: string;
+  successUrl?: string;
+  cancelUrl?: string;
 };
 
 export type IOrderCheckout = {
