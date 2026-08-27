@@ -38,13 +38,17 @@ export default function CategoryFilterItem({
           isSelected ? 'bg-maroon-600 dark:bg-ds-primary' : 'bg-zinc-500',
         )}
       >
-        <Image
-          src={category.image}
-          alt=""
-          width={21}
-          height={21}
-          className="size-5.25 object-cover"
-        />
+        {category.image ? (
+          <Image
+            src={category.image}
+            alt=""
+            width={21}
+            height={21}
+            className="size-5.25 object-cover"
+          />
+        ) : (
+          <div className="bg-ds-primary-fade size-5.25 rounded-sm" aria-hidden="true" />
+        )}
       </span>
       <span className="truncate text-sm leading-none font-medium text-zinc-800 dark:text-zinc-100">
         {category.title}

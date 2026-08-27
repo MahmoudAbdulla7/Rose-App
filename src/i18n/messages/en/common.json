@@ -25,6 +25,9 @@
     "emptyTitle": "Your wishlist is empty",
     "emptyDescription": "Save the flowers and gifts you love, then come back when you're ready to order.",
     "addToCart": "Add to cart",
+    "inCart": "In cart",
+    "inCartQuantity": "In cart · {count}",
+    "viewCart": "View cart",
     "addToCartSuccess": "{name} added to cart.",
     "addToCartError": "Couldn't add {name} to cart. Please try again.",
     "continueShopping": "Continue Shopping",
@@ -92,8 +95,16 @@
   },
   "entities": {
     "products": "products",
+    "categories": "categories",
     "occasions": "occasions",
     "testimonials": "testimonials"
+  },
+  "categories": {
+    "metadataDescription": "Browse our product categories and find the perfect flowers and gifts for every moment.",
+    "productCount": "{count, plural, one {# product} other {# products}}",
+    "viewCategory": "View products in {name}",
+    "searchPlaceholder": "Search categories...",
+    "searchLabel": "Search categories"
   },
   "loadError": {
     "title": "Failed to load {entity}. Try again.",

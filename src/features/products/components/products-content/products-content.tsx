@@ -7,10 +7,10 @@ import ProductsGrid from './products-grid';
 import ProductsGridSkeleton from './products-grid.skeleton';
 
 type ProductsContentProps = {
-  searchParams?: ISearchParams;
+  searchParams: Promise<ISearchParams>;
 };
 
-export default function ProductsContent({ searchParams = {} }: ProductsContentProps) {
+export default function ProductsContent({ searchParams }: ProductsContentProps) {
   return (
     <div className="flex h-full min-h-0 flex-col gap-6">
       <Suspense fallback={<ProductsGridSkeleton />}>
@@ -22,10 +22,11 @@ export default function ProductsContent({ searchParams = {} }: ProductsContentPr
   );
 }
 
-async function ProductsResults({ searchParams = {} }: ProductsContentProps) {
+async function ProductsResults({ searchParams }: ProductsContentProps) {
+  const resolvedSearchParams = await searchParams;
   const locale = await getLocale();
   const { products, metadata } = await getFilteredProducts({
-    searchParams,
+    searchParams: resolvedSearchParams,
     options: { locale },
   });
 

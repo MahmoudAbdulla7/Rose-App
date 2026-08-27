@@ -10,6 +10,7 @@
   "remove": "Remove",
   "confirmClear": "Are you sure you want to clear your cart?",
   "cancel": "Cancel",
+  "quantity": "Quantity",
   "quantityTimes": "(x{quantity})",
   "decreaseQuantity": "Decrease quantity",
   "increaseQuantity": "Increase quantity",

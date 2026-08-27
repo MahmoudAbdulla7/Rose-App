@@ -43,7 +43,7 @@ async function ProductDetailContent({ params }: Props) {
   return (
     <>
       <ProductDetails id={id} />
-      <div className="container mt-12 lg:mt-16">
+      <div className="mt-12 lg:mt-16">
         <Suspense fallback={<RelatedProductsSectionSkeleton />}>
           <RelatedProductsSection currentProductId={id} />
         </Suspense>
