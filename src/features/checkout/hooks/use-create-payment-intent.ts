@@ -2,12 +2,12 @@
 
 import { useMutation } from '@tanstack/react-query';
 
-import { createPaymentIntentRequest } from '../lib/apis/user-payments.api';
+import { createPaymentIntentAction } from '../lib/actions/payment.actions';
 import { CHECKOUT_OPTIONS } from '../lib/constants/checkout.options';
 
 export function useCreatePaymentIntent() {
   return useMutation({
     mutationKey: CHECKOUT_OPTIONS.CREATE_PAYMENT_INTENT_MUTATION_KEY,
-    mutationFn: createPaymentIntentRequest,
+    mutationFn: createPaymentIntentAction,
   });
 }

@@ -9,6 +9,8 @@ import { useRouter } from '@/i18n/navigation';
 
 import { useConfirmPayment } from './use-confirm-payment';
 import { ORDER_STATUS } from '../lib/constants/order-status.constant';
+import { CART_OPTIONS } from '@/shared/lib/apis/cart/cart.options';
+import { useQueryClient } from '@tanstack/react-query';
 
 type UseStripeCardPaymentParams = {
   paymentIntentId: string;
@@ -18,16 +20,22 @@ export function useStripeCardPayment({ paymentIntentId }: UseStripeCardPaymentPa
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const t = useTranslations('checkout');
   const { mutateAsync: confirmPayment, isPending } = useConfirmPayment();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const redirectToCancel = () => {
+    toast.error(t('paymentError'));
+    router.push('/checkout/cancel');
+  };
 
   const handleSubmit = async () => {
     if (!stripe || !elements) return;
 
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
-      toast.error(t('paymentError'));
+      redirectToCancel();
       return;
     }
 
@@ -40,7 +48,8 @@ export function useStripeCardPayment({ paymentIntentId }: UseStripeCardPaymentPa
       });
 
       if (error || !paymentMethod) {
-        toast.error(error?.message ?? t('paymentError'));
+        // toast.error(error?.message ?? t('paymentError'));
+        router.push('/checkout/cancel');
         return;
       }
 
@@ -50,19 +59,20 @@ export function useStripeCardPayment({ paymentIntentId }: UseStripeCardPaymentPa
       });
 
       if (!response.status) {
-        toast.error(t('paymentError'));
+        redirectToCancel();
         return;
       }
 
       if (ORDER_STATUS.SUCCESSED === response.payload.order.paymentStatus) {
         toast.success(t('orderSuccess'));
-        router.push('/checkout/success');
+        router.push('/orders');
       } else {
-        toast.error(t('paymentError'));
+        redirectToCancel();
       }
     } catch {
-      toast.error(t('paymentError'));
+      redirectToCancel();
     } finally {
+      queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
       setIsProcessing(false);
     }
   };

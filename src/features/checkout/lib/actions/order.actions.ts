@@ -1,4 +1,4 @@
-import 'server-only';
+'use server';
 
 import { API_HEADERS } from '@/shared/lib/apis/headers.options';
 import { buildApiEndpoint } from '@/shared/lib/utils/api-endpoint-builder.utils';
@@ -6,7 +6,9 @@ import { getNextAuthToken } from '@/shared/lib/utils/auth.utils';
 
 import type { ICreateOrderPayload, ICreateOrderResponse } from '../types/order';
 
-export async function createOrder(payload: ICreateOrderPayload): Promise<ICreateOrderResponse> {
+export async function createOrderAction(
+  payload: ICreateOrderPayload,
+): Promise<ICreateOrderResponse> {
   const token = await getNextAuthToken();
   if (!token?.accessToken) throw new Error('Unauthorized');
 
