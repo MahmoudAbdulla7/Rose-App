@@ -13,7 +13,6 @@ type Step1ContentProps = {
   setSelectedAddressId: (id: string) => void;
   open: boolean;
   setOpen: (open: boolean) => void;
-  step: number;
   setStep: (step: number) => void;
 };
 
@@ -23,26 +22,18 @@ export default function Step1Content({
   setSelectedAddressId,
   open,
   setOpen,
-  // step,
   setStep,
 }: Step1ContentProps) {
   const t = useTranslations('checkout');
 
   return (
-    <>
-      <ul className="mt-4 space-y-3">
+    <div className="flex w-full flex-col items-end gap-3">
+      <ul className="flex w-full flex-col gap-3">
         {addresses.map((address) => {
           const isSelected = selectedAddressId === address.id;
+
           return (
-            <li
-              key={address.id}
-              className={cn(
-                'cursor-pointer rounded-3xl px-4 py-3.5 font-medium transition-all',
-                isSelected
-                  ? 'bg-ds-primary border-ds-border-soft'
-                  : 'border-zinc-300 bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800',
-              )}
-            >
+            <li key={address.id}>
               <input
                 type="radio"
                 id={address.id}
@@ -51,32 +42,52 @@ export default function Step1Content({
                 hidden
                 checked={isSelected}
                 onChange={() => setSelectedAddressId(address.id)}
-                className="accent-maroon-600 h-4 w-4"
               />
-              <label htmlFor={address.id}>
-                <div
-                  className={cn(
-                    'flex justify-between',
-                    isSelected ? '*:text-ds-text-inverse' : '*:text-ds-text-plain',
-                  )}
-                >
-                  <p className="text-2xl font-semibold">{address.city}</p>
-                  <p className="flex items-center gap-2.5">
+              <label
+                htmlFor={address.id}
+                className={cn(
+                  'flex cursor-pointer flex-col gap-1.5 rounded-xl border border-zinc-300 px-4 py-3.5 transition-colors',
+                  isSelected
+                    ? 'bg-maroon-600'
+                    : 'bg-white hover:bg-zinc-50/50 dark:bg-transparent dark:hover:bg-zinc-900/50',
+                )}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p
+                    className={cn(
+                      'text-2xl leading-none font-semibold',
+                      isSelected ? 'text-zinc-50' : 'text-zinc-800 dark:text-zinc-500',
+                    )}
+                  >
+                    {address.city}
+                  </p>
+                  <p className="flex items-center gap-1.5">
                     <span
                       className={cn(
-                        'flex size-9 items-center justify-center rounded-full',
-                        isSelected ? '*:text-ds-primary bg-zinc-50' : 'bg-ds-primary *:text-white',
+                        'flex size-8.25 shrink-0 items-center justify-center rounded-full',
+                        isSelected
+                          ? 'bg-zinc-50 text-maroon-600'
+                          : 'bg-maroon-600 text-white',
                       )}
                     >
-                      <Phone size={22} />
+                      <Phone size={18} />
                     </span>
-                    <span className={!isSelected ? 'text-ds-text-soft' : ''}>{address.phone}</span>
+                    <span
+                      className={cn(
+                        'text-lg leading-none font-medium',
+                        isSelected ? 'text-zinc-50' : 'text-zinc-500',
+                      )}
+                    >
+                      {address.phone}
+                    </span>
                   </p>
                 </div>
                 <p
                   className={cn(
-                    'mt-2.5 w-fit rounded-full px-3 py-1',
-                    isSelected ? 'bg-ds-inverse text-ds-text-inverse' : '',
+                    'w-fit rounded-full px-3 py-1 text-base leading-none font-medium',
+                    isSelected
+                      ? 'bg-zinc-800 text-zinc-50'
+                      : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-100 dark:text-zinc-800',
                   )}
                 >
                   {address.street}
@@ -87,25 +98,29 @@ export default function Step1Content({
         })}
       </ul>
 
-      <p className="text-ds-text-soft text-center text-lg font-semibold">OR</p>
-      <div className="my-6 text-center">
+      <div className="flex w-full flex-col gap-2.5 border-b pb-2.5 border-zinc-100">
+        <div className="py-2.25">
+          <span className="text-zinc-500 flex w-full items-center gap-2.5 text-lg leading-none font-semibold before:h-px before:flex-1 before:bg-zinc-100 before:content-[''] after:h-px after:flex-1 after:bg-zinc-100 after:content-['']">
+            OR
+          </span>
+        </div>
         <button
-          className="text-ds-primary cursor-pointer font-medium hover:underline"
+          type="button"
           onClick={() => setOpen(true)}
+          className="w-full cursor-pointer rounded-2xl bg-maroon-50 px-4 py-3.5 text-base leading-none font-medium text-maroon-600 transition-colors hover:bg-maroon-100"
         >
           {t('addAddress')}
         </button>
         <AddressesModal open={open} onOpenChange={setOpen} />
       </div>
 
-      <div className="w-full text-end">
-        <Button className="self-center px-10 py-2.5" onClick={() => setStep(2)}>
-          {t('next')}
-          <MoveRight className="rtl:rotate-180" />
-        </Button>
-      </div>
-
-      <p className="mt-4 text-sm text-zinc-500">Selected address ID: {selectedAddressId}</p>
-    </>
+      <Button
+        className="w-38 rounded-2xl px-4 py-2.5"
+        onClick={() => setStep(2)}
+        rightIcon={<MoveRight className="size-5 rtl:rotate-180" />}
+      >
+        {t('next')}
+      </Button>
+    </div>
   );
 }

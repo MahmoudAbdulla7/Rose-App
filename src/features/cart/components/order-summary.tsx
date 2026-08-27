@@ -23,9 +23,10 @@ type OrderSummaryProps = {
   /** Replaces the default checkout button — e.g. a "place order" submit on checkout. */
   children?: React.ReactNode;
   className?: string;
+  onCouponApplied?: (couponCode: string | null) => void;
 };
 
-export default function OrderSummary({ children, className }: OrderSummaryProps) {
+export default function OrderSummary({ children, className, onCouponApplied }: OrderSummaryProps) {
   // Translation
   const t = useTranslations('cart');
 
@@ -66,9 +67,10 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
 
         setError(statusError);
 
-        if (!statusError) {
+        if (!statusError && found) {
           setCoupon(found);
           setCode('');
+          onCouponApplied?.(found.code);
         }
       },
       onError: () => setError('failed'),
@@ -78,6 +80,7 @@ export default function OrderSummary({ children, className }: OrderSummaryProps)
   const handleRemoveCoupon = () => {
     setCoupon(null);
     setError(null);
+    onCouponApplied?.(null);
   };
 
   return (
