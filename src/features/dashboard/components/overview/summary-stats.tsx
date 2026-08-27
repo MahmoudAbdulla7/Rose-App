@@ -9,8 +9,10 @@ type SummaryStatsProps = {
 };
 
 export default function SummaryStats({ summary }: SummaryStatsProps) {
+  // Translation
   const t = useTranslations('dashboard.overview.stats');
 
+  // Variables
   const stats = [
     {
       key: 'totalProducts',
@@ -47,11 +49,14 @@ export default function SummaryStats({ summary }: SummaryStatsProps) {
   ] as const;
 
   return (
-    <div className="bg-ds-plain rounded-3xl p-5">
+    <section className="bg-ds-plain rounded-3xl p-5">
       <div className="grid grid-cols-2 gap-3">
         {/* Card */}
         {stats.map((stat) => (
-          <div key={stat.key} className={cn('flex flex-col items-start rounded-3xl p-4', stat.bg)}>
+          <article
+            key={stat.key}
+            className={cn('flex flex-col items-start rounded-3xl p-4', stat.bg)}
+          >
             {/* Icon */}
             {stat.icon}
 
@@ -65,9 +70,9 @@ export default function SummaryStats({ summary }: SummaryStatsProps) {
 
             {/* Title */}
             <span className="font-medium">{stat.title}</span>
-          </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
