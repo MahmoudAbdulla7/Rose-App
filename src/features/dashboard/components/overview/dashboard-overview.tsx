@@ -5,10 +5,11 @@ import TopSellingStats from '@/features/dashboard/components/overview/top-sellin
 import { getStats } from '@/features/dashboard/lib/apis/stats.api';
 
 export default async function DashboardOverview() {
+  // Variables
   const stats = await getStats();
 
   return (
-    <div className="bg-ds-subtle grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <section className="bg-ds-subtle grid grid-cols-1 gap-6 lg:grid-cols-2">
       <SummaryStats summary={stats?.payload.summary} />
 
       <CategoriesStats categories={stats?.payload.categories} />
@@ -19,6 +20,6 @@ export default async function DashboardOverview() {
       />
 
       <LowStockStats products={stats?.payload.lowStockProducts} />
-    </div>
+    </section>
   );
 }

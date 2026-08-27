@@ -14,17 +14,18 @@ const rankBackgrounds = [
 ];
 
 export default function TopSellingStats({ products = [], currency }: TopSellingStatsProps) {
+  // Translation
   const t = useTranslations('dashboard.overview.lists');
 
   return (
-    <div className="bg-ds-plain flex h-110.75 flex-col rounded-3xl p-6">
+    <section className="bg-ds-plain flex h-110.75 flex-col rounded-3xl p-6">
       {/* Title */}
       <h2 className="mb-6 text-2xl font-semibold">{t('topSellingProducts')}</h2>
 
-      <div className="scrollbar-thumb-ds-text-subtle flex min-h-0 flex-1 scrollbar-thin flex-col gap-2.25 overflow-y-auto pe-1">
+      <ol className="scrollbar-thumb-ds-text-subtle flex min-h-0 flex-1 scrollbar-thin flex-col gap-2.25 overflow-y-auto pe-1">
         {/* Item */}
         {products.map((product, index) => (
-          <div
+          <li
             key={product.productId}
             className={`flex items-center justify-between gap-4 rounded-sm px-2.5 py-1.5 ${
               rankBackgrounds[index] ?? 'bg-ds-muted'
@@ -48,9 +49,9 @@ export default function TopSellingStats({ products = [], currency }: TopSellingS
                 {product.totalSales === 1 ? t('sale') : t('sales')}
               </span>
             </p>
-          </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ol>
+    </section>
   );
 }
