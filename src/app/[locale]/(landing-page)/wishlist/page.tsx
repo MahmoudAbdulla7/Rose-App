@@ -1,10 +1,12 @@
 import WishlistPageContent from '@/features/landing-page/components/wishlist/wishlist-page';
+import WishlistPageSkeleton from '@/features/landing-page/skeletons/wishlist/wishlist-page.skeleton';
 import { getWishlistItems } from '@/shared/lib/apis/wishlist/wishlist.api';
 import type { IWishlistItem } from '@/shared/lib/types/wishlist';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -33,7 +35,15 @@ async function getServerWishlistItems(): Promise<IWishlistItem[]> {
   return data.payload.wishlistItems;
 }
 
-export default async function WishlistPage() {
+export default function WishlistPage() {
+  return (
+    <Suspense fallback={<WishlistPageSkeleton />}>
+      <WishlistContent />
+    </Suspense>
+  );
+}
+
+async function WishlistContent() {
   const wishlistItems = await getServerWishlistItems();
 
   return <WishlistPageContent initialItems={wishlistItems} />;
