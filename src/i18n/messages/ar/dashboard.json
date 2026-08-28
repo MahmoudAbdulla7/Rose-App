@@ -9,6 +9,93 @@
     "occasions": "المناسبات",
     "products": "المنتجات"
   },
+  "crumbs": {
+    "categories": {
+      "new": "إضافة تصنيف",
+      "edit": "تعديل التصنيف"
+    },
+    "occasions": {
+      "new": "إضافة مناسبة",
+      "edit": "تعديل المناسبة"
+    }
+  },
+  "categories": {
+    "listTitle": "كل التصنيفات",
+    "add": "إضافة تصنيف جديد",
+    "searchLabel": "البحث في التصنيفات",
+    "addTitle": "إضافة تصنيف جديد",
+    "addSubmit": "إضافة التصنيف",
+    "updateTitle": "تعديل التصنيف: {name}",
+    "updateSubmit": "تعديل التصنيف",
+    "table": {
+      "name": "الاسم",
+      "products": "المنتجات",
+      "actions": "الإجراءات",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "deleteConfirm": {
+        "title": "حذف \"{name}\"؟",
+        "description": "سيتم حذف هذا التصنيف نهائيًا، ولا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "confirm": "حذف"
+      }
+    },
+    "form": {
+      "name": "الاسم",
+      "namePlaceholder": "أدخل اسم التصنيف",
+      "image": "صورة التصنيف",
+      "viewImage": "عرض صورة التصنيف",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف التصنيف",
+      "createSuccess": "تم إضافة التصنيف بنجاح",
+      "updateSuccess": "تم تعديل التصنيف بنجاح",
+      "deleteSuccess": "تم حذف التصنيف بنجاح",
+      "noChanges": "لا توجد تغييرات للحفظ"
+    },
+    "validation": {
+      "nameRequired": "اسم التصنيف مطلوب",
+      "descriptionRequired": "وصف التصنيف مطلوب",
+      "imageRequired": "يرجى تحميل صورة التصنيف"
+    }
+  },
+  "occasions": {
+    "listTitle": "كل المناسبات",
+    "add": "إضافة مناسبة جديدة",
+    "searchLabel": "البحث في المناسبات",
+    "addTitle": "إضافة مناسبة جديدة",
+    "addSubmit": "إضافة المناسبة",
+    "updateTitle": "تعديل المناسبة: {name}",
+    "updateSubmit": "تعديل المناسبة",
+    "table": {
+      "name": "الاسم",
+      "actions": "الإجراءات",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "deleteConfirm": {
+        "title": "حذف \"{name}\"؟",
+        "description": "سيتم حذف هذه المناسبة نهائيًا، ولا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "confirm": "حذف"
+      }
+    },
+    "form": {
+      "name": "الاسم",
+      "namePlaceholder": "أدخل اسم المناسبة",
+      "image": "صورة المناسبة",
+      "viewImage": "عرض صورة المناسبة",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف المناسبة",
+      "createSuccess": "تمت إضافة المناسبة بنجاح",
+      "updateSuccess": "تم تعديل المناسبة بنجاح",
+      "deleteSuccess": "تم حذف المناسبة بنجاح",
+      "noChanges": "لا توجد تغييرات للحفظ"
+    },
+    "validation": {
+      "nameRequired": "اسم المناسبة مطلوب",
+      "descriptionRequired": "وصف المناسبة مطلوب",
+      "imageRequired": "يرجى تحميل صورة المناسبة"
+    }
+  },
   "userMenu": {
     "label": "قائمة المستخدم",
     "account": "الحساب",

@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { ICategoryResponse } from '@/shared/lib/types/categories';
+import type { ICategoryResponse, ISingleCategoryResponse } from '@/shared/lib/types/categories';
 import { buildApiEndpoint } from '../../utils/api-endpoint-builder.utils';
 import { routing } from '@/i18n/routing';
 import { API_HEADERS } from '../headers.options';
@@ -27,4 +27,24 @@ export async function getCategories({
   });
 
   return response.json() as Promise<ICategoryResponse>;
+}
+
+export async function getCategory({
+  id,
+  options = { locale: routing.defaultLocale },
+}: {
+  id: string;
+  options?: { locale: string };
+}): Promise<ISingleCategoryResponse> {
+  const endpoint = buildApiEndpoint(`/categories/${id}`);
+
+  const response = await fetch(endpoint.toString(), {
+    method: 'GET',
+    headers: {
+      ...API_HEADERS.ACCEPT_LANGUAGE(options.locale),
+      ...API_HEADERS.JSON,
+    },
+  });
+
+  return response.json() as Promise<ISingleCategoryResponse>;
 }

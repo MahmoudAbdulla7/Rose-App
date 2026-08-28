@@ -20,7 +20,7 @@ export default function DashboardSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="border-ds-border-muted bg-ds-plain sticky top-0 hidden h-dvh w-72 shrink-0 flex-col justify-between border-e py-6 px-8 lg:flex">
+    <aside className="border-ds-border-muted bg-ds-plain sticky top-0 hidden h-dvh w-72 shrink-0 flex-col justify-between border-e px-8 py-6 lg:flex">
       <div className="flex flex-col items-center gap-6 pt-9">
         {/* Logo */}
         <Image

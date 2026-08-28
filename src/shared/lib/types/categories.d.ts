@@ -10,3 +10,13 @@ export interface ICategory extends IDBFields {
 }
 
 export type ICategoryResponse = IAPIResponse<IPaginatedData<ICategory>>;
+
+export type ISingleCategoryResponse = IAPIResponse<{ category: ICategory }>;
+
+export type ICreateCategoryInput = {
+  title: string;
+  description?: string;
+  image?: string;
+};
+
+export type IUpdateCategoryInput = Partial<ICreateCategoryInput>;

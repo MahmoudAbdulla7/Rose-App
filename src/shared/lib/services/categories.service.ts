@@ -1,5 +1,5 @@
 import { routing } from '@/i18n/routing';
-import { getCategories } from '@/shared/lib/apis/categories/categories.api';
+import { getCategories, getCategory } from '@/shared/lib/apis/categories/categories.api';
 import { CATEGORIES_OPTIONS } from '@/shared/lib/apis/categories/categories.options';
 import type { ICategory, ICategoryResponse } from '@/shared/lib/types/categories';
 import { getSearchParam, PAGE_KEY } from '@/shared/lib/utils/filter.utils';
@@ -8,20 +8,20 @@ import { cacheLife, cacheTag } from 'next/cache';
 
 const SEARCH_KEY = 'search';
 
-type GetLandingPageCategoriesParams = {
+type GetPaginatedCategoriesParams = {
   searchParams?: ISearchParams;
   options?: { locale: string };
 };
 
-export type LandingPageCategoriesResult = {
+export type PaginatedCategoriesResult = {
   categories: ICategory[];
   metadata: IPaginatedData<ICategory>['metadata'];
 };
 
-export async function getLandingPageCategories({
+export async function getPaginatedCategories({
   searchParams = {},
   options = { locale: routing.defaultLocale },
-}: GetLandingPageCategoriesParams = {}): Promise<LandingPageCategoriesResult> {
+}: GetPaginatedCategoriesParams = {}): Promise<PaginatedCategoriesResult> {
   'use cache';
   cacheLife(CATEGORIES_OPTIONS.CACHE_LIFE);
   cacheTag(...CATEGORIES_OPTIONS.TAGS);
@@ -48,4 +48,17 @@ export async function getLandingPageCategories({
     categories: pickData<ICategory>(successResponse),
     metadata: successResponse.payload.metadata,
   };
+}
+
+export async function getCategoryById(
+  id: string,
+  options: { locale: string } = { locale: routing.defaultLocale },
+): Promise<ICategory | null> {
+  'use cache';
+  cacheLife(CATEGORIES_OPTIONS.CACHE_LIFE);
+  cacheTag(...CATEGORIES_OPTIONS.TAGS);
+
+  const response = await getCategory({ id, options });
+
+  return response?.status ? response.payload.category : null;
 }

@@ -1,8 +1,19 @@
-import { useTranslations } from 'next-intl';
+import { Suspense } from 'react';
 
+import OccasionsContent from '@/features/dashboard/components/occasions/occasions-content';
+import OccasionsContentSkeleton from '@/features/dashboard/skeletons/occasions-content.skeleton';
+import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 
-export default function DashboardOccasionsPage(){
-  const t = useTranslations('dashboard.nav');
+type Props = {
+  searchParams: Promise<ISearchParams>;
+};
 
-  return <h1 className="text-ds-text-plain text-2xl font-semibold">{t('occasions')}</h1>;
+export default function DashboardOccasionsPage({ searchParams }: Props) {
+  return (
+    <Suspense fallback={<OccasionsContentSkeleton />}>
+      <LoadErrorBoundary entity="occasions">
+        <OccasionsContent searchParams={searchParams} />
+      </LoadErrorBoundary>
+    </Suspense>
+  );
 }
