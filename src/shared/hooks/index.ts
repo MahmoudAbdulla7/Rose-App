@@ -10,3 +10,4 @@ export { useCart } from './use-cart.hook';
 export { useRemoveFromCart } from './use-remove-from-cart.hook';
 export { useUpdateCartQuantity } from './use-update-cart-quantity.hook';
 export { useToggleWishlist } from './use-toggle-wishlist.hook';
+export { useUploadImage } from './use-upload-image.hook';

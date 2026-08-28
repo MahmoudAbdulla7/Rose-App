@@ -169,7 +169,6 @@ function FileInput({
         onChange={handleChange}
         className="hidden"
         disabled={disabled}
-        required={required && !value}
       />
 
       {error && <p className="text-ds-danger text-xs">{error}</p>}

@@ -15,6 +15,7 @@ function SearchInput({
   onClear,
   value,
   defaultValue,
+  placeholder,
   wrapperClassName,
   ...props
 }: SearchInputProps) {
@@ -51,7 +52,7 @@ function SearchInput({
   return (
     <Input
       type="text"
-      placeholder={t('searchPlaceholder')}
+      placeholder={placeholder ?? t('searchPlaceholder')}
       value={searchValue}
       onChange={handleChange}
       leftIcon={<Search className="w-icon-md h-icon-md text-ds-text-muted" />}

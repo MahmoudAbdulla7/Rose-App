@@ -6,3 +6,13 @@ export interface IOccasion extends IDBFields {
 }
 
 export type IOccasionResponse = IAPIResponse<IPaginatedData<IOccasion>>;
+
+export type ISingleOccasionResponse = IAPIResponse<{ occasion: IOccasion }>;
+
+export type ICreateOccasionInput = {
+  title: string;
+  description?: string;
+  image?: string;
+};
+
+export type IUpdateOccasionInput = Partial<ICreateOccasionInput>;

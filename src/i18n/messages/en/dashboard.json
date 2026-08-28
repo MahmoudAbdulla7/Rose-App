@@ -9,6 +9,93 @@
     "occasions": "Occasions",
     "products": "Products"
   },
+  "crumbs": {
+    "categories": {
+      "new": "Add Category",
+      "edit": "Update Category"
+    },
+    "occasions": {
+      "new": "Add Occasion",
+      "edit": "Update Occasion"
+    }
+  },
+  "categories": {
+    "listTitle": "All Categories",
+    "add": "Add a new category",
+    "searchLabel": "Search categories",
+    "addTitle": "Add a New Category",
+    "addSubmit": "Add Category",
+    "updateTitle": "Update Category: {name}",
+    "updateSubmit": "Update Category",
+    "table": {
+      "name": "Name",
+      "products": "Products",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": {
+        "title": "Delete \"{name}\"?",
+        "description": "This category will be permanently deleted. This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Enter category name",
+      "image": "Category image",
+      "viewImage": "View category image",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter category description",
+      "createSuccess": "Category added successfully",
+      "updateSuccess": "Category updated successfully",
+      "deleteSuccess": "Category deleted successfully",
+      "noChanges": "No changes to save"
+    },
+    "validation": {
+      "nameRequired": "Category name is required",
+      "descriptionRequired": "Category description is required",
+      "imageRequired": "Please upload a category image"
+    }
+  },
+  "occasions": {
+    "listTitle": "All Occasions",
+    "add": "Add a new occasion",
+    "searchLabel": "Search occasions",
+    "addTitle": "Add a New Occasion",
+    "addSubmit": "Add Occasion",
+    "updateTitle": "Update Occasion: {name}",
+    "updateSubmit": "Update Occasion",
+    "table": {
+      "name": "Name",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": {
+        "title": "Delete \"{name}\"?",
+        "description": "This occasion will be permanently deleted. This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Enter occasion name",
+      "image": "Occasion image",
+      "viewImage": "View occasion image",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter occasion description",
+      "createSuccess": "Occasion added successfully",
+      "updateSuccess": "Occasion updated successfully",
+      "deleteSuccess": "Occasion deleted successfully",
+      "noChanges": "No changes to save"
+    },
+    "validation": {
+      "nameRequired": "Occasion name is required",
+      "descriptionRequired": "Occasion description is required",
+      "imageRequired": "Please upload an occasion image"
+    }
+  },
   "userMenu": {
     "label": "User menu",
     "account": "Account",

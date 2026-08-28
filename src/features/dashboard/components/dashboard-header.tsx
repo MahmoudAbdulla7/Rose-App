@@ -4,7 +4,10 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 import DashboardUserMenu from './dashboard-user-menu';
-import { DASHBOARD_NAV_LINKS } from '@/features/dashboard/lib/constants/dashboard-nav-links';
+import {
+  DASHBOARD_NAV_LINKS,
+  DASHBOARD_ROOT,
+} from '@/features/dashboard/lib/constants/dashboard-nav-links';
 import { Link, usePathname } from '@/i18n/navigation';
 import {
   Breadcrumb,
@@ -24,8 +27,14 @@ export default function DashboardHeader() {
 
   // Variables
   const section = DASHBOARD_NAV_LINKS.find(
-    (link) => link.href !== '/dashboard' && pathname.startsWith(link.href),
+    (link) => link.href !== DASHBOARD_ROOT && pathname.startsWith(link.href),
   );
+
+  // `/categories/new` and `/categories/[id]/edit` add a third crumb.
+  const subPath = section ? pathname.slice(section.href.length) : '';
+  const subKey = subPath.endsWith('/new') ? 'new' : subPath.endsWith('/edit') ? 'edit' : null;
+  const subCrumbKey = section && subKey ? `crumbs.${section.label}.${subKey}` : null;
+  const subCrumb = subCrumbKey && t.has(subCrumbKey) ? t(subCrumbKey) : null;
 
   return (
     <header className="border-ds-border-muted bg-ds-plain sticky top-0 z-30 flex h-17.5 shrink-0 items-center justify-between gap-4 border-b px-4">
@@ -45,7 +54,9 @@ export default function DashboardHeader() {
           <BreadcrumbList>
             <BreadcrumbItem>
               {section ? (
-                <BreadcrumbLink render={<Link href="/dashboard" />}>{t('title')}</BreadcrumbLink>
+                <BreadcrumbLink render={<Link href={DASHBOARD_ROOT} />}>
+                  {t('title')}
+                </BreadcrumbLink>
               ) : (
                 <BreadcrumbPage>{t('title')}</BreadcrumbPage>
               )}
@@ -55,7 +66,22 @@ export default function DashboardHeader() {
               <>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>{t(`nav.${section.label}`)}</BreadcrumbPage>
+                  {subCrumb ? (
+                    <BreadcrumbLink render={<Link href={section.href} />}>
+                      {t(`nav.${section.label}`)}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage>{t(`nav.${section.label}`)}</BreadcrumbPage>
+                  )}
+                </BreadcrumbItem>
+              </>
+            )}
+
+            {subCrumb && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{subCrumb}</BreadcrumbPage>
                 </BreadcrumbItem>
               </>
             )}

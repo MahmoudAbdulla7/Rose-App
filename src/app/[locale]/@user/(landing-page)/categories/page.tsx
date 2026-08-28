@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import CategoriesGrid from '@/features/landing-page/components/categories/categories-grid';
-import CategoriesSearch from '@/features/landing-page/components/categories/categories-search';
+import SearchFilter from '@/shared/components/search-filter';
 import SectionHeading from '@/features/landing-page/components/home/section-heading';
 import {
   CategoriesGridSkeleton,
@@ -36,7 +36,11 @@ export default async function CategoriesPage({ searchParams }: CategoriesPagePro
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <SectionHeading id="categories-heading">{t('pages.categories')}</SectionHeading>
         <Suspense fallback={<CategoriesSearchSkeleton />}>
-          <CategoriesSearch />
+          <SearchFilter
+            placeholder={t('categories.searchPlaceholder')}
+            label={t('categories.searchLabel')}
+            className="max-w-md"
+          />
         </Suspense>
       </div>
 
