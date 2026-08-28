@@ -1,7 +1,19 @@
-import { useTranslations } from 'next-intl';
+import { Suspense } from 'react';
 
-export default function DashboardCategoriesPage() {
-  const t = useTranslations('dashboard.nav');
+import CategoriesContent from '@/features/dashboard/components/categories/categories-content';
+import CategoriesContentSkeleton from '@/features/dashboard/skeletons/categories-content.skeleton';
+import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 
-  return <h1 className="text-ds-text-plain text-2xl font-semibold">{t('categories')}</h1>;
+type Props = {
+  searchParams: Promise<ISearchParams>;
+};
+
+export default function DashboardCategoriesPage({ searchParams }: Props) {
+  return (
+    <Suspense fallback={<CategoriesContentSkeleton />}>
+      <LoadErrorBoundary entity="categories">
+        <CategoriesContent searchParams={searchParams} />
+      </LoadErrorBoundary>
+    </Suspense>
+  );
 }

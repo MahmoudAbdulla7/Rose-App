@@ -2,7 +2,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import CategoryCard from '@/features/landing-page/components/categories/category-card';
 import CategoriesPagination from '@/features/landing-page/components/categories/categories-pagination';
-import { getLandingPageCategories } from '@/features/landing-page/lib/services/categories.service';
+import { getPaginatedCategories } from '@/shared/lib/services/categories.service';
 import EmptyState from '@/shared/components/empty-state';
 
 type CategoriesGridProps = {
@@ -10,11 +10,13 @@ type CategoriesGridProps = {
 };
 
 export default async function CategoriesGrid({ searchParams }: CategoriesGridProps) {
+  // Translation
   const t = await getTranslations('common');
   const locale = await getLocale();
-  const resolvedSearchParams = await searchParams;
-  const { categories, metadata } = await getLandingPageCategories({
-    searchParams: resolvedSearchParams,
+
+  // Query
+  const { categories, metadata } = await getPaginatedCategories({
+    searchParams: await searchParams,
     options: { locale },
   });
 

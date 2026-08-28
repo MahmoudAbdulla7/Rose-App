@@ -1,13 +1,16 @@
 import { CalendarHeart, ClipboardList, LayoutDashboard, Package } from 'lucide-react';
 
+// The admin slot mirrors the storefront routes, so the dashboard lives at the root.
+export const DASHBOARD_ROOT = '/';
+
 export const DASHBOARD_NAV_LINKS = [
-  { href: '/dashboard', label: 'overview', icon: LayoutDashboard },
-  { href: '/dashboard/categories', label: 'categories', icon: ClipboardList },
-  { href: '/dashboard/occasions', label: 'occasions', icon: CalendarHeart },
-  { href: '/dashboard/products', label: 'products', icon: Package },
+  { href: DASHBOARD_ROOT, label: 'overview', icon: LayoutDashboard },
+  { href: '/categories', label: 'categories', icon: ClipboardList },
+  { href: '/occasions', label: 'occasions', icon: CalendarHeart },
+  { href: '/products', label: 'products', icon: Package },
 ] as const;
 
 export function isDashboardNavLinkActive(pathname: string, href: string) {
-  if (href === '/dashboard') return pathname === '/dashboard';
+  if (href === DASHBOARD_ROOT) return pathname === DASHBOARD_ROOT;
   return pathname.startsWith(href);
 }
