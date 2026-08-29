@@ -28,6 +28,7 @@
       "description": "Enter the verification code sent to {email}.",
       "verify": "Confirm",
       "resend": "Resend code",
+      "resendIn": "Send a new code in {seconds}s",
       "invalid": "Invalid verification code."
     }
   },

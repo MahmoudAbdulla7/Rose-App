@@ -2,10 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import { toast } from 'sonner';
 
+import { ResendTimer } from '@/features/auth/components/resend-timer';
 import { OTP_LENGTH } from '@/features/auth/lib/constants/otp.constant';
 import type { IUser } from '@/features/auth/lib/types/auth';
 import { requestEmailChangeAction } from '@/features/landing-page/lib/actions/request-email-change.action';
@@ -43,9 +43,6 @@ export default function ConfirmEmailModal({
   // Schema
   const confirmEmailSchema = createConfirmEmailChangeSchema(t);
 
-  // State
-  const [isResending, setIsResending] = useState(false);
-
   // Form
   const { control, handleSubmit, reset, setError } = useForm<IConfirmEmailChangeFields>({
     resolver: zodResolver(confirmEmailSchema),
@@ -66,7 +63,6 @@ export default function ConfirmEmailModal({
   useEffect(() => {
     if (!open) {
       reset({ code: '' });
-      setIsResending(false);
     }
   }, [open, reset]);
 
@@ -80,25 +76,6 @@ export default function ConfirmEmailModal({
       },
     });
   });
-
-  const handleResend = async () => {
-    setIsResending(true);
-
-    try {
-      const res = await requestEmailChangeAction({ newEmail: pendingEmail });
-
-      if (!res.status) {
-        toast.error(res.message || tCommon('error.networkError'));
-        return;
-      }
-
-      toast.success(res.message || t('codeSent'));
-    } catch {
-      toast.error(tCommon('error.networkError'));
-    } finally {
-      setIsResending(false);
-    }
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -148,15 +125,13 @@ export default function ConfirmEmailModal({
               )}
             />
 
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              loading={isResending}
-              onClick={handleResend}
-            >
-              {t('otp.resend')}
-            </Button>
+            <ResendTimer
+              email={pendingEmail}
+              namespace="accountSettings.changeEmail"
+              successMessage={t('codeSent')}
+              errorMessage={tCommon('error.networkError')}
+              resendAction={() => requestEmailChangeAction({ newEmail: pendingEmail })}
+            />
           </div>
 
           <Button
