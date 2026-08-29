@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Locale } from 'next-intl';
 
 type ComingSoonPageProps = {
-  locale: Locale;
+  params: Promise<{ locale: string }>;
   titleKey:
     | 'wishlist'
     | 'cart'
@@ -15,8 +15,9 @@ type ComingSoonPageProps = {
     | 'orders';
 };
 
-export default async function ComingSoonPage({ locale, titleKey }: ComingSoonPageProps) {
-  setRequestLocale(locale);
+export default async function ComingSoonPage({ params, titleKey }: ComingSoonPageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
   const t = await getTranslations('common.pages');
 
   return (

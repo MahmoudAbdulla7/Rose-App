@@ -25,7 +25,6 @@ export default async function RelatedProductsSection({
     <ProductsCarouselSection
       title={t('relatedProducts.title')}
       products={relatedProducts}
-      emptyState={null}
       className="my-12.5 lg:mb-42!"
     />
   );

@@ -1,5 +1,6 @@
 import { PRODUCT_FILTER_KEYS } from '@/features/products/lib/utils/filter.utils';
 import { Link } from '@/i18n/navigation';
+import BlurredImagePlaceholder from '@/shared/components/blurred-image-placeholder';
 import type { IOccasion } from '@/shared/lib/types/occasions';
 import { Badge } from '@/shared/ui/badge';
 import Image from 'next/image';
@@ -19,19 +20,24 @@ export default function Occasions({ occasions }: OccasionsProps) {
     <div className="text-ds-text-inverse dark:text-ds-text-plain grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
       {occasions.map((occasion) => (
         <Link
+          prefetch={true}
           key={occasion.id}
           href={`/products?${PRODUCT_FILTER_KEYS.OCCASION}=${occasion.id}`}
           aria-label={occasion.title}
         >
           <div className="relative aspect-4/3 size-full overflow-hidden rounded-4xl sm:aspect-1.5/1">
-            <Image
-              src={occasion.image}
-              alt={occasion.title}
-              fill
-              sizes={HERO_IMAGE_OPTIONS.OCCASION.SIZES}
-              className="z-0 object-cover"
-              {...HERO_IMAGE_OPTIONS.OCCASION.IMAGE}
-            />
+            {occasion.image ? (
+              <Image
+                src={occasion.image}
+                alt={occasion.title}
+                fill
+                sizes={HERO_IMAGE_OPTIONS.OCCASION.SIZES}
+                className="z-0 object-cover"
+                {...HERO_IMAGE_OPTIONS.OCCASION.IMAGE}
+              />
+            ) : (
+              <BlurredImagePlaceholder />
+            )}
             <div className="absolute inset-0 bg-linear-to-t from-black/60 from-0% via-15% to-transparent to-80%" />
             <div className="absolute bottom-0 left-0 space-y-2 p-4 sm:space-y-2.5 sm:p-6">
               <Badge className="bg-maroon-50 text-maroon-600">{occasion.title}</Badge>
