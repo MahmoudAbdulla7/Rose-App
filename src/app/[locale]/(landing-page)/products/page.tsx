@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ProductsPageProps): Promise<M
 
 export default function ProductsPage({ searchParams }: ProductsPageProps) {
   return (
-    <main className="container grid grid-cols-1 gap-4 overflow-hidden py-6 sm:gap-6 sm:py-8 lg:grid-cols-[minmax(0,25%)_minmax(0,1fr)] lg:gap-6.25">
+    <main className="container grid grid-cols-1 gap-3 overflow-hidden py-4 sm:gap-4 sm:py-6 lg:grid-cols-[minmax(0,25%)_minmax(0,1fr)] lg:gap-6.25 lg:py-8">
       <section className="min-w-0 lg:rounded-lg">
         <Suspense fallback={<FiltersSkeleton />}>
           <Filters searchParams={searchParams} />

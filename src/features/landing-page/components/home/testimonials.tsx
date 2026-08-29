@@ -11,11 +11,10 @@ import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 import { cn } from '@/shared/lib/utils';
 import { CarouselItem } from '@/shared/ui/carousel';
 
-const TestimonialsCarousel = dynamic(
-  () =>
-    import('@/features/landing-page/components/home/testimonials-carousel').then(
-      (m) => m.TestimonialsCarousel,
-    ),
+const TestimonialsCarousel = dynamic(() =>
+  import('@/features/landing-page/components/home/testimonials-carousel').then(
+    (m) => m.TestimonialsCarousel,
+  ),
 );
 
 export default function Testimonials() {
@@ -63,7 +62,7 @@ async function TestimonialsContent() {
                 className="relative flex basis-full flex-col px-3! ps-0 sm:basis-3/4 md:basis-1/2 md:px-6! xl:basis-1/3"
               >
                 {/* Avatar Image */}
-                <div className="absolute -top-15 left-1/2 z-10 size-30 -translate-x-1/2 overflow-hidden rounded-full border-4 border-white bg-white">
+                <div className="absolute -top-10 left-1/2 z-10 size-20 -translate-x-1/2 overflow-hidden rounded-full border-3 border-white bg-white sm:-top-12 sm:size-24 sm:border-4 lg:-top-15 lg:size-30">
                   {testimonial.image ? (
                     <Image
                       src={testimonial.image}
@@ -82,9 +81,11 @@ async function TestimonialsContent() {
                   )}
                 </div>
 
-                <article className="rounded-5xl shadow-ds-soft-lg flex h-full w-full flex-col items-center bg-white px-5 pt-16 pb-5">
+                <article className="shadow-ds-soft-lg lg:rounded-5xl flex h-full w-full flex-col items-center rounded-4xl bg-white px-4 pt-12 pb-4 sm:px-5 sm:pt-14 sm:pb-5 lg:pt-16 lg:pb-5">
                   {/* name */}
-                  <h3 className="mb-9 text-base font-semibold text-zinc-800">{testimonial.name}</h3>
+                  <h3 className="mb-6 text-sm font-semibold text-zinc-800 sm:mb-8 sm:text-base lg:mb-9">
+                    {testimonial.name}
+                  </h3>
 
                   {/* Rating */}
                   <div
@@ -107,7 +108,7 @@ async function TestimonialsContent() {
                   </div>
 
                   {/* Message */}
-                  <p className="mb-9 flex-1 text-start text-base leading-[100%] font-medium text-zinc-800">
+                  <p className="mb-6 flex-1 text-start text-sm leading-[110%] font-medium text-zinc-800 sm:mb-8 sm:text-base lg:mb-9 lg:leading-[100%]">
                     {testimonial.content}
                   </p>
 

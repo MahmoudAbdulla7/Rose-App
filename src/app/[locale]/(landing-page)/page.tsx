@@ -23,8 +23,8 @@ type LandingPageProps = {
 
 export default function LandingPage({ searchParams }: LandingPageProps) {
   return (
-    <main className="flex flex-col gap-16 overflow-x-hidden py-6 sm:gap-20 sm:py-8 md:gap-24 lg:gap-28 xl:gap-32">
-      <div className="container flex flex-col gap-16 sm:gap-20 md:gap-24 lg:gap-28 xl:gap-32">
+    <main className="flex flex-col gap-10 overflow-x-hidden py-4 sm:gap-12 sm:py-6 md:gap-14 lg:gap-28 xl:gap-32">
+      <div className="container flex flex-col gap-10 sm:gap-12 md:gap-14 lg:gap-28 xl:gap-32">
         <Suspense fallback={<HeroSkeleton />}>
           <Hero />
         </Suspense>

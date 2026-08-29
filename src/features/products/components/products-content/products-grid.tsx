@@ -21,10 +21,15 @@ export default async function ProductsGrid({ products }: ProductsGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} className="w-full min-w-0" />
-      ))}
-    </div>
+    <section aria-labelledby="products-grid-title">
+      <h2 id="products-grid-title" className="sr-only">
+        {t('productsGridLabel')}
+      </h2>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} className="w-full min-w-0" />
+        ))}
+      </div>
+    </section>
   );
 }

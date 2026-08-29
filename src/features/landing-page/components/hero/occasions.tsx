@@ -23,7 +23,7 @@ export default function Occasions({ occasions }: OccasionsProps) {
           prefetch={true}
           key={occasion.id}
           href={`/products?${PRODUCT_FILTER_KEYS.OCCASION}=${occasion.id}`}
-          aria-label={occasion.title}
+          aria-label={`${occasion.title}: ${occasion.description}`}
         >
           <div className="relative aspect-4/3 size-full overflow-hidden rounded-4xl sm:aspect-1.5/1">
             {occasion.image ? (

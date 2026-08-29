@@ -34,12 +34,13 @@ export default function ProductCartButton({
       onClick={handleAdd}
       disabled={outOfStock || isPending}
       aria-label={outOfStock ? t('outOfStock') : t('addToCart', { name: productMetadata.title })}
+      aria-busy={isPending}
       className={cn(
-        'bg-maroon-600 shadow-ds-spread focus-visible:ring-ds-ring dark:bg-maroon-500 inline-flex size-10.5 shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        'bg-maroon-600 shadow-ds-spread focus-visible:ring-ds-ring dark:bg-maroon-500 inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:size-10.5',
         className,
       )}
     >
-      <ShoppingCart className="text-maroon-50 size-6" aria-hidden="true" />
+      <ShoppingCart className="text-maroon-50 size-5 lg:size-6" aria-hidden="true" />
     </button>
   );
 }

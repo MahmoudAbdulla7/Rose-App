@@ -40,14 +40,17 @@ export default async function ProductCard({
 
   return (
     <article
-      className={cn('flex w-full min-w-68 flex-col gap-4 rounded-4xl', className)}
+      className={cn(
+        'flex w-full min-w-0 flex-col gap-3 rounded-3xl lg:min-w-68 lg:gap-4 lg:rounded-4xl',
+        className,
+      )}
       data-product-id={id}
       aria-labelledby={nameId}
       aria-describedby={outOfStock ? stockId : undefined}
     >
       {/* Image */}
-      <div className="relative h-72 w-full rounded-2xl">
-        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+      <div className="relative h-56 w-full rounded-xl lg:h-72 lg:rounded-2xl">
+        <div className="absolute inset-0 overflow-hidden rounded-xl lg:rounded-2xl">
           <HoveredLink
             href={productHref}
             className="absolute inset-0 block"
@@ -70,7 +73,7 @@ export default async function ProductCard({
         </div>
 
         {/* Actions and badges (outside overflow so remove label can expand) */}
-        <div className="pointer-events-none absolute inset-0 z-10 flex items-start justify-between p-2.5">
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-start justify-between p-2 lg:p-2.5">
           <div className="pointer-events-auto">
             <ProductWishlistButton
               className={cn(
@@ -98,13 +101,13 @@ export default async function ProductCard({
       </div>
 
       {/* Content */}
-      <div className="flex w-full flex-col gap-3">
+      <div className="flex w-full flex-col gap-2 lg:gap-3">
         {/* Name */}
         <HoveredLink href={productHref} className="min-w-0">
           <h3
             id={nameId}
             title={title}
-            className="text-maroon-700 dark:text-soft-pink-200 truncate text-lg leading-none font-semibold"
+            className="text-maroon-700 dark:text-soft-pink-200 truncate text-base leading-none font-semibold lg:text-lg"
           >
             {title}
           </h3>
@@ -117,13 +120,20 @@ export default async function ProductCard({
         )}
 
         {/* Price and cart button */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 lg:gap-2.5">
           <div className="flex min-w-0 flex-1 flex-col gap-1">
             {/* Rating */}
             <ProductRating rating={rating} />
 
             {/* Price */}
-            <p className="text-maroon-700 dark:text-soft-pink-200 text-base leading-none font-medium">
+            <p
+              className="text-maroon-700 dark:text-soft-pink-200 text-sm leading-none font-medium lg:text-base"
+              aria-label={
+                hasSalePrice
+                  ? `${t('currentPrice')}: ${t('price', { price })}. ${t('originalPrice')}: ${t('price', { price: originalPrice })}`
+                  : `${t('currentPrice')}: ${t('price', { price })}`
+              }
+            >
               <span className="sr-only">{t('currentPrice')}: </span>
               <span>{t('price', { price })}</span>
               {hasSalePrice && (

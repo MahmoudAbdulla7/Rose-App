@@ -34,13 +34,14 @@ export default function ProductWishlistButton({
       }
       disabled={isPending}
       aria-pressed={isWishlisted}
+      aria-busy={isPending}
       className={cn(
-        'focus-visible:ring-ds-ring group/wishlist inline-flex h-8 cursor-pointer items-center justify-center rounded-full bg-white px-1.5 transition-all hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:animate-pulse disabled:cursor-not-allowed disabled:opacity-50',
+        'focus-visible:ring-ds-ring group/wishlist inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full bg-white px-1.5 transition-all hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:animate-pulse disabled:cursor-not-allowed disabled:opacity-50',
         isWishlisted && 'hover:gap-1.5 hover:pe-2.5',
         className,
       )}
     >
-      <Icon className="text-maroon-700 size-4.5 shrink-0" aria-hidden="true" />
+      <Icon className="text-maroon-700 size-4 shrink-0 lg:size-4.5" aria-hidden="true" />
       {showLabel && isWishlisted ? (
         <span
           className={cn(

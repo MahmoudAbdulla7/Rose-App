@@ -30,14 +30,14 @@ export default function Step1Content({
 
   return (
     <>
-      <ul className="mt-4 space-y-3">
+      <ul className="mt-3 space-y-2.5 lg:mt-4 lg:space-y-3">
         {addresses.map((address) => {
           const isSelected = selectedAddressId === address.id;
           return (
             <li
               key={address.id}
               className={cn(
-                'cursor-pointer rounded-3xl px-4 py-3.5 font-medium transition-all',
+                'cursor-pointer rounded-2xl px-3 py-3 text-sm font-medium transition-all sm:px-4 lg:rounded-3xl lg:py-3.5 lg:text-base',
                 isSelected
                   ? 'bg-ds-primary border-ds-border-soft'
                   : 'border-zinc-300 bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800',
@@ -56,26 +56,28 @@ export default function Step1Content({
               <label htmlFor={address.id}>
                 <div
                   className={cn(
-                    'flex justify-between',
+                    'flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between lg:items-stretch lg:gap-0',
                     isSelected ? '*:text-ds-text-inverse' : '*:text-ds-text-plain',
                   )}
                 >
-                  <p className="text-2xl font-semibold">{address.city}</p>
-                  <p className="flex items-center gap-2.5">
+                  <p className="text-lg font-semibold sm:text-xl lg:text-2xl">{address.city}</p>
+                  <p className="flex min-w-0 items-center gap-2 lg:gap-2.5">
                     <span
                       className={cn(
-                        'flex size-9 items-center justify-center rounded-full',
+                        'flex size-7 shrink-0 items-center justify-center rounded-full lg:size-9',
                         isSelected ? '*:text-ds-primary bg-zinc-50' : 'bg-ds-primary *:text-white',
                       )}
                     >
-                      <Phone size={22} />
+                      <Phone className="size-4 lg:size-[22px]" />
                     </span>
-                    <span className={!isSelected ? 'text-ds-text-soft' : ''}>{address.phone}</span>
+                    <span className={cn('truncate', !isSelected ? 'text-ds-text-soft' : '')}>
+                      {address.phone}
+                    </span>
                   </p>
                 </div>
                 <p
                   className={cn(
-                    'mt-2.5 w-fit rounded-full px-3 py-1',
+                    'mt-2 w-fit max-w-full truncate rounded-full px-2.5 py-1 text-xs sm:text-sm lg:mt-2.5 lg:px-3 lg:text-base',
                     isSelected ? 'bg-ds-inverse text-ds-text-inverse' : '',
                   )}
                 >
@@ -87,8 +89,8 @@ export default function Step1Content({
         })}
       </ul>
 
-      <p className="text-ds-text-soft text-center text-lg font-semibold">OR</p>
-      <div className="my-6 text-center">
+      <p className="text-ds-text-soft text-center text-sm font-semibold lg:text-lg">OR</p>
+      <div className="my-4 text-center text-sm lg:my-6 lg:text-base">
         <button
           className="text-ds-primary cursor-pointer font-medium hover:underline"
           onClick={() => setOpen(true)}
@@ -99,9 +101,12 @@ export default function Step1Content({
       </div>
 
       <div className="w-full text-end">
-        <Button className="self-center px-10 py-2.5" onClick={() => setStep(2)}>
+        <Button
+          className="self-center px-7 py-2 text-sm lg:px-10 lg:py-2.5"
+          onClick={() => setStep(2)}
+        >
           {t('next')}
-          <MoveRight className="rtl:rotate-180" />
+          <MoveRight className="size-3 lg:size-4 rtl:rotate-180" />
         </Button>
       </div>
 

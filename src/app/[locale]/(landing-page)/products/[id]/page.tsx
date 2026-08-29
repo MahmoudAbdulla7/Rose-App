@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function ProductDetailPage({ params }: Props) {
   return (
-    <section className="mt-10 lg:mt-17">
+    <section className="mt-6 lg:mt-17">
       <Suspense fallback={<ProductDetailPageSkeleton />}>
         <ProductDetailContent params={params} />
       </Suspense>
@@ -43,7 +43,7 @@ async function ProductDetailContent({ params }: Props) {
   return (
     <>
       <ProductDetails id={id} />
-      <div className="mt-12 lg:mt-16">
+      <div className="mt-8 lg:mt-16">
         <Suspense fallback={<RelatedProductsSectionSkeleton />}>
           <RelatedProductsSection currentProductId={id} />
         </Suspense>

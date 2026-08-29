@@ -54,11 +54,11 @@ export default function CheckoutStep1() {
   }
 
   return (
-    <section className="my-8">
-      <div className="container grid grid-cols-[1fr_30%] gap-10">
+    <section className="my-5 lg:my-8">
+      <div className="container grid grid-cols-1 gap-7 lg:grid-cols-[1fr_30%] lg:gap-10">
         <div className="space-y-2.5">
           <Stepper step={step} />
-          <h2 className="text-3xl font-semibold">{t('step1Title')}</h2>
+          <h2 className="text-xl font-semibold sm:text-2xl lg:text-3xl">{t('step1Title')}</h2>
           {leftContent}
         </div>
         <div>
