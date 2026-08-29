@@ -15,6 +15,32 @@
     "about": "About",
     "orders": "Orders"
   },
+  "wishlist": {
+    "metadataDescription": "Review and manage the flowers and gifts saved to your wishlist.",
+    "eyebrow": "Saved picks",
+    "title": "Wishlist",
+    "itemCount": "{count, number} {count, plural, one {item} other {items}}",
+    "clear": "Clear wishlist",
+    "itemsLabel": "Wishlist items",
+    "emptyTitle": "Your wishlist is empty",
+    "emptyDescription": "Save the flowers and gifts you love, then come back when you're ready to order.",
+    "addToCart": "Add to cart",
+    "addToCartSuccess": "{name} added to cart.",
+    "addToCartError": "Couldn't add {name} to cart. Please try again.",
+    "continueShopping": "Continue Shopping",
+    "exploreSimilar": "Explore Similar Products",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "ratingValue": "{rating, number, decimal}/5",
+    "ratingsCount": "({count, number} {count, plural, one {rating} other {ratings}})",
+    "remove": "Remove",
+    "clearConfirmation": {
+      "title": "Are you sure you want to clear your Wishlist?",
+      "description": "This will remove all saved wishlist items.",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    }
+  },
   "toast": {
     "error": "Error"
   },
@@ -66,8 +92,16 @@
   },
   "entities": {
     "products": "products",
+    "categories": "categories",
     "occasions": "occasions",
     "testimonials": "testimonials"
+  },
+  "categories": {
+    "metadataDescription": "Browse our product categories and find the perfect flowers and gifts for every moment.",
+    "productCount": "{count, plural, one {# product} other {# products}}",
+    "viewCategory": "View products in {name}",
+    "searchPlaceholder": "Search categories...",
+    "searchLabel": "Search categories"
   },
   "loadError": {
     "title": "Failed to load {entity}. Try again.",

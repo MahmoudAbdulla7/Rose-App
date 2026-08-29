@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import BestSellingProducts from '@/features/landing-page/components/best-selling/best-selling-products';
 import { getBestSellingProducts } from '@/features/landing-page/lib/services/best-selling-products.service';
@@ -9,12 +10,15 @@ import { PRODUCT_SORT_BY } from '@/shared/lib/apis/products/products.options';
 import { cn } from '@/shared/lib/utils';
 import { isMobileDevice } from '@/shared/lib/utils/device.utils';
 import { buttonVariants } from '@/shared/ui/button';
+import BestSellingSectionSkeleton from '../../skeletons/best-selling/best-selling-section.skeleton';
 
 export default function BestSellingSection() {
   return (
-    <LoadErrorBoundary entity="products">
-      <BestSellingSectionContent />
-    </LoadErrorBoundary>
+    <Suspense fallback={<BestSellingSectionSkeleton />}>
+      <LoadErrorBoundary entity="products">
+        <BestSellingSectionContent />
+      </LoadErrorBoundary>
+    </Suspense>
   );
 }
 

@@ -30,15 +30,20 @@ export default function QuantityStepper({
 
   // Variables
   const isInteractiveDisabled = disabled || isLoading;
+  const stockLimit = Number.isFinite(maxStock) ? Math.max(0, Math.floor(maxStock)) : 0;
+  const isAtMin = quantity <= 1;
+  const isAtMax = quantity >= stockLimit;
 
   // Functions
+  // Quantity cannot go below 1. Minus at 1 is a no-op; deleting a line uses
+  // the Remove control, not quantity 0 (ticket Option B).
   const handleDecrease = () => {
-    if (isInteractiveDisabled || quantity <= 1) return;
+    if (isInteractiveDisabled || isAtMin) return;
     onQuantityChange(quantity - 1);
   };
 
   const handleIncrease = () => {
-    if (isInteractiveDisabled || quantity >= maxStock) return;
+    if (isInteractiveDisabled || isAtMax) return;
     onQuantityChange(quantity + 1);
   };
 
@@ -49,7 +54,7 @@ export default function QuantityStepper({
     if (Number.isNaN(nextValue)) return;
 
     // Clamp between 1 and available stock
-    const clamped = Math.min(maxStock, Math.max(1, Math.floor(nextValue)));
+    const clamped = Math.min(stockLimit, Math.max(1, Math.floor(nextValue)));
     if (clamped !== quantity) {
       onQuantityChange(clamped);
     }
@@ -65,7 +70,7 @@ export default function QuantityStepper({
         variant="secondary"
         size="icon-lg"
         onClick={handleDecrease}
-        disabled={isInteractiveDisabled || quantity <= 1}
+        disabled={isInteractiveDisabled || isAtMin}
         aria-label={t('decreaseQuantity')}
       >
         <Minus />
@@ -76,7 +81,7 @@ export default function QuantityStepper({
           type="number"
           inputMode="numeric"
           min={1}
-          max={maxStock}
+          max={stockLimit}
           value={quantity}
           disabled={isInteractiveDisabled}
           onChange={handleInputChange}
@@ -103,8 +108,8 @@ export default function QuantityStepper({
         variant="secondary"
         size="icon-lg"
         onClick={handleIncrease}
-        disabled={isInteractiveDisabled || quantity >= maxStock}
-        aria-label={t('increaseQuantity')}
+        disabled={isInteractiveDisabled || isAtMax}
+        aria-label={isAtMax ? t('maxStockReached', { count: stockLimit }) : t('increaseQuantity')}
       >
         <Plus />
       </Button>

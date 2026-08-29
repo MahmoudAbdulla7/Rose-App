@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { buildOccasionHref } from '@/features/landing-page/lib/utils/occasion.utils';
-import HoveredLink from '@/shared/components/hovered-link';
+import { Link } from '@/i18n/navigation';
 import type { IOccasion } from '@/shared/lib/types/occasions';
 import { cn } from '@/shared/lib/utils';
 
@@ -38,7 +38,8 @@ export default async function PopularProductsOccasionsFilter({
         const isActive = activeOccasionId === occasion.id;
 
         return (
-          <HoveredLink
+          <Link
+            prefetch={true}
             key={occasion.id}
             href={buildOccasionHref(searchParams, occasion.id)}
             aria-current={isActive ? 'page' : undefined}
@@ -51,7 +52,7 @@ export default async function PopularProductsOccasionsFilter({
             )}
           >
             {occasion.title}
-          </HoveredLink>
+          </Link>
         );
       })}
     </nav>

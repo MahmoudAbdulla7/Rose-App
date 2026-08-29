@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 import CartHeader from '@/features/cart/components/cart-header';
 import CartItemCard, { type CartItem } from '@/features/cart/components/cart-item-card';
@@ -17,6 +18,7 @@ import {
 } from '@/features/cart/hooks/use-cart';
 import type { ICartItem } from '@/shared/lib/types/cart';
 import { getProductDisplayPrice } from '@/shared/lib/utils/product-price.utils';
+import { getProductStock } from '@/shared/lib/utils/product-stock.utils';
 
 // Map API cart line → UI card shape
 function mapCartItem(item: ICartItem): CartItem {
@@ -26,7 +28,7 @@ function mapCartItem(item: ICartItem): CartItem {
     discountValue: item.product.discountValue,
   });
 
-  const stock = Number(item.product.stock);
+  const maxStock = getProductStock(item.product.stock);
 
   return {
     id: item.id,
@@ -37,8 +39,8 @@ function mapCartItem(item: ICartItem): CartItem {
     ratingsCount: Number(item.product.ratings),
     unitPrice: price,
     quantity: item.quantity,
-    maxStock: stock,
-    outOfStock: stock <= 0,
+    maxStock,
+    outOfStock: maxStock <= 0,
   };
 }
 
@@ -63,11 +65,16 @@ export default function CartContent() {
 
   const hasLoadError = !showSkeleton && (isError || (data != null && data.status === false));
   const cartItems = hasResolvedCart ? data.payload.cartItems.map(mapCartItem) : [];
-  const subtotal = cartItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
 
-  // Handlers — always pass cartItems[].id (not productId)
+  // Handlers — always pass cartItems[].id (not productId).
+  // Quantity stays between 1 and product stock; removal is only via handleRemove (Option B).
   const handleQuantityChange = (id: string, quantity: number) => {
-    if (!id || quantity < 1) return;
+    const item = cartItems.find((cartItem) => cartItem.id === id);
+    if (!id || !item || quantity < 1) return;
+    if (quantity > item.maxStock) {
+      toast.error(t('maxStockReached', { count: item.maxStock }));
+      return;
+    }
     updateCartItem.mutate({ id, quantity });
   };
 
@@ -81,7 +88,7 @@ export default function CartContent() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-10">
+    <div className="container grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-10">
       {/* Left column — cart items */}
       <section className="flex min-w-0 flex-col gap-6">
         <CartHeader itemCount={cartItems.length} onClearCart={handleClearCart} />
@@ -97,7 +104,7 @@ export default function CartContent() {
         ) : (
           <>
             <ul className="border-ds-border-muted divide-ds-border-muted flex list-none flex-col divide-y rounded-2xl border px-4">
-              {cartItems.map((item) => (
+              {cartItems.map((item: CartItem) => (
                 <li key={item.id}>
                   <CartItemCard
                     item={item}
@@ -117,11 +124,7 @@ export default function CartContent() {
       </section>
 
       {/* order summary */}
-      <OrderSummary
-        subtotal={subtotal}
-        checkoutDisabled={showSkeleton || hasLoadError}
-        className="lg:sticky lg:top-36 lg:self-start"
-      />
+      <OrderSummary className="lg:sticky lg:top-36 lg:self-start" />
     </div>
   );
 }

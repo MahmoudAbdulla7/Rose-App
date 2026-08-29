@@ -16,5 +16,16 @@
       "title": "العنوان مطلوب",
       "content": "التقييم مطلوب"
     }
+  },
+  "summary": {
+    "title": "تقييمات المنتج",
+    "generalRating": "التقييم العام:",
+    "customerReviews": "تقييمات العملاء",
+    "ratingsCount": "({count, number, decimal} تقييم)",
+    "rating": "{rating} من {maxRating} نجوم"
+  },
+  "emptyState": {
+    "title": "لا توجد تقييمات",
+    "description": "لا توجد تقييمات لهذا المنتج حالياً. كن أول من يقيّمه!"
   }
 }

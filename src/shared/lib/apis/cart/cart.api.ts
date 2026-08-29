@@ -1,17 +1,13 @@
 import 'server-only';
 
-import type { ICartItem, ICartResponse } from '../../types/cart';
-import { getNextAuthToken } from '../../utils/auth.utils';
 import { buildApiEndpoint } from '../../utils/api-endpoint-builder.utils';
+import { getNextAuthToken } from '../../utils/auth.utils';
 import { API_HEADERS } from '../headers.options';
+import type { ICartResponse } from '../../types/cart';
 
-// Shared auth headers for every backend cart call
 async function getAuthHeaders() {
   const token = await getNextAuthToken();
-
-  if (!token) {
-    throw new Error('Unauthorized');
-  }
+  if (!token) throw new Error('Unauthorized');
 
   return {
     ...API_HEADERS.JSON,
@@ -19,13 +15,57 @@ async function getAuthHeaders() {
   };
 }
 
+async function parseCartResponse<T>(response: Response, fallbackMessage: string): Promise<T> {
+  const data = (await response.json()) as { status?: boolean; message?: string };
+
+  if (!response.ok || data.status === false) {
+    throw new Error(data.message || fallbackMessage);
+  }
+
+  return data as T;
+}
+
 export async function getCartItems(): Promise<ICartResponse> {
   const headers = await getAuthHeaders();
   const endpoint = buildApiEndpoint('/cart', {});
-
   const response = await fetch(endpoint.toString(), { headers });
 
   return (await response.json()) as ICartResponse;
+}
+
+export async function addCartItem(productId: string, quantity: number): Promise<ICartResponse> {
+  const headers = await getAuthHeaders();
+  const endpoint = buildApiEndpoint('/cart', {});
+  const response = await fetch(endpoint.toString(), {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ productId, quantity }),
+  });
+
+  return parseCartResponse<ICartResponse>(response, 'Failed to add cart item');
+}
+
+export async function updateCartItemQuantity(id: string, quantity: number): Promise<ICartResponse> {
+  const headers = await getAuthHeaders();
+  const endpoint = buildApiEndpoint(`/cart/${id}`, {});
+  const response = await fetch(endpoint.toString(), {
+    method: 'PATCH',
+    headers,
+    body: JSON.stringify({ quantity }),
+  });
+
+  return parseCartResponse<ICartResponse>(response, 'Failed to update cart item');
+}
+
+export async function removeCartItem(id: string): Promise<ICartResponse> {
+  const headers = await getAuthHeaders();
+  const endpoint = buildApiEndpoint(`/cart/${id}`, {});
+  const response = await fetch(endpoint.toString(), {
+    method: 'DELETE',
+    headers,
+  });
+
+  return parseCartResponse<ICartResponse>(response, 'Failed to remove item from cart');
 }
 
 export async function clearCartItems(): Promise<IAPIResponse<null>> {
@@ -45,10 +85,12 @@ export async function clearCartItems(): Promise<IAPIResponse<null>> {
   await Promise.all(
     cart.payload.cartItems.map(async (item) => {
       const endpoint = buildApiEndpoint(`/cart/${item.id}`, {});
-      await fetch(endpoint.toString(), {
+      const response = await fetch(endpoint.toString(), {
         method: 'DELETE',
         headers,
       });
+
+      await parseCartResponse(response, 'Failed to clear cart');
     }),
   );
 
@@ -56,59 +98,6 @@ export async function clearCartItems(): Promise<IAPIResponse<null>> {
     status: true,
     code: 200,
     message: 'Cart cleared',
-    payload: null,
-  };
-}
-
-export async function updateCartItemById(
-  id: string,
-  quantity: number,
-): Promise<IAPIResponse<ICartItem>> {
-  if (!id) {
-    return {
-      status: false,
-      code: 400,
-      message: 'Missing cart item id',
-    };
-  }
-
-  const headers = await getAuthHeaders();
-  // `id` is the cart line id from cartItems[].id
-  const endpoint = buildApiEndpoint(`/cart/${id}`, {});
-
-  const response = await fetch(endpoint.toString(), {
-    method: 'PATCH',
-    body: JSON.stringify({ quantity }),
-    headers,
-  });
-
-  return (await response.json()) as IAPIResponse<ICartItem>;
-}
-
-export async function removeCartItemById(id: string): Promise<IAPIResponse<null>> {
-  if (!id) {
-    return {
-      status: false,
-      code: 400,
-      message: 'Missing cart item id',
-    };
-  }
-
-  const headers = await getAuthHeaders();
-  // `id` is the cart line id from cartItems[].id
-  const endpoint = buildApiEndpoint(`/cart/${id}`, {});
-
-  const response = await fetch(endpoint.toString(), {
-    method: 'DELETE',
-    headers,
-  });
-
-  const data = (await response.json()) as IAPIResponse<ICartItem | null>;
-
-  return {
-    status: data.status,
-    code: data.code,
-    message: data.message,
     payload: null,
   };
 }

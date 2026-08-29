@@ -1,72 +1,38 @@
 'use server';
 
-import { buildApiEndpoint } from '../utils/api-endpoint-builder.utils';
-import { getNextAuthToken } from '../utils/auth.utils';
-import { API_HEADERS } from '../apis/headers.options';
-import type { ICartItem, IAddToCart, IRemoveFromCart, IUpdateCartQuantity } from '../types/cart';
+import {
+  addCartItem,
+  clearCartItems,
+  removeCartItem as deleteCartItem,
+  updateCartItemQuantity,
+} from '../apis/cart/cart.api';
+import type { ICartResponse } from '../types/cart';
 
-export async function addToCart(data: IAddToCart): Promise<IAPIResponse<ICartItem>> {
-  const token = await getNextAuthToken();
+/**
+ * Cart quantity cannot go below 1. Removing a line is a separate mutation
+ * (`removeCartItem` / DELETE), not quantity 0 via PATCH (ticket Option B).
+ */
+const MIN_CART_QUANTITY = 1;
 
-  if (!token) {
-    throw new Error('Unauthorized');
+function assertMinQuantity(quantity: number) {
+  if (!Number.isFinite(quantity) || quantity < MIN_CART_QUANTITY) {
+    throw new Error('Quantity must be at least 1. Remove the item to delete it.');
   }
-
-  const endpoint = buildApiEndpoint('/cart', {});
-
-  const response = await fetch(endpoint.toString(), {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      ...API_HEADERS.JSON,
-      ...API_HEADERS.AUTHORIZATION(token.accessToken),
-    },
-  });
-
-  return (await response.json()) as IAPIResponse<ICartItem>;
 }
 
-export async function removeFromCart(data: IRemoveFromCart): Promise<IAPIResponse<ICartItem>> {
-  const token = await getNextAuthToken();
-
-  if (!token) {
-    throw new Error('Unauthorized');
-  }
-
-  const endpoint = buildApiEndpoint('/cart', {
-    productId: data.productId,
-  });
-
-  const response = await fetch(endpoint.toString(), {
-    method: 'DELETE',
-    headers: {
-      ...API_HEADERS.JSON,
-      ...API_HEADERS.AUTHORIZATION(token.accessToken),
-    },
-  });
-
-  return (await response.json()) as IAPIResponse<ICartItem>;
+export async function addToCart(productId: string, quantity: number = 1): Promise<ICartResponse> {
+  return addCartItem(productId, quantity);
 }
 
-export async function updateCartQuantity(
-  data: IUpdateCartQuantity,
-): Promise<IAPIResponse<ICartItem>> {
-  const token = await getNextAuthToken();
+export async function updateCartItem(id: string, quantity: number): Promise<ICartResponse> {
+  assertMinQuantity(quantity);
+  return updateCartItemQuantity(id, quantity);
+}
 
-  if (!token) {
-    throw new Error('Unauthorized');
-  }
+export async function removeCartItem(id: string): Promise<ICartResponse> {
+  return deleteCartItem(id);
+}
 
-  const endpoint = buildApiEndpoint('/cart', {});
-
-  const response = await fetch(endpoint.toString(), {
-    method: 'PATCH', // or 'PUT' depending on your API
-    body: JSON.stringify(data),
-    headers: {
-      ...API_HEADERS.JSON,
-      ...API_HEADERS.AUTHORIZATION(token.accessToken),
-    },
-  });
-
-  return (await response.json()) as IAPIResponse<ICartItem>;
+export async function clearCart(): Promise<IAPIResponse<null>> {
+  return clearCartItems();
 }

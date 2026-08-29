@@ -3,43 +3,42 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 
+import { clearCart, removeCartItem, updateCartItem } from '@/shared/lib/actions/cart.actions';
 import { CART_OPTIONS } from '@/shared/lib/apis/cart/cart.options';
+import { fetchCartItems } from '@/shared/lib/apis/cart/user-cart-items.api';
 import {
-  clearCartRequest,
-  fetchCartItems,
-  removeCartItemRequest,
-  updateCartItemRequest,
-} from '@/shared/lib/apis/cart/user-cart-items.api';
-import { guestCart } from '@/shared/lib/services/guest-cart.service';
+  clearGuestCart,
+  getGuestCartSnapshot,
+  removeFromGuestCart,
+  updateGuestCartItemQuantity,
+} from '@/shared/lib/services/guest-cart.service';
 import type { ICartItem, ICartResponse } from '@/shared/lib/types/cart';
 
+function onCartMutationError(error: Error) {
+  toast.error(error.message);
+}
+
 export function useCart() {
-  // Auth
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
   const previousStatusRef = useRef(status);
 
-  // Separate cache per auth scope so guest empty cart never masks the server cart
   const scope = isAuthenticated ? (session?.user?.id ?? 'user') : 'guest';
 
-  // Reset / refresh cart cache when auth status changes
   useEffect(() => {
     const previousStatus = previousStatusRef.current;
-
     if (previousStatus === 'authenticated' && status === 'unauthenticated') {
       queryClient.removeQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     }
-
     if (previousStatus !== 'authenticated' && status === 'authenticated') {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     }
-
     previousStatusRef.current = status;
   }, [status, queryClient]);
 
-  // Query
   return useQuery({
     queryKey: [...CART_OPTIONS.QUERY_KEY, scope],
     queryFn: async (): Promise<ICartResponse> => {
@@ -47,16 +46,15 @@ export function useCart() {
         return await fetchCartItems();
       }
 
-      // Guest fallback — IndexedDB cart while logged out
-      const items = await guestCart.getAll();
+      const items = getGuestCartSnapshot();
       const mappedItems: ICartItem[] = items.map((item) => ({
-        id: String(item.id),
+        id: item.id || `guest-${item.productId}`,
         productId: item.productId,
         product: item.product,
         quantity: item.quantity,
         userId: 'guest',
-        createdAt: item.addedAt,
-        updatedAt: item.addedAt,
+        createdAt: item.createdAt || new Date(),
+        updatedAt: item.updatedAt || new Date(),
       }));
 
       return {
@@ -72,46 +70,61 @@ export function useCart() {
 }
 
 export function useUpdateCartItem() {
-  // Query
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
 
-  // Mutation — PATCH /api/cart/{cartItemId}
   return useMutation({
     mutationFn: async ({ id, quantity }: { id: string; quantity: number }) => {
-      return await updateCartItemRequest(id, quantity);
+      if (isAuthenticated) {
+        return updateCartItem(id, quantity);
+      }
+
+      updateGuestCartItemQuantity(id, quantity);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     },
+    onError: onCartMutationError,
   });
 }
 
 export function useRemoveCartItem() {
-  // Query
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
 
-  // Mutation — DELETE /api/cart/{cartItemId}
   return useMutation({
     mutationFn: async (id: string) => {
-      return await removeCartItemRequest(id);
+      if (isAuthenticated) {
+        return removeCartItem(id);
+      }
+
+      removeFromGuestCart(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     },
+    onError: onCartMutationError,
   });
 }
 
 export function useClearCart() {
-  // Query
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
 
-  // Mutation — DELETE /api/cart
   return useMutation({
     mutationFn: async () => {
-      return await clearCartRequest();
+      if (isAuthenticated) {
+        return clearCart();
+      }
+
+      clearGuestCart();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     },
+    onError: onCartMutationError,
   });
 }

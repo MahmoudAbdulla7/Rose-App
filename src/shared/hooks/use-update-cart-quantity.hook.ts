@@ -1,13 +1,10 @@
+import { updateCartItem as serverUpdate } from '@/shared/lib/actions/cart.actions';
+import { CART_OPTIONS } from '@/shared/lib/apis/cart/cart.options';
+import { updateGuestCartItemQuantity } from '@/shared/lib/services/guest-cart.service';
+import type { ICartItem, IUpdateCartQuantity } from '@/shared/lib/types/cart';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { updateCartQuantity as serverUpdate } from '@/shared/lib/actions/cart.actions';
-import { guestCart } from '@/shared/lib/services/guest-cart.service';
-import { CART_OPTIONS } from '@/shared/lib/apis/cart/cart.options';
-import type {
-  IUpdateCartQuantity,
-  UpdateCartQuantityResponse,
-  ICartItem,
-} from '@/shared/lib/types/cart';
+import { toast } from 'sonner';
 import { type IProduct } from '../lib/types/product';
 
 export function useUpdateCartQuantity() {
@@ -16,14 +13,11 @@ export function useUpdateCartQuantity() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      productId,
-      quantity,
-    }: IUpdateCartQuantity): Promise<UpdateCartQuantityResponse> => {
+    mutationFn: async ({ productId, quantity }: IUpdateCartQuantity) => {
       if (isAuthenticated) {
-        return await serverUpdate({ productId, quantity });
+        return await serverUpdate(productId, quantity);
       } else {
-        await guestCart.updateQuantity(productId, quantity);
+        await updateGuestCartItemQuantity(productId, quantity);
         // Dummy payload to satisfy the type (server would return the updated item)
         const dummyItem: ICartItem = {
           id: `guest-${Date.now()}`,
@@ -44,6 +38,9 @@ export function useUpdateCartQuantity() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 }

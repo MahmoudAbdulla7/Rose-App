@@ -20,14 +20,17 @@ function RelatedProductsCarouselPrevious() {
 
   const { scrollPrev, canScrollPrev } = useCarousel();
 
+  if (!canScrollPrev) {
+    return null;
+  }
+
   return (
     <button
       type="button"
       data-slot="carousel-previous"
-      disabled={!canScrollPrev}
       onClick={scrollPrev}
       aria-label={t('previousSlide')}
-      className="bg-ds-primary shadow-ds-spread focus-visible:ring-ds-ring absolute inset-y-0 -inset-s-4 z-10 my-auto inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+      className="bg-ds-primary shadow-ds-spread focus-visible:ring-ds-ring absolute inset-y-0 -inset-s-4 z-10 my-auto inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:ring focus-visible:outline-none"
     >
       <ChevronLeft className="text-ds-text-inverse rtl:rotate-180" />
     </button>
@@ -39,14 +42,17 @@ function RelatedProductsCarouselNext() {
 
   const { scrollNext, canScrollNext } = useCarousel();
 
+  if (!canScrollNext) {
+    return null;
+  }
+
   return (
     <button
       type="button"
       data-slot="carousel-next"
-      disabled={!canScrollNext}
       onClick={scrollNext}
       aria-label={t('nextSlide')}
-      className="bg-ds-primary shadow-ds-spread focus-visible:ring-ds-ring absolute inset-y-0 -inset-e-4 z-10 my-auto inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+      className="bg-ds-primary shadow-ds-spread focus-visible:ring-ds-ring absolute inset-y-0 -inset-e-4 z-10 my-auto inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:ring focus-visible:outline-none"
     >
       <ChevronLeft className="text-ds-text-inverse rotate-180 rtl:rotate-0" />
     </button>
@@ -68,7 +74,7 @@ export default function RelatedProductsCarousel({
   }
 
   return (
-    <section className={cn('w-full', className)}>
+    <section className={cn('container', className)}>
       <SectionHeading>{title}</SectionHeading>
 
       <div className="relative mx-auto w-full max-w-7xl px-4.75">
