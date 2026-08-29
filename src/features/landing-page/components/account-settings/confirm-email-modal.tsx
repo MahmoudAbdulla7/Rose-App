@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { OTP_LENGTH } from '@/features/auth/lib/constants/otp.constant';
@@ -47,14 +47,14 @@ export default function ConfirmEmailModal({
   const [isResending, setIsResending] = useState(false);
 
   // Form
-  const { control, handleSubmit, reset, setError, watch } = useForm<IConfirmEmailChangeFields>({
+  const { control, handleSubmit, reset, setError } = useForm<IConfirmEmailChangeFields>({
     resolver: zodResolver(confirmEmailSchema),
     defaultValues: {
       code: '',
     },
   });
 
-  const code = watch('code');
+  const code = useWatch({ control, name: 'code' }) ?? '';
 
   // Hooks
   const { mutate: confirmEmailChange, isPending } = useConfirmEmailChange((user) => {
