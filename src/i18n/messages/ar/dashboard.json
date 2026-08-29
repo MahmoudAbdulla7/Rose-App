@@ -9,6 +9,10 @@
     "occasions": "المناسبات",
     "products": "المنتجات"
   },
+  "profile": {
+    "title": "الملف الشخصي للأدمن",
+    "breadcrumb": "الملف الشخصي"
+  },
   "userMenu": {
     "label": "قائمة المستخدم",
     "account": "الحساب",
