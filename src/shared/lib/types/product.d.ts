@@ -20,10 +20,11 @@ export interface IProduct extends IDBFields {
   category: IRelatedData;
   subCategory: IRelatedData | null;
   occasions: IRelatedData[] | null;
-  count: {
+  _count: {
     reviews: number;
     cartItems: number;
     wishlistItems: number;
+    orderItems: number
   };
 }
 
