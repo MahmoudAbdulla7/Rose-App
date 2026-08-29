@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { removeFromCart as serverRemove } from '@/shared/lib/actions/cart.actions';
-import { guestCart } from '@/shared/lib/services/guest-cart.service';
+import { toast } from 'sonner';
+import { removeCartItem as serverRemove } from '@/shared/lib/actions/cart.actions';
+import { removeFromGuestCart } from '@/shared/lib/services/guest-cart.service';
 import { CART_OPTIONS } from '@/shared/lib/apis/cart/cart.options';
 import type { IRemoveFromCart, RemoveFromCartResponse } from '@/shared/lib/types/cart';
 
@@ -13,7 +14,7 @@ export function useRemoveFromCart() {
   return useMutation({
     mutationFn: async ({ productId }: IRemoveFromCart): Promise<RemoveFromCartResponse> => {
       if (isAuthenticated) {
-        const response = await serverRemove({ productId });
+        const response = await serverRemove(productId);
 
         return {
           status: response.status,
@@ -22,7 +23,7 @@ export function useRemoveFromCart() {
           payload: null,
         };
       } else {
-        await guestCart.remove(productId);
+        await removeFromGuestCart(productId);
         return {
           status: true,
           code: 200,
@@ -33,6 +34,9 @@ export function useRemoveFromCart() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 }

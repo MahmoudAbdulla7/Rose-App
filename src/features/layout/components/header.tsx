@@ -11,12 +11,18 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import HeaderCartLink from './header-cart-link';
 import HeaderWishlistLink from './header-wishlist-link';
-import NotificationsDropdown from './notifications-dropdown';
+import NotificationsDropdown from './notifications/notifications-dropdown';
+import CurrentDeliveryLocation from './addresses/current-delivery-location';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 
 export default async function Header() {
   const t = await getTranslations('header');
   const locale = await getLocale();
   const suggestions = await getHeaderSearchSuggestions({ options: { locale } }).catch(() => []);
+
+  const session = await getServerSession(authOptions);
+  const isAuthenticated = !!session?.user;
 
   return (
     <header className="font-primary sticky top-0 z-50">
@@ -34,6 +40,8 @@ export default async function Header() {
               />
             </Link>
 
+            {isAuthenticated && <CurrentDeliveryLocation />}
+
             <HeaderSearch
               suggestions={suggestions}
               placeholder={t('searchPlaceholder')}
@@ -43,7 +51,7 @@ export default async function Header() {
 
           <div className="flex shrink-0 items-center">
             <div className="hidden items-center lg:flex">
-              <HeaderAuth />
+              <HeaderAuth isAuthenticated={isAuthenticated} />
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
             </div>
 
@@ -51,7 +59,7 @@ export default async function Header() {
 
             <HeaderCartLink />
 
-            <NotificationsDropdown />
+            {isAuthenticated && <NotificationsDropdown />}
 
             <div className="hidden items-center lg:flex">
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
@@ -60,7 +68,7 @@ export default async function Header() {
               <ThemeToggle />
             </div>
 
-            <HeaderMobileMenu />
+            <HeaderMobileMenu isAuthenticated={isAuthenticated} />
           </div>
         </div>
 

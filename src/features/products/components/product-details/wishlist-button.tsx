@@ -1,54 +1,42 @@
 'use client';
 
-import { HeartPlus, HeartMinus } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useWishlist, useAddToWishlist, useRemoveFromWishlist } from '@/shared/hooks';
+import { useToggleWishlist } from '@/shared/hooks/use-toggle-wishlist.hook';
 import type { IProduct } from '@/shared/lib/types/product';
-import { Button } from '@/shared/ui/button';
 import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { HeartMinus, HeartPlus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type WishlistButtonProps = {
   product: IProduct;
+  className?: string;
 };
 
 export default function WishlistButton({ product }: WishlistButtonProps) {
   const t = useTranslations('product');
-  const { data: wishlistData, isLoading } = useWishlist();
-  const { mutate: add, isPending: adding } = useAddToWishlist();
-  const { mutate: remove, isPending: removing } = useRemoveFromWishlist();
+  const { isWishlisted, toggle, isPending } = useToggleWishlist(product);
 
-  const wishlistItems =
-    wishlistData && 'payload' in wishlistData ? wishlistData.payload?.wishlistItems : undefined;
-
-  const isWishlisted = wishlistItems?.some((item) => item.productId === product.id) ?? false;
-
-  const isPending = adding || removing;
-
-  const toggle = () => {
-    if (isWishlisted) {
-      remove({ productId: product.id });
-    } else {
-      add({ productId: product.id, product });
-    }
-  };
+  const Icon = isWishlisted ? HeartMinus : HeartPlus;
 
   return (
     <Button
       variant="subtle"
       size="icon"
-      className={cn(
-        'size-11.5 shrink-0 text-black',
-        isWishlisted ? 'bg-zinc-800 text-white' : 'bg-zinc-100 text-black',
-      )}
       onClick={toggle}
-      disabled={isLoading || isPending}
+      disabled={isPending}
+      className={cn(
+        'size-11.5 shrink-0',
+        isWishlisted
+          ? 'dark:text-soft-pink-300 bg-zinc-800 text-white hover:bg-zinc-600 dark:bg-zinc-700'
+          : 'text-ds-text-plain bg-zinc-100 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700',
+      )}
       aria-label={
         isWishlisted
           ? t('removeFromWishlist', { name: product.title })
           : t('addToWishlist', { name: product.title })
       }
     >
-      {isWishlisted ? <HeartMinus className="size-6" /> : <HeartPlus className="size-6" />}
+      <Icon className="size-6" />
     </Button>
   );
 }

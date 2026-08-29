@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, type SubmitEvent } from 'react';
 import { MoveRight, TicketPercent, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useState, type SubmitEvent } from 'react';
 
+import { useCart } from '@/features/cart/hooks/use-cart';
 import { useApplyCoupon } from '@/features/cart/hooks/use-coupon';
+import { getCartSubtotal } from '@/features/cart/lib/utils/cart.utils';
 import {
   getCouponCartError,
   getCouponDiscount,
@@ -16,18 +17,15 @@ import type { ICoupon } from '@/shared/lib/types/coupon';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
+import { useTranslations } from 'next-intl';
 
 type OrderSummaryProps = {
-  subtotal: number;
-  checkoutDisabled?: boolean;
+  /** Replaces the default checkout button — e.g. a "place order" submit on checkout. */
+  children?: React.ReactNode;
   className?: string;
 };
 
-export default function OrderSummary({
-  subtotal,
-  checkoutDisabled = false,
-  className,
-}: OrderSummaryProps) {
+export default function OrderSummary({ children, className }: OrderSummaryProps) {
   // Translation
   const t = useTranslations('cart');
 
@@ -36,15 +34,21 @@ export default function OrderSummary({
   const [coupon, setCoupon] = useState<ICoupon | null>(null);
   const [error, setError] = useState<TCouponError | null>(null);
 
+  // Query
+  const { data, isPending: isCartPending, isError } = useCart();
+
   // Mutation
   const { mutate: applyCoupon, isPending } = useApplyCoupon();
 
-  // Derived State — the cart check re-runs every render, so editing the cart
-  // can't leave a stale discount applied.
-  const couponError = getCouponCartError(coupon, subtotal) ?? error;
+  // Variables
+  const cartReady = !isCartPending && !isError && data?.status === true;
+  const subtotal = cartReady ? getCartSubtotal(data.payload?.cartItems ?? []) : 0;
+
+  const couponError = getCouponCartError(coupon, subtotal);
+  const formError = couponError ?? error;
   const discount = coupon && !couponError ? getCouponDiscount(coupon, subtotal) : 0;
   const total = subtotal - discount;
-  const canCheckout = !checkoutDisabled && subtotal > 0;
+  const canCheckout = cartReady && subtotal > 0;
 
   // Functions
   const formatPrice = (price: number) => `${t('priceAmount', { price })} ${t('currency')}`;
@@ -61,9 +65,9 @@ export default function OrderSummary({
         const statusError = getCouponStatusError(found);
 
         setError(statusError);
-        setCoupon(statusError ? null : found);
 
         if (!statusError) {
+          setCoupon(found);
           setCode('');
         }
       },
@@ -90,7 +94,7 @@ export default function OrderSummary({
             onChange={(event) => setCode(event.target.value)}
             placeholder={t('couponPlaceholder')}
             aria-label={t('couponPlaceholder')}
-            error={couponError ? t(`couponErrors.${couponError}`) : undefined}
+            error={formError ? t(`couponErrors.${formError}`) : undefined}
             wrapperClassName="flex-1"
             disabled={isPending}
           />
@@ -157,15 +161,17 @@ export default function OrderSummary({
         </div>
       </div>
 
-      <Button
-        variant="primary"
-        className="h-17 w-full text-xl font-medium"
-        disabled={!canCheckout}
-        render={canCheckout ? <Link href="/checkout" /> : undefined}
-        rightIcon={<MoveRight className="size-6 rtl:rotate-180" />}
-      >
-        {t('checkout')}
-      </Button>
+      {children ?? (
+        <Button
+          variant="primary"
+          className="h-17 w-full text-xl font-medium"
+          disabled={!canCheckout}
+          render={canCheckout ? <Link href="/checkout" /> : undefined}
+          rightIcon={<MoveRight className="size-6 rtl:rotate-180" />}
+        >
+          {t('checkout')}
+        </Button>
+      )}
     </section>
   );
 }
