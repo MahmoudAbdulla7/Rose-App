@@ -29,6 +29,18 @@
       "products": "Products",
       "sale": "Sale",
       "sales": "Sales"
+    },
+    "charts": {
+      "orderStatus": "Orders Status",
+      "orderStatusLegend": "Order status breakdown",
+      "completed": "Completed",
+      "inProgress": "In progress",
+      "canceled": "Canceled",
+      "noOrders": "No orders",
+      "revenue": "Revenue",
+      "period": "Revenue period",
+      "monthly": "Monthly",
+      "lastWeek": "Last Week"
     }
   },
   "profile": {

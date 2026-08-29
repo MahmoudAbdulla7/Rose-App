@@ -29,6 +29,18 @@
       "products": "منتج",
       "sale": "مبيعة",
       "sales": "مبيعة"
+    },
+    "charts": {
+      "orderStatus": "حالة الطلبات",
+      "orderStatusLegend": "تفاصيل حالات الطلبات",
+      "completed": "مكتملة",
+      "inProgress": "قيد التنفيذ",
+      "canceled": "ملغاة",
+      "noOrders": "لا توجد طلبات",
+      "revenue": "الإيرادات",
+      "period": "فترة الإيرادات",
+      "monthly": "شهريًا",
+      "lastWeek": "الأسبوع الماضي"
     }
   },
   "profile": {
