@@ -1,4 +1,5 @@
 import { getCartItems } from '@/shared/lib/apis/cart/cart.api';
+import { handleApiRouteError } from '@/shared/lib/utils/api-route-error.utils';
 import { NextResponse } from 'next/server';
 
 /**
@@ -13,10 +14,6 @@ export async function GET() {
     const data = await getCartItems();
     return NextResponse.json(data);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Internal Server Error';
-    if (message === 'Unauthorized' || message === 'No token found') {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    return handleApiRouteError(error);
   }
 }
