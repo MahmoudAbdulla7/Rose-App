@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 
 import { Badge } from '@/shared/ui/badge';
 import { Separator } from '@/shared/ui/separator';
-import { Category } from '../../lib/types/stats';
+import type { Category } from '../../lib/types/stats';
 
 type CategoriesStatsProps = {
   categories?: Category[];
