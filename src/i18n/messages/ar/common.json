@@ -92,8 +92,16 @@
   },
   "entities": {
     "products": "المنتجات",
+    "categories": "الفئات",
     "occasions": "المناسبات",
     "testimonials": "آراء العملاء"
+  },
+  "categories": {
+    "metadataDescription": "تصفح فئات منتجاتنا واعثر على الزهور والهدايا المثالية لكل مناسبة.",
+    "productCount": "{count, plural, one {منتج واحد} other {# منتجات}}",
+    "viewCategory": "عرض منتجات {name}",
+    "searchPlaceholder": "ابحث في الفئات...",
+    "searchLabel": "البحث في الفئات"
   },
   "loadError": {
     "title": "فشل تحميل {entity}. حاول مرة أخرى.",

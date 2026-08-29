@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { useSearchParams } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -35,7 +34,6 @@ export default function LoginForm({ callbackUrl, onSuccess }: LoginFormProps) {
 
   // Navigation
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   // Form
   const loginSchema = createLoginSchema({
@@ -86,7 +84,10 @@ export default function LoginForm({ callbackUrl, onSuccess }: LoginFormProps) {
       saveRememberedUser(data.rememberMe, data.username);
       onSuccess?.();
       router.push(
-        safeCallbackUrl(callbackUrl ?? searchParams.get('callbackUrl'), window.location.origin),
+        safeCallbackUrl(
+          callbackUrl ?? new URLSearchParams(window.location.search).get('callbackUrl'),
+          window.location.origin,
+        ),
       );
       router.refresh();
       return;
