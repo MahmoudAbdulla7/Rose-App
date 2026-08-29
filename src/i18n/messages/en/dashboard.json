@@ -9,6 +9,10 @@
     "occasions": "Occasions",
     "products": "Products"
   },
+  "profile": {
+    "title": "Admin Profile",
+    "breadcrumb": "Profile"
+  },
   "userMenu": {
     "label": "User menu",
     "account": "Account",

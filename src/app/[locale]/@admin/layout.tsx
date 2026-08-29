@@ -1,5 +1,3 @@
-import type { Locale } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 
 import DashboardBottomNav from '@/features/dashboard/components/dashboard-bottom-nav';
@@ -8,13 +6,9 @@ import DashboardSidebar from '@/features/dashboard/components/dashboard-sidebar'
 
 type Props = {
   children: ReactNode;
-  params: Promise<{ locale: string }>;
 };
 
-export default async function DashboardLayout({ children, params }: Props): Promise<ReactNode> {
-  const { locale } = await params;
-  setRequestLocale(locale as Locale);
-
+export default function DashboardLayout({ children }: Props): ReactNode {
   return (
     <div className="bg-ds-subtle flex flex-1">
       <DashboardSidebar />
