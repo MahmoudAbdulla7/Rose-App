@@ -103,9 +103,9 @@ export default function CartContent() {
           <EmptyCartState />
         ) : (
           <>
-            <ul className="border-ds-border-muted divide-ds-border-muted flex list-none flex-col divide-y rounded-2xl border px-4">
+            <ul className="border-ds-border-muted divide-ds-border-muted flex list-none flex-col divide-y rounded-2xl border">
               {cartItems.map((item: CartItem) => (
-                <li key={item.id}>
+                <li key={item.id} className="min-w-0">
                   <CartItemCard
                     item={item}
                     onQuantityChange={handleQuantityChange}
