@@ -12,6 +12,8 @@ import {
 } from '@/features/landing-page/skeletons/categories/categories-page.skeleton';
 import LoadErrorBoundary from '@/shared/components/load-error-boundary';
 
+export const instant = false;
+
 type CategoriesPageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<ISearchParams>;

@@ -6,6 +6,8 @@ import { getProduct } from '@/shared/lib/apis/product/product.api';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
+export const instant = false;
+
 type Props = {
   params: Promise<{ id: string; locale: string }>;
 };
