@@ -2,6 +2,8 @@ import type { Locale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 
+export const instant = false;
+
 type Props = {
   params: Promise<{ locale: string }>;
 };

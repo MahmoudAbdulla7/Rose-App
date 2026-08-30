@@ -59,6 +59,7 @@ export function generateStaticParams() {
 
 // Admins see the dashboard slot, everyone else the storefront slot.
 // Exception: rose_view=storefront cookie previews the storefront for admins.
+// The omitted slot is dropped from the tree, so its pages export `instant = false`.
 async function RoleSlot({ admin, user }: { admin: ReactNode; user: ReactNode }): Promise<ReactNode> {
   const session = await getServerSession(authOptions);
 

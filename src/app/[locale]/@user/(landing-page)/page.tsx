@@ -17,6 +17,8 @@ import PartnerSkeleton from '@/features/landing-page/skeletons/home/partner.skel
 import TestimonialsSkeleton from '@/features/landing-page/skeletons/home/testimonials.skeleton';
 import PopularProductsSectionSkeleton from '@/features/landing-page/skeletons/popular-products/popular-products-section.skeleton';
 
+export const instant = false;
+
 type LandingPageProps = {
   searchParams: Promise<ISearchParams>;
 };

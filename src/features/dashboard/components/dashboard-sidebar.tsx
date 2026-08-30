@@ -1,7 +1,7 @@
 'use client';
 
 import { Flower } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 import DashboardUserMenu from './dashboard-user-menu';
@@ -9,7 +9,7 @@ import {
   DASHBOARD_NAV_LINKS,
   isDashboardNavLinkActive,
 } from '@/features/dashboard/lib/constants/dashboard-nav-links';
-import { useRoseViewSwitch } from '@/features/dashboard/lib/hooks/use-rose-view-switch.hook';
+import { getRoseViewHref } from '@/features/dashboard/lib/hooks/use-rose-view-switch.hook';
 import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 
@@ -18,8 +18,8 @@ export default function DashboardSidebar() {
   const t = useTranslations('dashboard');
 
   // Navigation
+  const locale = useLocale();
   const pathname = usePathname();
-  const switchRoseView = useRoseViewSwitch();
 
   return (
     <aside className="border-ds-border-muted bg-ds-plain sticky top-0 hidden h-dvh w-72 shrink-0 flex-col justify-between border-e py-6 px-8 lg:flex">
@@ -35,14 +35,13 @@ export default function DashboardSidebar() {
         />
 
         {/* Preview website */}
-        <button
-          type="button"
-          onClick={() => switchRoseView('storefront')}
+        <a
+          href={getRoseViewHref('storefront', locale)}
           className="bg-ds-primary text-ds-text-inverse flex h-12.5 w-full cursor-pointer items-center justify-center gap-2 rounded-lg font-semibold"
         >
           <Flower className="size-6" />
           {t('previewWebsite')}
-        </button>
+        </a>
 
         {/* Navigation */}
         <nav aria-label={t('nav.label')} className="flex w-full flex-col gap-4">
