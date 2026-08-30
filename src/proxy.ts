@@ -4,6 +4,10 @@ import type { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import type { Locale } from 'next-intl';
 
+import {
+  ROSE_VIEW_COOKIE,
+  ROSE_VIEW_MAX_AGE,
+} from '@/features/dashboard/lib/constants/rose-view.constant';
 import { routing } from './i18n/routing';
 import { getPathname } from './i18n/navigation';
 import { AUTH_ROUTES } from './shared/lib/constants/auth-routes.constant';
@@ -14,6 +18,28 @@ import { resolveLocalizedPathname } from './shared/lib/utils/localized-pathname.
 const handleI18nRouting = createMiddleware(routing);
 
 export async function proxy(request: NextRequest) {
+  const view = request.nextUrl.searchParams.get('view');
+
+  // Set/clear storefront-preview cookie, then redirect to a clean URL without `view`.
+  if (view === 'storefront' || view === 'admin') {
+    const cleanUrl = request.nextUrl.clone();
+    cleanUrl.searchParams.delete('view');
+
+    const redirectResponse = NextResponse.redirect(cleanUrl);
+
+    if (view === 'storefront') {
+      redirectResponse.cookies.set(ROSE_VIEW_COOKIE, 'storefront', {
+        path: '/',
+        sameSite: 'lax',
+        maxAge: ROSE_VIEW_MAX_AGE,
+      });
+    } else {
+      redirectResponse.cookies.delete(ROSE_VIEW_COOKIE);
+    }
+
+    return redirectResponse;
+  }
+
   const response = handleI18nRouting(request);
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET! });
 
@@ -44,6 +70,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Add 'assets' to prevent redirecting in
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|assets).*)'],
 };

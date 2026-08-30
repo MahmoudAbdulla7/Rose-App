@@ -7,10 +7,12 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 import { getServerSession } from 'next-auth';
+import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 
 import { authOptions } from '@/auth';
 import { ROLES } from '@/features/auth/lib/constants/roles.constant';
+import { ROSE_VIEW_COOKIE } from '@/features/dashboard/lib/constants/rose-view.constant';
 import { routing } from '@/i18n/routing';
 import { getFormats } from '@/i18n/formats';
 import AppProvider from '@/shared/providers/app.provider';
@@ -56,9 +58,21 @@ export function generateStaticParams() {
 }
 
 // Admins see the dashboard slot, everyone else the storefront slot.
+// Exception: rose_view=storefront cookie previews the storefront for admins.
+// The omitted slot is dropped from the tree, so its pages export `instant = false`.
 async function RoleSlot({ admin, user }: { admin: ReactNode; user: ReactNode }): Promise<ReactNode> {
   const session = await getServerSession(authOptions);
-  return session?.user?.role === ROLES.ADMIN ? admin : user;
+
+  if (session?.user?.role !== ROLES.ADMIN) {
+    return user;
+  }
+
+  const cookieStore = await cookies();
+  if (cookieStore.get(ROSE_VIEW_COOKIE)?.value === 'storefront') {
+    return user;
+  }
+
+  return admin;
 }
 
 export default async function RootLayout({ admin, user, params }: Props): Promise<ReactNode> {

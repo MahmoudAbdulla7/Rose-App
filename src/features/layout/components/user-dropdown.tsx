@@ -4,7 +4,10 @@ import { signOut } from 'next-auth/react';
 import { User, Settings, LogOut, ChevronDown, MapPinHouse, ScrollText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { ROLES } from '@/features/auth/lib/constants/roles.constant';
+import { useRoseViewSwitch } from '@/features/dashboard/lib/hooks/use-rose-view-switch.hook';
 import { Link } from '@/i18n/navigation';
+import { useAuth } from '@/shared/hooks';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -12,7 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
-import { useAuth } from '@/shared/hooks';
 
 export default function UserDropdown() {
   // Translation
@@ -21,6 +23,7 @@ export default function UserDropdown() {
 
   // Custom hooks
   const { user } = useAuth();
+  const switchRoseView = useRoseViewSwitch();
 
   // Variables
   const menuItemClasses =
@@ -83,12 +86,21 @@ export default function UserDropdown() {
 
           <DropdownMenuSeparator />
 
-          {/* Dashboard */}
-          {user?.role === 'ADMIN' && (
+          {/* Dashboard — leave storefront preview and open admin */}
+          {user?.role === ROLES.ADMIN && (
             <>
-              <DropdownMenuItem disabled render={<Link href="#" className={menuItemClasses} />}>
+              <DropdownMenuItem
+                nativeButton
+                render={
+                  <button
+                    type="button"
+                    onClick={() => switchRoseView('admin')}
+                    className="flex w-full cursor-pointer gap-2"
+                  />
+                }
+              >
                 <Settings size={16} strokeWidth={1.5} />
-                <span>{tUserMenu('dashboard')}</span>
+                <span className="text-ds-text-plain font-medium">{tUserMenu('dashboard')}</span>
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
@@ -98,7 +110,9 @@ export default function UserDropdown() {
           {/* Log out */}
           <DropdownMenuItem
             nativeButton
-            render={<button onClick={handleLogout} className="flex w-full cursor-pointer gap-2" />}
+            render={
+              <button type="button" onClick={handleLogout} className="flex w-full cursor-pointer gap-2" />
+            }
           >
             <LogOut size={16} strokeWidth={1.5} />
             <span className="text-ds-text-plain font-medium">{tUserMenu('logout')}</span>

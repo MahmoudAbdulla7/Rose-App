@@ -6,6 +6,8 @@ import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+export const instant = false;
+
 type ProductsPageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<ISearchParams>;
