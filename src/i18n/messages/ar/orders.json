@@ -1,0 +1,42 @@
+{
+  "title": "طلباتي",
+  "orderNumber": "طلب رقم #{number}",
+  "date": "تم الإنشاء في {date} الساعة {time}",
+  "total": "الإجمالي",
+  "orderItems": "عناصر الطلب",
+  "empty": "لم تقم بأي طلبات بعد.",
+  "paymentMethod": {
+    "title": "طريقة الدفع",
+    "cash": "نقدًا",
+    "creditCard": "بطاقة ائتمان"
+  },
+  "paymentStatus": {
+    "title": "حالة الدفع",
+    "pending": "قيد الانتظار",
+    "processing": "قيد العمل",
+    "succeeded": "نجاح",
+    "failed": "فشل",
+    "refunded": "استرداد",
+    "cancelled": "ملغي"
+  },
+  "summary": {
+    "inProgress": "قيد التنفيذ",
+    "done": "تم",
+    "cancelled": "ملغي"
+  },
+  "status": {
+    "title": "الحالة",
+    "paid": "تم الدفع",
+    "pending": "قيد الانتظار",
+    "confirmed": "تم التأكيد",
+    "processing": "قيد العمل",
+    "shipped": "تم الشحن",
+    "delivered": "تم التوصيل",
+    "cancelled": "ملغي",
+    "refunded": "استرداد"
+  },
+  "itemsList": {
+    "showAll": "عرض الكل",
+    "showLess": "عرض أقل"
+  }
+}
