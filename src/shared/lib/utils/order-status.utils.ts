@@ -15,7 +15,7 @@ import {
 export type TStatusVariant = 'success' | 'info' | 'danger' | 'warning' | 'neutral';
 
 export interface IStatusDisplay {
-    label: string;
+    key: string;
     variant: TStatusVariant;
     icon: LucideIcon;
 }
@@ -23,49 +23,44 @@ export interface IStatusDisplay {
 export function getOrderStatusSummary(status: TOrderStatus): IStatusDisplay {
     switch (status) {
         case 'DELIVERED':
-            return { label: 'Done', variant: 'success', icon: CheckCheck };
+            return { key: 'done', variant: 'success', icon: CheckCheck };
         case 'CANCELLED':
-            return { label: 'Cancelled', variant: 'danger', icon: AlertTriangle };
         case 'REFUNDED':
-            return { label: 'Refunded', variant: 'neutral', icon: RotateCcw };
+            return { key: 'cancelled', variant: 'danger', icon: AlertTriangle };
         case 'PENDING':
-            return { label: 'Pending', variant: 'warning', icon: Truck };
         case 'CONFIRMED':
-            return { label: 'Confirmed', variant: 'info', icon: Check };
         case 'PROCESSING':
-            return { label: 'Processing', variant: 'info', icon: Loader2 };
         case 'SHIPPED':
-            return { label: 'Shipped', variant: 'info', icon: PackageCheck };
         default:
-            return { label: 'In Progress', variant: 'info', icon: Loader2 };
+            return { key: 'inProgress', variant: 'info', icon: Loader2 };
     }
 }
 
 export function getOrderStatusDetail(status: TOrderStatus): IStatusDisplay {
     switch (status) {
         case 'PENDING':
-            return { label: 'Pending', variant: 'warning', icon: Truck };
+            return { key: 'pending', variant: 'warning', icon: Truck };
         case 'CONFIRMED':
-            return { label: 'Confirmed', variant: 'info', icon: Check };
+            return { key: 'confirmed', variant: 'info', icon: Check };
         case 'PROCESSING':
-            return { label: 'Processing', variant: 'info', icon: Loader2 };
+            return { key: 'processing', variant: 'info', icon: Loader2 };
         case 'SHIPPED':
-            return { label: 'Shipped', variant: 'info', icon: PackageCheck };
+            return { key: 'shipped', variant: 'info', icon: PackageCheck };
         case 'DELIVERED':
-            return { label: 'Delivered', variant: 'success', icon: CheckCheck };
+            return { key: 'delivered', variant: 'success', icon: CheckCheck };
         case 'CANCELLED':
-            return { label: 'Cancelled', variant: 'danger', icon: AlertTriangle };
+            return { key: 'cancelled', variant: 'danger', icon: AlertTriangle };
         case 'REFUNDED':
-            return { label: 'Refunded', variant: 'neutral', icon: RotateCcw };
+            return { key: 'refunded', variant: 'neutral', icon: RotateCcw };
     }
 }
 
-export function getPaymentMethodDisplay(paymentMethod: TPaymentMethod): { label: string; icon: LucideIcon } {
+export function getPaymentMethodDisplay(paymentMethod: TPaymentMethod): { key: string; icon: LucideIcon } {
     switch (paymentMethod) {
         case 'CASH_ON_DELIVERY':
-            return { label: 'Cash', icon: Wallet };
+            return { key: 'cash', icon: Wallet };
         case 'CREDIT_CARD':
-            return { label: 'Credit Card', icon: CreditCard };
+            return { key: 'creditCard', icon: CreditCard };
     }
 }
 
@@ -74,16 +69,16 @@ export function isOrderPaid(paymentStatus: TPaymentStatus): boolean {
 }
 
 export function formatOrderNumber(id: string): string {
-    return `#${id.slice(0, 8).toUpperCase()}`;
+    return id.slice(0, 8).toUpperCase();
 }
 
-export function formatOrderDate(isoDate: string): string {
-    const date = new Date(isoDate);
+export function formatOrderDateParts(isoDate: string, locale: string): { date: string; time: string } {
+    const parsed = new Date(isoDate);
 
-    const day = date.toLocaleString(undefined, { day: '2-digit' });
-    const month = date.toLocaleString(undefined, { month: 'long' });
-    const year = date.toLocaleString(undefined, { year: 'numeric' });
-    const time = date.toLocaleString(undefined, { hour: 'numeric', minute: '2-digit' });
+    const day = parsed.toLocaleString(locale, { day: '2-digit' });
+    const month = parsed.toLocaleString(locale, { month: 'long' });
+    const year = parsed.toLocaleString(locale, { year: 'numeric' });
+    const time = parsed.toLocaleString(locale, { hour: 'numeric', minute: '2-digit' });
 
-    return `${day} ${month}, ${year} at ${time}`;
+    return { date: `${day} ${month}, ${year}`, time };
 }

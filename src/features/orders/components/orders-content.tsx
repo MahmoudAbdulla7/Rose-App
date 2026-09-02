@@ -7,11 +7,14 @@ import { useOrders, getOrdersQueryKey } from '@/shared/hooks/use-orders.hook';
 import { fetchOrders } from '@/shared/lib/apis/orders/user-order-list.api';
 import OrderCard from './order-card';
 import OrdersEmptyState from './orders-empty-state';
+import { useTranslations } from 'next-intl';
 
 export default function OrdersPageContent() {
     const searchParams = useSearchParams();
     const page = searchParams.get('page') ?? '1';
     const queryClient = useQueryClient();
+
+    const t = useTranslations('orders')
 
     const { orders, metadata, isLoading } = useOrders({ page });
 
@@ -27,7 +30,7 @@ export default function OrdersPageContent() {
 
     return (
         <div className="mx-auto max-w-3xl px-4 py-8">
-            <h1 className="mb-6 text-2xl font-bold">Orders</h1>
+            <h1 className="mb-6 text-2xl font-bold">{t('title')}</h1>
 
             {isLoading ? (
                 <p className="text-ds-text-muted text-sm">Loading orders...</p>
