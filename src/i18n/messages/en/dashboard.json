@@ -25,10 +25,11 @@
       "allCategories": "All Categories",
       "topSellingProducts": "Top Selling Products",
       "lowStockProducts": "Low Stock Products",
-      "product": "Product",
-      "products": "Products",
-      "sale": "Sale",
-      "sales": "Sales"
+      "productsLabel": "{count, plural, =0 {Products} =1 {Product} other {Products}}",
+      "salesLabel": "{count, plural, =0 {Sales} =1 {Sale} other {Sales}}",
+      "noCategories": "No categories available",
+      "noTopSellingProducts": "No top-selling products available",
+      "noLowStockProducts": "No low-stock products available"
     }
   },
   "profile": {
