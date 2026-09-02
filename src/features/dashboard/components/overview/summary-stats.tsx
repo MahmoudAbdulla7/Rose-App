@@ -1,5 +1,5 @@
 import { CircleDollarSign, ClipboardList, Package, ReceiptText } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 
 import { cn } from '@/shared/lib/utils';
 import { Summary } from '../../lib/types/stats';
@@ -11,6 +11,9 @@ type SummaryStatsProps = {
 export default function SummaryStats({ summary }: SummaryStatsProps) {
   // Translation
   const t = useTranslations('dashboard.overview.stats');
+
+  //Hooks
+  const format = useFormatter();
 
   // Variables
   const stats = [
@@ -62,7 +65,7 @@ export default function SummaryStats({ summary }: SummaryStatsProps) {
 
             {/* Value */}
             <span className={`mt-3 text-2xl font-semibold ${stat.text}`}>
-              {stat.value}
+              {format.number(stat.value ?? 0)}
               {stat.key === 'totalRevenue' && (
                 <span className="ms-1 text-sm font-medium">{summary?.currency}</span>
               )}

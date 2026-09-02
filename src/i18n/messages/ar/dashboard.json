@@ -25,10 +25,11 @@
       "allCategories": "جميع الفئات",
       "topSellingProducts": "المنتجات الأكثر مبيعًا",
       "lowStockProducts": "المنتجات منخفضة المخزون",
-      "product": "منتج",
-      "products": "منتج",
-      "sale": "مبيعة",
-      "sales": "مبيعة"
+      "productsLabel": "{count, plural, =0 {منتجات} =1 {منتج} =2 {منتجان} few {منتجات} many {منتجًا} other {منتج}}",
+      "salesLabel": "{count, plural, =0 {مبيعات} =1 {عملية بيع} =2 {عمليتا بيع} few {عمليات بيع} many {عملية بيع} other {عملية بيع}}",
+      "noCategories": "لا توجد تصنيفات",
+      "noTopSellingProducts": "لا توجد منتجات الأكثر مبيعًا",
+      "noLowStockProducts": "No low-stock products available"
     }
   },
   "profile": {
