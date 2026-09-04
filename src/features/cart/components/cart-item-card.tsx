@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
 import QuantityStepper from '@/features/cart/components/quantity-stepper';
+import { useDebouncedQuantityChange } from '@/features/cart/hooks/use-debounced-quantity-change';
 import HoveredLink from '@/shared/components/hovered-link';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
@@ -49,13 +50,7 @@ function MobileIconTooltip({ label, children }: MobileIconTooltipProps) {
   );
 }
 
-function CartItemPrice({
-  item,
-  className,
-}: {
-  item: CartItem;
-  className?: string;
-}) {
+function CartItemPrice({ item, className }: { item: CartItem; className?: string }) {
   const t = useTranslations('cart');
   const lineTotal = item.unitPrice * item.quantity;
 
@@ -73,7 +68,6 @@ function CartItemPrice({
           </span>
         ) : null}
       </p>
-
     </div>
   );
 }
@@ -87,8 +81,19 @@ export default function CartItemCard({
   const t = useTranslations('cart');
   const tProduct = useTranslations('product');
 
-  const handleRemove = () => onRemove(item.id);
-  const handleQuantityChange = (quantity: number) => onQuantityChange(item.id, quantity);
+  const {
+    quantity,
+    setQuantity,
+    cancel: cancelPendingQuantity,
+  } = useDebouncedQuantityChange({
+    quantity: item.quantity,
+    onCommit: (nextQuantity) => onQuantityChange(item.id, nextQuantity),
+  });
+
+  const handleRemove = () => {
+    cancelPendingQuantity();
+    onRemove(item.id);
+  };
 
   const removeButtonProps = {
     onClick: handleRemove,
@@ -155,7 +160,10 @@ export default function CartItemCard({
 
       <div className="flex min-w-0 flex-wrap items-center gap-1.5 md:col-start-2 md:row-start-2">
         <span className="bg-ds-warning-fade text-ds-text-plain inline-flex h-6 items-center gap-1 rounded-md px-1.5 text-xs font-semibold min-[480px]:text-sm">
-          <Star className="fill-ds-warning text-ds-warning size-3.5 min-[480px]:size-4" aria-hidden="true" />
+          <Star
+            className="fill-ds-warning text-ds-warning size-3.5 min-[480px]:size-4"
+            aria-hidden="true"
+          />
           {tProduct('productDetails.ratingValue', {
             rating: item.rating,
             maxRating: 5,
@@ -166,16 +174,19 @@ export default function CartItemCard({
         </span>
       </div>
 
-      <CartItemPrice item={item} className="min-w-0 md:col-start-2 md:row-start-3 md:self-end" />
+      <CartItemPrice
+        item={{ ...item, quantity }}
+        className="min-w-0 md:col-start-2 md:row-start-3 md:self-end"
+      />
 
       <div className="col-span-2 flex min-w-0 items-center justify-between gap-3 md:hidden">
         <span className="text-ds-text-default text-sm font-medium">{t('quantity')}</span>
         <QuantityStepper
-          quantity={item.quantity}
+          quantity={quantity}
           maxStock={item.maxStock}
           disabled={item.outOfStock}
           isLoading={isUpdating}
-          onQuantityChange={handleQuantityChange}
+          onQuantityChange={setQuantity}
           size="compact"
           fullWidth
           className="max-w-45 min-[480px]:max-w-52"
@@ -194,11 +205,11 @@ export default function CartItemCard({
         </Button>
 
         <QuantityStepper
-          quantity={item.quantity}
+          quantity={quantity}
           maxStock={item.maxStock}
           disabled={item.outOfStock}
           isLoading={isUpdating}
-          onQuantityChange={handleQuantityChange}
+          onQuantityChange={setQuantity}
         />
       </div>
     </article>

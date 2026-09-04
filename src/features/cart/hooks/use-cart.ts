@@ -3,16 +3,22 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 
+import { clearCart, removeCartItem, updateCartItem } from '@/shared/lib/actions/cart.actions';
 import { CART_OPTIONS } from '@/shared/lib/apis/cart/cart.options';
+import { fetchCartItems } from '@/shared/lib/apis/cart/user-cart-items.api';
 import {
-  clearCartRequest,
-  fetchCartItems,
-  removeCartItemRequest,
-  updateCartItemRequest,
-} from '@/shared/lib/apis/cart/user-cart-items.api';
-import { getGuestCartSnapshot } from '@/shared/lib/services/guest-cart.service';
+  clearGuestCart,
+  getGuestCartSnapshot,
+  removeFromGuestCart,
+  updateGuestCartItemQuantity,
+} from '@/shared/lib/services/guest-cart.service';
 import type { ICartItem, ICartResponse } from '@/shared/lib/types/cart';
+
+function onCartMutationError(error: Error) {
+  toast.error(error.message);
+}
 
 export function useCart() {
   const { data: session, status } = useSession();
@@ -64,37 +70,61 @@ export function useCart() {
 }
 
 export function useUpdateCartItem() {
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ id, quantity }: { id: string; quantity: number }) => {
-      return await updateCartItemRequest(id, quantity);
+      if (isAuthenticated) {
+        return updateCartItem(id, quantity);
+      }
+
+      updateGuestCartItemQuantity(id, quantity);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     },
+    onError: onCartMutationError,
   });
 }
 
 export function useRemoveCartItem() {
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (id: string) => {
-      return await removeCartItemRequest(id);
+      if (isAuthenticated) {
+        return removeCartItem(id);
+      }
+
+      removeFromGuestCart(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     },
+    onError: onCartMutationError,
   });
 }
 
 export function useClearCart() {
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async () => {
-      return await clearCartRequest();
+      if (isAuthenticated) {
+        return clearCart();
+      }
+
+      clearGuestCart();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CART_OPTIONS.QUERY_KEY });
     },
+    onError: onCartMutationError,
   });
 }
