@@ -2,7 +2,7 @@
 
 import { Loader2, Minus, Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import type { ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent, type FocusEvent } from 'react';
 
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
@@ -29,31 +29,78 @@ export default function QuantityStepper({
   size = 'default',
   fullWidth = false,
 }: QuantityStepperProps) {
+  // Translation
   const t = useTranslations('cart');
 
+  // Variables
   const isCompact = size === 'compact';
   const isInteractiveDisabled = disabled || isLoading;
+  const stockLimit = Number.isFinite(maxStock) ? Math.max(0, Math.floor(maxStock)) : 0;
+  const isAtMin = quantity <= 1;
+  const isAtMax = quantity >= stockLimit;
+  const [draft, setDraft] = useState<string | null>(null);
+  const inputValue = draft ?? String(quantity);
 
+  useEffect(() => {
+    setDraft((current) => {
+      if (current === null || current === '') return current;
+
+      const parsed = Number(current);
+      if (!Number.isNaN(parsed) && Math.floor(parsed) === quantity) return current;
+
+      return null;
+    });
+  }, [quantity]);
+
+  const clampQuantity = (value: number) => Math.min(stockLimit, Math.max(1, Math.floor(value)));
+
+  const commitQuantity = (nextQuantity: number) => {
+    setDraft(null);
+    if (nextQuantity !== quantity) {
+      onQuantityChange(nextQuantity);
+    }
+  };
+
+  // Functions
+  // Quantity cannot go below 1. Minus at 1 is a no-op; deleting a line uses
+  // the Remove control, not quantity 0 (ticket Option B).
   const handleDecrease = () => {
-    if (isInteractiveDisabled || quantity <= 1) return;
-    onQuantityChange(quantity - 1);
+    if (isInteractiveDisabled || isAtMin) return;
+    commitQuantity(quantity - 1);
   };
 
   const handleIncrease = () => {
-    if (isInteractiveDisabled || quantity >= maxStock) return;
-    onQuantityChange(quantity + 1);
+    if (isInteractiveDisabled || isAtMax) return;
+    commitQuantity(quantity + 1);
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (isInteractiveDisabled) return;
 
-    const nextValue = Number(event.target.value);
-    if (Number.isNaN(nextValue)) return;
+    const nextValue = event.target.value;
+    setDraft(nextValue);
 
-    const clamped = Math.min(maxStock, Math.max(1, Math.floor(nextValue)));
+    if (nextValue === '') return;
+
+    const parsed = Number(nextValue);
+    if (Number.isNaN(parsed)) return;
+
+    const clamped = clampQuantity(parsed);
     if (clamped !== quantity) {
       onQuantityChange(clamped);
     }
+  };
+
+  const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
+    if (isInteractiveDisabled) return;
+
+    const parsed = Number(event.target.value);
+    if (event.target.value === '' || Number.isNaN(parsed)) {
+      setDraft(null);
+      return;
+    }
+
+    commitQuantity(clampQuantity(parsed));
   };
 
   return (
@@ -72,7 +119,7 @@ export default function QuantityStepper({
         variant="secondary"
         size={isCompact ? 'icon-sm' : 'icon-lg'}
         onClick={handleDecrease}
-        disabled={isInteractiveDisabled || quantity <= 1}
+        disabled={isInteractiveDisabled || isAtMin}
         aria-label={t('decreaseQuantity')}
         className={isCompact ? 'size-8 shrink-0' : undefined}
       >
@@ -84,10 +131,11 @@ export default function QuantityStepper({
           type="number"
           inputMode="numeric"
           min={1}
-          max={maxStock}
-          value={quantity}
+          max={stockLimit}
+          value={inputValue}
           disabled={isInteractiveDisabled}
           onChange={handleInputChange}
+          onBlur={handleInputBlur}
           aria-label={t('quantityTimes', { quantity })}
           wrapperClassName="w-full"
           className={cn(
@@ -114,8 +162,8 @@ export default function QuantityStepper({
         variant="secondary"
         size={isCompact ? 'icon-sm' : 'icon-lg'}
         onClick={handleIncrease}
-        disabled={isInteractiveDisabled || quantity >= maxStock}
-        aria-label={t('increaseQuantity')}
+        disabled={isInteractiveDisabled || isAtMax}
+        aria-label={isAtMax ? t('maxStockReached', { count: stockLimit }) : t('increaseQuantity')}
         className={isCompact ? 'size-8 shrink-0' : undefined}
       >
         <Plus className={isCompact ? 'size-3.5' : undefined} />

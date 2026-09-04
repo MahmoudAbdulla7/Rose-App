@@ -1,5 +1,6 @@
 import type { IProduct } from '@/shared/lib/types/product';
 import type { ICartItem } from '@/shared/lib/types/cart';
+import { getProductStock } from '@/shared/lib/utils/product-stock.utils';
 
 const STORAGE_KEY = 'guestCart';
 const listeners = new Set<() => void>();
@@ -38,10 +39,16 @@ export function getGuestCartServerSnapshot(): ICartItem[] {
 export function addToGuestCart(product: IProduct, quantity: number = 1) {
   const current = getGuestCartSnapshot();
   const existing = current.find((item) => item.productId === product.id);
+  const nextQuantity = (existing?.quantity ?? 0) + quantity;
+  const stock = getProductStock(product.stock);
+
+  if (nextQuantity > stock) {
+    throw new Error('Quantity exceeds available stock');
+  }
 
   const updated = existing
     ? current.map((item) =>
-        item.productId === product.id ? { ...item, quantity: item.quantity + quantity } : item,
+        item.productId === product.id ? { ...item, quantity: nextQuantity } : item,
       )
     : [...current, { productId: product.id, product, quantity }];
 
@@ -49,18 +56,39 @@ export function addToGuestCart(product: IProduct, quantity: number = 1) {
   emitChange();
 }
 
-export function updateGuestCartItemQuantity(productId: string, quantity: number) {
+function matchesGuestCartLine(item: ICartItem, idOrProductId: string) {
+  return (
+    item.id === idOrProductId ||
+    item.productId === idOrProductId ||
+    `guest-${item.productId}` === idOrProductId
+  );
+}
+
+/**
+ * Updates a guest line's quantity. Quantity cannot go below 1 — callers must
+ * use `removeFromGuestCart` to delete a line (ticket Option B).
+ */
+export function updateGuestCartItemQuantity(idOrProductId: string, quantity: number) {
+  if (!Number.isFinite(quantity) || quantity < 1) {
+    throw new Error('Quantity must be at least 1. Remove the item to delete it.');
+  }
+
   const current = getGuestCartSnapshot();
+  const match = current.find((item) => matchesGuestCartLine(item, idOrProductId));
+  if (match && quantity > getProductStock(match.product.stock)) {
+    throw new Error('Quantity exceeds available stock');
+  }
+
   const updated = current.map((item) =>
-    item.productId === productId ? { ...item, quantity } : item,
+    matchesGuestCartLine(item, idOrProductId) ? { ...item, quantity } : item,
   );
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   emitChange();
 }
 
-export function removeFromGuestCart(productId: string) {
+export function removeFromGuestCart(idOrProductId: string) {
   const current = getGuestCartSnapshot();
-  const updated = current.filter((item) => item.productId !== productId);
+  const updated = current.filter((item) => !matchesGuestCartLine(item, idOrProductId));
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   emitChange();
 }

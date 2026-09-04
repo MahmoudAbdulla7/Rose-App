@@ -16,6 +16,7 @@
   "increaseQuantity": "Increase quantity",
   "loadError": "Failed to load cart.",
   "outOfStock": "Out of stock",
+  "maxStockReached": "Only {count} available in stock.",
   "updatingQuantity": "Updating quantity",
   "summary": "Summary",
   "couponPlaceholder": "Coupon Code",

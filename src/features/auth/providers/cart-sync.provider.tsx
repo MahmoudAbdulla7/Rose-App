@@ -8,7 +8,7 @@ import {
   getGuestCartSnapshot,
   setGuestCart,
 } from '@/shared/lib/services/guest-cart.service';
-import { addCartItem } from '@/shared/lib/apis/cart/user-cart-items.api';
+import { addToCart } from '@/shared/lib/actions/cart.actions';
 
 export function CartSyncProvider({ children }: { children: React.ReactNode }) {
   const { status } = useSession();
@@ -25,7 +25,7 @@ export function CartSyncProvider({ children }: { children: React.ReactNode }) {
 
     (async () => {
       const results = await Promise.allSettled(
-        items.map((item) => addCartItem(item.productId, item.quantity)),
+        items.map((item) => addToCart(item.productId, item.quantity)),
       );
       if (cancelled) return;
 
