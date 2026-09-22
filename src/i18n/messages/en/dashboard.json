@@ -29,6 +29,10 @@
         "stock": "Stock",
         "sales": "Sales",
         "rating": "Rating"
+      },
+      "empty": {
+        "title": "No products found",
+        "description": "Try adjusting your search, or add your first product to get started."
       }
     }
   }
