@@ -13,5 +13,23 @@
     "label": "User menu",
     "account": "Account",
     "logout": "Log out"
+  },
+  "pages": {
+    "products": {
+      "title": "All Products",
+      "price": "{price} EGP",
+      "actions": {
+        "addProduct": "Add a new product",
+        "editProduct": "Edit",
+        "deleteProduct": "Delete"
+      },
+      "table": {
+        "name": "Name",
+        "price": "Price",
+        "stock": "Stock",
+        "sales": "Sales",
+        "rating": "Rating"
+      }
+    }
   }
 }

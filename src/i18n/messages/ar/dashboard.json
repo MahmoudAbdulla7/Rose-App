@@ -13,5 +13,23 @@
     "label": "قائمة المستخدم",
     "account": "الحساب",
     "logout": "تسجيل الخروج"
+  },
+  "pages": {
+    "products": {
+      "title": "جميع المنتجات",
+      "price": "{price} ج.م",
+      "actions": {
+        "addProduct": "إضافة منتج جديد",
+        "editProduct": "تعديل",
+        "deleteProduct": "حذف"
+      },
+      "table": {
+        "name": "الاسم",
+        "price": "السعر",
+        "stock": "المخزون",
+        "sales": "المبيعات",
+        "rating": "التقييم"
+      }
+    }
   }
 }
