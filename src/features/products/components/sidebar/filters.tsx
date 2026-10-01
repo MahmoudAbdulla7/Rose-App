@@ -11,10 +11,11 @@ import FiltersSheet from './filters-sheet';
 import ResetAllFilters from './reset-all-filters';
 
 export type FiltersProps = {
-  searchParams?: ISearchParams;
+  searchParams: Promise<ISearchParams>;
 };
 
-export default async function Filters({ searchParams = {} }: FiltersProps) {
+export default async function Filters({ searchParams }: FiltersProps) {
+  const resolvedSearchParams = await searchParams;
   const locale = await getLocale();
   const tFilters = await getTranslations('common.filters');
 
@@ -23,13 +24,13 @@ export default async function Filters({ searchParams = {} }: FiltersProps) {
     getProductsPageOccasions({ locale }),
   ]);
 
-  const hasActiveFilters = isFilterActive(searchParams, ALL_PRODUCT_FILTER_KEYS);
-  const resetAllHref = clearFilterHref(searchParams, ALL_PRODUCT_FILTER_KEYS);
+  const hasActiveFilters = isFilterActive(resolvedSearchParams, ALL_PRODUCT_FILTER_KEYS);
+  const resetAllHref = clearFilterHref(resolvedSearchParams, ALL_PRODUCT_FILTER_KEYS);
 
   const panelProps = {
     categories,
     occasions,
-    searchParams,
+    searchParams: resolvedSearchParams,
   };
 
   return (

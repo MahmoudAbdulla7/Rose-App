@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation';
 import { buildFilterHref, PRODUCT_FILTER_KEYS } from '@/features/products/lib/utils/filter.utils';
+import BlurredImagePlaceholder from '@/shared/components/blurred-image-placeholder';
 import type { IOccasion } from '@/shared/lib/types/occasions';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
@@ -31,13 +32,17 @@ export default function OccasionFilterItem({
         'hover:opacity-90 active:scale-[0.98] active:opacity-80',
       )}
     >
-      <Image
-        src={occasion.image}
-        alt=""
-        fill
-        sizes="133px"
-        className="object-cover transition-transform duration-300 ease-out group-hover/occasion:scale-105"
-      />
+      {occasion.image ? (
+        <Image
+          src={occasion.image}
+          alt=""
+          fill
+          sizes="133px"
+          className="object-cover transition-transform duration-300 ease-out group-hover/occasion:scale-105"
+        />
+      ) : (
+        <BlurredImagePlaceholder />
+      )}
       <span
         className={cn(
           'absolute inset-0 transition-colors duration-200 ease-out',

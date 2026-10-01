@@ -1,0 +1,42 @@
+{
+  "title": "My Orders",
+  "orderNumber": "Order #{number}",
+  "date": "Created on {date} at {time}",
+  "total": "Total",
+  "orderItems": "Order Items",
+  "empty": "You haven't placed any orders yet.",
+  "paymentMethod": {
+    "title": "Payment Method",
+    "cash": "Cash",
+    "creditCard": "Credit Card"
+  },
+  "paymentStatus": {
+    "title": "Payment Status",
+    "pending": "Pending",
+    "processing": "Processing",
+    "succeeded": "Succeeded",
+    "failed": "Failed",
+    "refunded": "Refunded",
+    "cancelled": "Cancelled"
+  },
+  "summary": {
+    "inProgress": "In Progress",
+    "done": "Done",
+    "cancelled": "Cancelled"
+  },
+  "status": {
+    "title": "Status",
+    "paid": "Paid",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "refunded": "Refunded"
+  },
+  "itemsList": {
+    "showAll": "Show All",
+    "showLess": "Show Less"
+  }
+}

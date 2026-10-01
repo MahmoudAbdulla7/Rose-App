@@ -28,3 +28,4 @@ export const PRODUCTS_OPTIONS = {
   SUGGESTED_LIMIT: 8,
   SUGGESTED_FETCH_LIMIT: 16,
 } as const;
+

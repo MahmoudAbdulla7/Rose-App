@@ -24,7 +24,7 @@ import {
 } from '@/shared/ui/dialog';
 import { Separator } from '@/shared/ui/separator';
 
-export default function HeaderMobileMenu() {
+export default function HeaderMobileMenu({ isAuthenticated }: { isAuthenticated: boolean }) {
   const t = useTranslations('header');
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -61,7 +61,7 @@ export default function HeaderMobileMenu() {
         </DialogHeader>
 
         <div className="flex flex-col gap-4 px-4 py-4">
-          <HeaderAuth alwaysShowLabel />
+          <HeaderAuth alwaysShowLabel isAuthenticated={isAuthenticated} />
 
           <Separator className="bg-ds-border-soft" />
 

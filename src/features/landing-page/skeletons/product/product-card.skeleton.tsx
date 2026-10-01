@@ -32,7 +32,7 @@ export default function ProductCardSkeleton({ className }: IProductCardSkeletonP
             <Skeleton className="h-4 w-20" />
 
             {/* Price */}
-            <Skeleton className="h-4 w-65" />
+            <Skeleton className="h-4 w-3/4" />
           </div>
 
           {/* Cart button */}

@@ -1,11 +1,7 @@
-import ComingSoonPage from '@/features/landing-page/components/coming-soon-page';
-import type { Locale } from 'next-intl';
+import OrdersPageContent from '@/features/orders/components/orders-content'
 
-type Props = {
-  params: Promise<{ locale: string }>;
-};
-
-export default async function OrdersPage({ params }: Props) {
-  const { locale } = await params;
-  return <ComingSoonPage locale={locale as Locale} titleKey="orders" />;
+export default function OrdersPage() {
+  return (
+    <OrdersPageContent />
+  )
 }

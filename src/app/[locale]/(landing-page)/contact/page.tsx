@@ -1,11 +1,15 @@
 import ComingSoonPage from '@/features/landing-page/components/coming-soon-page';
-import type { Locale } from 'next-intl';
+import ComingSoonPageSkeleton from '@/features/landing-page/skeletons/coming-soon/coming-soon-page.skeleton';
+import { Suspense } from 'react';
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
-export default async function ContactPage({ params }: Props) {
-  const { locale } = await params;
-  return <ComingSoonPage locale={locale as Locale} titleKey="contact" />;
+export default function ContactPage({ params }: Props) {
+  return (
+    <Suspense fallback={<ComingSoonPageSkeleton />}>
+      <ComingSoonPage params={params} titleKey="contact" />
+    </Suspense>
+  );
 }
