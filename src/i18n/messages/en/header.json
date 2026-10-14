@@ -20,7 +20,9 @@
     "markRead": "Mark as read",
     "delete": "Delete",
     "empty": "No notifications yet",
-    "error": "Could not load notifications"
+    "error": "Could not load notifications",
+    "enableNotifications": "Enable push notifications",
+    "enablingNotifications": "Enabling notifications..."
   },
   "logoAlt": "Rose",
   "homeAria": "Rose home",
