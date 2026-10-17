@@ -22,7 +22,12 @@
     "empty": "لا توجد إشعارات حتى الآن",
     "error": "تعذر تحميل الإشعارات",
     "enableNotifications": "تفعيل الإشعارات",
-    "enablingNotifications": "جارٍ تفعيل الإشعارات..."
+    "enablingNotifications": "جارٍ تفعيل الإشعارات...",
+    "permissionDenied": "تم رفض إذن الإشعارات. يمكنك تفعيله من إعدادات المتصفح.",
+    "pushNotSupported": "الإشعارات الفورية غير مدعومة في متصفحك.",
+    "checkSubscriptionError": "تعذر التحقق من إعدادات الإشعارات. يُرجى المحاولة مرة أخرى.",
+    "enableNotificationsError": "تعذر تفعيل الإشعارات. يُرجى المحاولة مرة أخرى.",
+    "notificationsEnabled": "تم تفعيل الإشعارات بنجاح."
   },
   "logoAlt": "روز",
   "homeAria": "الصفحة الرئيسية لروز",

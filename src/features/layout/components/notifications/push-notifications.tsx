@@ -5,12 +5,25 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/ui/button';
 import { usePushNotifications } from '@/features/layout/hooks/use-push-notifications';
 
-export default function PushNotifications() {
+type PushNotificationsProps = {
+  pushConfigured: boolean;
+  vapidPublicKey: string;
+};
+
+export default function PushNotifications({
+  pushConfigured,
+  vapidPublicKey,
+}: PushNotificationsProps) {
+  // Translation
   const t = useTranslations('header.notifications');
 
-  const { pushConfigured, isSubscribed, isEnabling, enablePush } = usePushNotifications();
+  // Custom hooks
+  const { isSubscribed, isCheckingSubscription, isEnabling, enablePush } = usePushNotifications({
+    pushConfigured,
+    vapidPublicKey,
+  });
 
-  if (!pushConfigured || isSubscribed) {
+  if (!pushConfigured || isSubscribed || isCheckingSubscription) {
     return null;
   }
 

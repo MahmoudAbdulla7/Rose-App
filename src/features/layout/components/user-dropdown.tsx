@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
 } from '@/shared/ui/dropdown-menu';
 import { useAuth } from '@/shared/hooks';
-import { deletePushSubscription } from '../lib/utils/push-notifications.utils';
+import { deletePushSubscriptionAction } from '../lib/actions/push-notifications.action';
 
 export default function UserDropdown() {
   // Translation
@@ -28,9 +28,24 @@ export default function UserDropdown() {
     'text-ds-text-plain flex w-full items-center gap-2 font-medium cursor-pointer';
 
   // Functions
+  async function cleanupPushSubscription() {
+    if (!('serviceWorker' in navigator)) return;
+
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.getSubscription();
+
+    if (!subscription) return;
+
+    try {
+      await deletePushSubscriptionAction(subscription.endpoint);
+    } finally {
+      await subscription.unsubscribe();
+    }
+  }
+
   const handleLogout = async () => {
     try {
-      await deletePushSubscription();
+      await cleanupPushSubscription();
     } finally {
       await signOut({
         callbackUrl: '/',

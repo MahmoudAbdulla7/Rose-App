@@ -1,69 +1,88 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
+import { registerPushSubscriptionAction } from '../lib/actions/push-notifications.action';
 import { urlBase64ToUint8Array } from '../lib/utils/push-notifications.utils';
 
-type PushStatus = {
+type UsePushNotificationsProps = {
   pushConfigured: boolean;
-  subscriptionCount: number;
-  unreadCount: number;
+  vapidPublicKey: string;
 };
 
-export function usePushNotifications() {
-  const [pushConfigured, setPushConfigured] = useState(false);
+export function usePushNotifications({
+  pushConfigured,
+  vapidPublicKey,
+}: UsePushNotificationsProps) {
+  const t = useTranslations('header.notifications');
+
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isCheckingSubscription, setIsCheckingSubscription] = useState(true);
   const [isEnabling, setIsEnabling] = useState(false);
 
+  const registerSubscriptionMutation = useMutation({
+    mutationFn: registerPushSubscriptionAction,
+  });
+
   useEffect(() => {
-    const checkPushStatus = async () => {
+    let cancelled = false;
+
+    const checkSubscription = async () => {
+      if (
+        !pushConfigured ||
+        !('serviceWorker' in navigator) ||
+        !('PushManager' in window) ||
+        !('Notification' in window)
+      ) {
+        setIsSubscribed(false);
+        setIsCheckingSubscription(false);
+        return;
+      }
+
       try {
-        if (
-          !('serviceWorker' in navigator) ||
-          !('PushManager' in window) ||
-          !('Notification' in window)
-        ) {
-          return;
-        }
-
-        const response = await fetch('/api/notifications/push-status');
-
-        if (!response.ok) {
-          return;
-        }
-
-        const data: {
-          status: boolean;
-          payload: PushStatus;
-        } = await response.json();
-
-        if (!data.status) {
-          return;
-        }
-
-        setPushConfigured(data.payload.pushConfigured);
-
-        if (!data.payload.pushConfigured) {
-          return;
-        }
-
         const registration = await navigator.serviceWorker.getRegistration('/sw.js');
-
         const subscription = await registration?.pushManager.getSubscription();
 
-        setIsSubscribed(Boolean(subscription));
+        if (!cancelled) {
+          setIsSubscribed(Boolean(subscription));
+        }
       } catch {
-        setPushConfigured(false);
+        if (!cancelled) {
+          toast.error(t('checkSubscriptionError'));
+        }
+      } finally {
+        if (!cancelled) {
+          setIsCheckingSubscription(false);
+        }
       }
     };
 
-    checkPushStatus();
-  }, []);
+    setIsCheckingSubscription(true);
+    void checkSubscription();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [pushConfigured, t]);
 
   const enablePush = useCallback(async () => {
-    if (isEnabling || !pushConfigured) {
+    if (isEnabling || !pushConfigured || !vapidPublicKey) {
       return;
     }
+
+    if (
+      !('serviceWorker' in navigator) ||
+      !('PushManager' in window) ||
+      !('Notification' in window)
+    ) {
+      toast.error(t('pushNotSupported'));
+      return;
+    }
+
+    let subscription: PushSubscription | null = null;
 
     try {
       setIsEnabling(true);
@@ -71,56 +90,43 @@ export function usePushNotifications() {
       const permission = await Notification.requestPermission();
 
       if (permission !== 'granted') {
+        toast.error(t('permissionDenied'));
         return;
       }
 
       const registration = await navigator.serviceWorker.register('/sw.js');
+      const existingSubscription = await registration.pushManager.getSubscription();
 
-      const vapidResponse = await fetch('/api/notifications/vapid-public-key');
+      subscription =
+        existingSubscription ??
+        (await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
+        }));
 
-      if (!vapidResponse.ok) {
-        throw new Error('Failed to get VAPID public key');
-      }
-
-      const vapidData: {
-        status: boolean;
-        payload: {
-          publicKey: string;
-        };
-      } = await vapidResponse.json();
-
-      if (!vapidData.status) {
-        throw new Error('Failed to get VAPID public key');
-      }
-
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidData.payload.publicKey),
-      });
-
-      const subscriptionResponse = await fetch('/api/notifications/subscriptions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(subscription.toJSON()),
-      });
-
-      if (!subscriptionResponse.ok) {
-        throw new Error('Failed to register push subscription');
-      }
+      await registerSubscriptionMutation.mutateAsync(subscription.toJSON());
 
       setIsSubscribed(true);
-    } catch (error) {
-      console.error('Failed to enable push notifications:', error);
+      toast.success(t('notificationsEnabled'));
+    } catch {
+      if (subscription) {
+        try {
+          await subscription.unsubscribe();
+        } catch {
+          // Ignore cleanup failure; preserve the original registration error.
+        }
+      }
+
+      setIsSubscribed(false);
+      toast.error(t('enableNotificationsError'));
     } finally {
       setIsEnabling(false);
     }
-  }, [isEnabling, pushConfigured]);
+  }, [isEnabling, pushConfigured, vapidPublicKey, registerSubscriptionMutation, t]);
 
   return {
-    pushConfigured,
     isSubscribed,
+    isCheckingSubscription,
     isEnabling,
     enablePush,
   };
