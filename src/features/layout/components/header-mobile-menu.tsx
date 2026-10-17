@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import HeaderAuth from './header-auth';
+import NotificationsDropdown from './notifications/notifications-dropdown';
 import {
   HEADER_NAV_LINKS,
   isHeaderNavLinkActive,
@@ -24,7 +25,17 @@ import {
 } from '@/shared/ui/dialog';
 import { Separator } from '@/shared/ui/separator';
 
-export default function HeaderMobileMenu() {
+type HeaderMobileMenuProps = {
+  isAuthenticated: boolean;
+  pushConfigured: boolean;
+  vapidPublicKey: string;
+};
+
+export default function HeaderMobileMenu({
+  isAuthenticated,
+  pushConfigured,
+  vapidPublicKey,
+}: HeaderMobileMenuProps) {
   const t = useTranslations('header');
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -61,7 +72,7 @@ export default function HeaderMobileMenu() {
         </DialogHeader>
 
         <div className="flex flex-col gap-4 px-4 py-4">
-          <HeaderAuth alwaysShowLabel />
+          <HeaderAuth alwaysShowLabel isAuthenticated={isAuthenticated} />
 
           <Separator className="bg-ds-border-soft" />
 
@@ -93,18 +104,13 @@ export default function HeaderMobileMenu() {
 
           <Separator className="bg-ds-border-soft" />
 
-          <DialogClose
-            nativeButton={false}
-            render={
-              <Link
-                href="/notifications"
-                className="text-ds-text-default inline-flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium"
-              />
-            }
-          >
-            <Bell className="size-4 shrink-0" />
-            {t('notifications.label')}
-          </DialogClose>
+          {isAuthenticated && (
+            <NotificationsDropdown
+              showLabel
+              pushConfigured={pushConfigured}
+              vapidPublicKey={vapidPublicKey}
+            />
+          )}
 
           <div className="flex flex-wrap items-center justify-between gap-3 px-1">
             <LanguageSwitcherComponent className="text-sm" />

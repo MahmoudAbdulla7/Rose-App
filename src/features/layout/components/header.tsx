@@ -13,8 +13,19 @@ import HeaderCartLink from './header-cart-link';
 import HeaderWishlistLink from './header-wishlist-link';
 import NotificationsDropdown from './notifications/notifications-dropdown';
 import CurrentDeliveryLocation from './addresses/current-delivery-location';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
+import { getPushStatus, getVapidPublicKey } from '../lib/apis/push-notifications.api';
 
 export default async function Header() {
+  const session = await getServerSession(authOptions);
+  const isAuthenticated = !!session?.user;
+
+  const [pushStatus, vapidKey] = await Promise.all([
+    isAuthenticated ? getPushStatus().catch(() => null) : Promise.resolve(null),
+    getVapidPublicKey().catch(() => null),
+  ]);
+
   const t = await getTranslations('header');
   const locale = await getLocale();
   const suggestions = await getHeaderSearchSuggestions({ options: { locale } }).catch(() => []);
@@ -46,7 +57,7 @@ export default async function Header() {
 
           <div className="flex shrink-0 items-center">
             <div className="hidden items-center lg:flex">
-              <HeaderAuth />
+              <HeaderAuth isAuthenticated={isAuthenticated} />
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
             </div>
 
@@ -54,7 +65,10 @@ export default async function Header() {
 
             <HeaderCartLink />
 
-            <NotificationsDropdown />
+            <NotificationsDropdown
+              pushConfigured={pushStatus?.pushConfigured ?? false}
+              vapidPublicKey={vapidKey?.publicKey ?? ''}
+            />
 
             <div className="hidden items-center lg:flex">
               <Separator orientation="vertical" className="bg-ds-border-soft mx-2 h-8" />
@@ -63,7 +77,11 @@ export default async function Header() {
               <ThemeToggle />
             </div>
 
-            <HeaderMobileMenu />
+            <HeaderMobileMenu
+              isAuthenticated={isAuthenticated}
+              pushConfigured={pushStatus?.pushConfigured ?? false}
+              vapidPublicKey={vapidKey?.publicKey ?? ''}
+            />
           </div>
         </div>
 
