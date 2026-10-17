@@ -21,9 +21,15 @@ import NotificationItemSkeleton from '../../skeletons/notification-item.skeleton
 
 type NotificationsDropdownProps = {
   showLabel?: boolean;
+  pushConfigured: boolean;
+  vapidPublicKey: string;
 };
 
-export default function NotificationsDropdown({ showLabel = false }: NotificationsDropdownProps) {
+export default function NotificationsDropdown({
+  showLabel = false,
+  pushConfigured,
+  vapidPublicKey,
+}: NotificationsDropdownProps) {
   // Translation
   const t = useTranslations('header.notifications');
 
@@ -103,7 +109,8 @@ export default function NotificationsDropdown({ showLabel = false }: Notificatio
             {t('title')}
             {!error && ` (${unreadCount})`}
           </div>
-          <PushNotifications />
+
+          <PushNotifications pushConfigured={pushConfigured} vapidPublicKey={vapidPublicKey} />
         </div>
 
         {/* Body */}

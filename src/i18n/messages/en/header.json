@@ -22,7 +22,12 @@
     "empty": "No notifications yet",
     "error": "Could not load notifications",
     "enableNotifications": "Enable push notifications",
-    "enablingNotifications": "Enabling notifications..."
+    "enablingNotifications": "Enabling notifications...",
+    "permissionDenied": "Notification permission was denied. You can enable it in your browser settings.",
+    "pushNotSupported": "Push notifications are not supported by your browser.",
+    "checkSubscriptionError": "Couldn't check your notification settings. Please try again.",
+    "enableNotificationsError": "Couldn't enable notifications. Please try again.",
+    "notificationsEnabled": "Notifications enabled successfully."
   },
   "logoAlt": "Rose",
   "homeAria": "Rose home",

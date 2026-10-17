@@ -25,7 +25,17 @@ import {
 } from '@/shared/ui/dialog';
 import { Separator } from '@/shared/ui/separator';
 
-export default function HeaderMobileMenu({ isAuthenticated }: { isAuthenticated: boolean }) {
+type HeaderMobileMenuProps = {
+  isAuthenticated: boolean;
+  pushConfigured: boolean;
+  vapidPublicKey: string;
+};
+
+export default function HeaderMobileMenu({
+  isAuthenticated,
+  pushConfigured,
+  vapidPublicKey,
+}: HeaderMobileMenuProps) {
   const t = useTranslations('header');
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -94,7 +104,13 @@ export default function HeaderMobileMenu({ isAuthenticated }: { isAuthenticated:
 
           <Separator className="bg-ds-border-soft" />
 
-          {isAuthenticated && <NotificationsDropdown showLabel />}
+          {isAuthenticated && (
+            <NotificationsDropdown
+              showLabel
+              pushConfigured={pushConfigured}
+              vapidPublicKey={vapidPublicKey}
+            />
+          )}
 
           <div className="flex flex-wrap items-center justify-between gap-3 px-1">
             <LanguageSwitcherComponent className="text-sm" />
